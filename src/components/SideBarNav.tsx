@@ -20,15 +20,16 @@ import ListItemText from '@mui/material/ListItemText';
 import { useNavigate } from 'react-router-dom';
 
 
-import SubMenuPages from '../pages/SubMenuPages'
+
 import PagesRoute from '../Routes';
 
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
-import HomeIcon from '@mui/icons-material/Home';
+
 import PersonIcon from '@mui/icons-material/Person';
 import Assessment from '@mui/icons-material/Assessment';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 const drawerWidth = 240;
 
@@ -162,9 +163,9 @@ export default function MiniDrawer() {
                 }}
                 onClick={() => navigate('/home')}
               >
-                <HomeIcon />
+                <AccessAlarmsIcon />
               </ListItemIcon>
-              <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home')}>Home</ListItemText>
+              <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home')}>Ponto</ListItemText>
             </ListItemButton>
 
             <ListItemButton
@@ -182,9 +183,10 @@ export default function MiniDrawer() {
                 }}
                 onClick={() => navigate('/home/point')}
               >
-                <AccessAlarmsIcon />
+
+                <CalendarMonthIcon/>
               </ListItemIcon>
-              <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/point')}>Ponto Eletronico</ListItemText>
+              <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/point')}>Agendamento</ListItemText>
             </ListItemButton>
 
             <ListItemButton

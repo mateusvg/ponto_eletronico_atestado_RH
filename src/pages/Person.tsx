@@ -1,5 +1,10 @@
-export default function(){
-    return(
-        <>Person</>
+import TableStatus from '../components/TableStatus'
+export default function () {
+    return (
+        <>
+            Colaboradores
+
+            <TableStatus />
+        </>
     )
 }
