@@ -14,6 +14,8 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import LogoX from '../assets/img/LogoX.png'
 import { useNavigate } from 'react-router-dom';
+import { useContext } from "react";
+import { Login } from "../contexts/Login";
 
 function Copyright(props: any) {
     return (
@@ -30,7 +32,20 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
+
+
+
 export default function SignInSide(props: any) {
+
+    const navigate = useNavigate();
+    const { login, setLogin } = useContext(Login);
+
+    function handleClick(){
+        console.log(login)
+        setLogin(true)
+        console.log(login)
+        navigate('home')
+    }
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -39,7 +54,6 @@ export default function SignInSide(props: any) {
             password: data.get('password'),
         });
     };
-    const navigate = useNavigate();
     return (
         <ThemeProvider theme={theme}>
             <Grid container component="main" sx={{ height: '100vh' }}>
@@ -102,7 +116,7 @@ export default function SignInSide(props: any) {
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
-                                onClick={() => navigate('/home')}
+                                onClick={() => {handleClick()}}
                             >
                                 Sign In
                             </Button>

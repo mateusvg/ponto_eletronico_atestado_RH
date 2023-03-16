@@ -1,14 +1,25 @@
-import { Routes, Route } from 'react-router-dom';
-import Index from './pages/Index'
-import Home from './pages/Home'
+import {
+  BrowserRouter,
+} from 'react-router-dom';
+
+import SideNavBar from './components/SideBarNav'
+import LoginPage from '../src/pages/Login'
+
+import { useState } from 'react';
+import { Login } from "./contexts/Login";
+
 function App() {
+  const [login, setLogin] = useState(false);
   return (
 
 
-    <Routes>
-      <Route path="/" element={<Index />} />
-      <Route path="/home" element={<Home />} />
-    </Routes>
+    <BrowserRouter>
+      <Login.Provider value={{ login, setLogin }}>
+
+        {login ? <SideNavBar /> : <LoginPage />}
+      </Login.Provider>
+
+    </BrowserRouter>
 
   );
 }
