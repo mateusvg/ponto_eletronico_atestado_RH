@@ -276,11 +276,11 @@ export default function MiniDrawer() {
                                     mr: open ? 3 : 'auto',
                                     justifyContent: 'center',
                                 }}
-                                onClick={() => navigate('/home')}
+                                onClick={() => navigate('/home/user')}
                             >
                                 <AccessAlarmsIcon />
                             </ListItemIcon>
-                            <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home')}>Ponto</ListItemText>
+                            <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/user')}>Ponto</ListItemText>
                         </ListItemButton> : <></>}
 
                         {permission == 2 ? <ListItemButton
