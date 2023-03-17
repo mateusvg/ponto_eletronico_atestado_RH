@@ -17,6 +17,7 @@ import LogoX from '../assets/img/LogoX.png'
 import { useNavigate } from 'react-router-dom';
 import { useContext } from "react";
 import { Login } from "../contexts/Login";
+import { PermissionConst } from "../contexts/PermissionVisibility";
 
 import { getLoginUserUser } from '../services/Login/getLoginUser'
 
@@ -42,6 +43,7 @@ export default function SignInSide(props: any) {
 
     const navigate = useNavigate();
     const { login, setLogin } = useContext(Login);
+    const { permission, setPermission } = useContext(PermissionConst);
 
     const handleSubmit =  async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -51,10 +53,16 @@ export default function SignInSide(props: any) {
 
             const response = await parsedValue[0]?.userName
             const senha = await parsedValue[0]?.userPassword
+            const userPermission = await parsedValue[0]?.userPermission
             console.log(`responsta e :${response}`)
 
 
             if (response === data.get('email') && senha === data.get('password')) {
+                if(userPermission == 1){
+                    setPermission(1)
+                } else if (userPermission == 2){
+                    setPermission(2)
+                }
                 setLogin(true)
                 navigate('home')
             } else {

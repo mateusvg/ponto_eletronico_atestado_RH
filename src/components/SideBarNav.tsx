@@ -30,7 +30,13 @@ import PersonIcon from '@mui/icons-material/Person';
 import Assessment from '@mui/icons-material/Assessment';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import HistoryIcon from '@mui/icons-material/History';
+import AddAlertIcon from '@mui/icons-material/AddAlert';
 import { Grid } from '@mui/material';
+
+
+import { useContext } from "react";
+import { PermissionConst } from "../contexts/PermissionVisibility";
 
 const drawerWidth = 240;
 
@@ -107,6 +113,7 @@ export default function MiniDrawer() {
     const navigate = useNavigate();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const { permission, setPermission } = useContext(PermissionConst);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -173,7 +180,7 @@ export default function MiniDrawer() {
                             <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home')}>Ponto</ListItemText>
                         </ListItemButton>
 
-                        <ListItemButton
+                        {permission == 1 ? <ListItemButton
                             sx={{
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
@@ -192,29 +199,31 @@ export default function MiniDrawer() {
                                 <CalendarMonthIcon />
                             </ListItemIcon>
                             <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/point')}>Agendamento</ListItemText>
-                        </ListItemButton>
+                        </ListItemButton> : <></>}
 
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                            }}
-                        >
-                            <ListItemIcon
+
+                        {permission == 1 ?
+                            <ListItemButton
                                 sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
                                 }}
-                                onClick={() => navigate('/home/person')}
                             >
-                                <PersonIcon />
-                            </ListItemIcon>
-                            <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/person')}>Colaboradores</ListItemText>
-                        </ListItemButton>
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                    onClick={() => navigate('/home/person')}
+                                >
+                                    <PersonIcon />
+                                </ListItemIcon>
+                                <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/person')}>Colaboradores</ListItemText>
+                            </ListItemButton> : <></>}
 
-                        <ListItemButton
+                        {permission == 1 ? <ListItemButton
                             sx={{
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
@@ -232,9 +241,31 @@ export default function MiniDrawer() {
                                 <LocalHospitalIcon />
                             </ListItemIcon>
                             <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/certificate')}>Atestado</ListItemText>
-                        </ListItemButton>
+                        </ListItemButton> : <></>}
 
-                        <ListItemButton
+                        {permission == 1 ?
+                            <ListItemButton
+                                sx={{
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
+                                }}
+                            >
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                    onClick={() => navigate('/home/reports')}
+                                >
+                                    <Assessment />
+                                </ListItemIcon>
+                                <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/reports')}>Relatórios</ListItemText>
+                            </ListItemButton> : <></>}
+
+                        {/* MENU USUARIO */}
+                        {permission == 2 ? <ListItemButton
                             sx={{
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
@@ -247,13 +278,54 @@ export default function MiniDrawer() {
                                     mr: open ? 3 : 'auto',
                                     justifyContent: 'center',
                                 }}
-                                onClick={() => navigate('/home/reports')}
+                                onClick={() => navigate('/home/user/history')}
                             >
-                                <Assessment />
+                                <HistoryIcon />
                             </ListItemIcon>
-                            <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/reports')}>Relatórios</ListItemText>
-                        </ListItemButton>
+                            <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/user/history')}>Historico Ponto</ListItemText>
+                        </ListItemButton> : <></>}
 
+                        {permission == 2 ? <Divider /> : <></>}
+                        
+                        {permission == 2 ? <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                                onClick={() => navigate('/home/user/certificate')}
+                            >
+                                <LocalHospitalIcon />
+                            </ListItemIcon>
+                            <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/user/certificate')}>Status Atestado</ListItemText>
+                        </ListItemButton> : <></>}
+
+                        {permission == 2 ? <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                                onClick={() => navigate('/home/user/certificate/send')}
+                            >
+                                <AddAlertIcon />
+                            </ListItemIcon>
+                            <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/user/certificate/send')}>Enviar Atestado</ListItemText>
+                        </ListItemButton> : <></>}
                     </ListItem>
 
                 </List>
@@ -262,7 +334,7 @@ export default function MiniDrawer() {
 
                 <List>
                     <ListItem disablePadding sx={{ display: 'block' }}>
-                        <ListItemButton
+                        {permission == 1 ? <ListItemButton
                             sx={{
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
@@ -280,7 +352,29 @@ export default function MiniDrawer() {
                                 <SettingsIcon />
                             </ListItemIcon>
                             <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/settings')}>Configurações</ListItemText>
-                        </ListItemButton>
+                        </ListItemButton> : <></>}
+
+
+                        {permission == 2 ? <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                                onClick={() => navigate('/home/settings/user')}
+                            >
+
+                                <SettingsIcon />
+                            </ListItemIcon>
+                            <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/settings/user')}>Ccnfigurações</ListItemText>
+                        </ListItemButton> : <></>}
                     </ListItem>
                 </List>
             </Drawer>
