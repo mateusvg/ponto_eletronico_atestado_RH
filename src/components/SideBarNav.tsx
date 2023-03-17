@@ -19,7 +19,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ProfileIcon from './ProfileIcon'
 
 import { useNavigate } from 'react-router-dom';
-
+import Logo from '../assets/img/Logo.png'
 
 import PagesRoute from '../Routes';
 
@@ -140,11 +140,8 @@ export default function MiniDrawer() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        Ponto Eletrônico
-                    </Typography>
+                        <img src={Logo} alt="Logo" width={"3%"} />
                     <Grid container justifyContent="flex-end">
-
                         <ProfileIcon />
                     </Grid>
                 </Toolbar>
@@ -286,7 +283,7 @@ export default function MiniDrawer() {
                         </ListItemButton> : <></>}
 
                         {permission == 2 ? <Divider /> : <></>}
-                        
+
                         {permission == 2 ? <ListItemButton
                             sx={{
                                 minHeight: 48,

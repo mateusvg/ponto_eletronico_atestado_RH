@@ -1,4 +1,4 @@
-import TableStatus from '../components/TablePerson'
+import TableStatus from '../../components/TablePerson'
 export default function () {
     return (
         <>

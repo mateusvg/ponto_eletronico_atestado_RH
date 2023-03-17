@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import Home from './pages/Home'
 import Index from './pages/Login'
-import Person from './pages/Person'
-import Certificate from './pages/Certificate'
-import Reports from './pages/Reports'
+import Person from './pages/Admin/Person'
+import Certificate from './pages/Admin/Certificate'
+import Reports from './pages/Admin/Reports'
 import Point from './pages/Point'
-import Settings from "./pages/Settings";
+import Settings from "./pages/Admin/Settings";
 import UserHistory from "./pages/User/UserHistory";
 import SettingsUser from "./pages/User/SettingsUser"
 import UserCertificate from "./pages/User/UserCertificate";
