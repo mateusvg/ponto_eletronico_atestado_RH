@@ -391,7 +391,7 @@ export default function MiniDrawer() {
 
                                 <SettingsIcon />
                             </ListItemIcon>
-                            <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/user/settings')}>Ccnfigurações</ListItemText>
+                            <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/user/settings')}>Configurações</ListItemText>
                         </ListItemButton> : <></>}
                     </ListItem>
                 </List>
