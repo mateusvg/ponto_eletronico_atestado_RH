@@ -13,9 +13,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import LogoX from '../assets/img/LogoX.png'
+
 import { useNavigate } from 'react-router-dom';
 import { useContext } from "react";
 import { Login } from "../contexts/Login";
+
+import { getLoginUserUser } from '../services/Login/getLoginUser'
 
 function Copyright(props: any) {
     return (
@@ -40,19 +43,27 @@ export default function SignInSide(props: any) {
     const navigate = useNavigate();
     const { login, setLogin } = useContext(Login);
 
-    function handleClick(){
-        console.log(login)
-        setLogin(true)
-        console.log(login)
-        navigate('home')
-    }
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit =  async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        try {
+            const parsedValue = await getLoginUserUser({ user: data.get('email'), password: data.get('password') })
+
+            const response = await parsedValue[0]?.userName
+            const senha = await parsedValue[0]?.userPassword
+            console.log(`responsta e :${response}`)
+
+
+            if (response === data.get('email') && senha === data.get('password')) {
+                setLogin(true)
+                navigate('home')
+            } else {
+                console.log('não autenticado')
+            }
+
+        } catch (err) {
+            console.log(err);
+        }
     };
     return (
         <ThemeProvider theme={theme}>
@@ -116,7 +127,7 @@ export default function SignInSide(props: any) {
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
-                                onClick={() => {handleClick()}}
+                                // onClick={() => {handleSubmit}}
                             >
                                 Sign In
                             </Button>
