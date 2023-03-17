@@ -55,11 +55,12 @@ export default function SignInSide(props: any) {
             if (response === data.get('email') && senha === data.get('password')) {
                 if (userPermission == 1) {
                     setPermission(1)
+                    navigate('home')
                 } else if (userPermission == 2) {
                     setPermission(2)
+                    navigate('home/user')
                 }
                 setLogin(true)
-                navigate('home')
             } else {
                 console.log('Not Authenticated')
             }
