@@ -14,8 +14,6 @@ export const insertNewUserPerson = async (...props: any) => {
             },
             body: JSON.stringify(props[0]),
         })
-        const jsonObj = await response.json();
-        return jsonObj
     } catch (error) {
         console.error(error);
     }
