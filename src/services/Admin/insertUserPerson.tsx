@@ -2,6 +2,7 @@ import { relativeURI } from '../../helper/RelativeURI'
 
 const uriRelative = relativeURI()
 export const insertNewUserPerson = async (...props: any) => {
+    console.log(...props)
     const uri = `${uriRelative}admin/user/insert`
     try {
         const response = await fetch(

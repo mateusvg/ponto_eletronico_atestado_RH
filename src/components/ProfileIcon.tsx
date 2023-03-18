@@ -21,8 +21,6 @@ export default function AccountMenu() {
     function handleLogout() {
         setLogin(false)
         setUserId(0)
-        console.log(`menu userid ${userId}`)
-        console.log(`menu context ${login}`)
         navigate('/')
     }
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
