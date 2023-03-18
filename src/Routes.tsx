@@ -25,7 +25,7 @@ export default function PagesRoutes() {
             <Route path="/home/settings" element={<Settings />} />
             
             <Route path="/home/user" element={<UserHome />} />
-            <Route path="/home/user/setting" element={<UserSettings />} />
+            <Route path="/home/user/settings" element={<UserSettings />} />
             <Route path="/home/user/history" element={<UserHistory />} />
             <Route path="/home/user/certificate" element={<UserCertificate />} />
             <Route path="/home/user/certificate/send" element={<UserCertificateSend />} />

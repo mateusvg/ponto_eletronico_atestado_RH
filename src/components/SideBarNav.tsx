@@ -37,6 +37,7 @@ import { Grid } from '@mui/material';
 
 import { useContext } from "react";
 import { PermissionConst } from "../contexts/PermissionVisibility";
+import { userIdConst } from "../contexts/UsersId";
 
 const drawerWidth = 240;
 
@@ -114,6 +115,7 @@ export default function MiniDrawer() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const { permission, setPermission } = useContext(PermissionConst);
+    const { setUserId, userName } = useContext(userIdConst)
 
     const handleDrawerOpen = () => {
         setOpen(true);

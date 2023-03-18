@@ -8,8 +8,12 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from '@mui/material';
 
+import { useContext } from 'react';
+import { userIdConst } from "../../contexts/UsersId";
+
 export default function FormDialog() {
     const [open, setOpen] = React.useState(false);
+    const { userId, setUserId } = useContext(userIdConst);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -19,19 +23,11 @@ export default function FormDialog() {
         setOpen(false);
     };
 
-    const handleClickOpenSecond = () => {
-        setOpen(true);
-    };
-
-    const handleCloseSecond = () => {
-        setOpen(false);
-    };
-
     return (
         <Box display={'flex'} flexDirection={'column'} alignItems={'center'} margin={3}>
             <Box display={'flex'} flexDirection={'column'} alignItems={'center'} margin={3}>
                 <Button variant="outlined" onClick={handleClickOpen}>
-                    Alterar senha
+                    Alterar senha {userId}
                 </Button>
                 <Dialog open={open} onClose={handleClose}>
                     <DialogTitle>Subscribe</DialogTitle>

@@ -6,17 +6,22 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import IconButton from '@mui/material/IconButton';
 
-import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
+//Context
+import { useContext } from 'react';
+import { userIdConst } from "../contexts/UsersId";
 import { Login } from "../contexts/Login";
-import { ReactNode, useContext } from 'react';
 
 export default function AccountMenu() {
     const navigate = useNavigate();
     const { login, setLogin } = useContext(Login);
+    const { userId, setUserId, userName } = useContext(userIdConst);
+    
     function handleLogout() {
         setLogin(false)
+        setUserId(0)
+        console.log(`menu userid ${userId}`)
         console.log(`menu context ${login}`)
         navigate('/')
     }
@@ -32,7 +37,7 @@ export default function AccountMenu() {
         <React.Fragment>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
 
-
+Bem vindo {userName}
                     <IconButton
                         onClick={handleClick}
                         size="small"

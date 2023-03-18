@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from "react";
 import { Login } from "../contexts/Login";
 import { PermissionConst } from "../contexts/PermissionVisibility";
+import { userIdConst } from '../contexts/UsersId'
 
 //Service
 import { getLoginUserUser } from '../services/Login/getLoginUser'
@@ -43,6 +44,7 @@ export default function SignInSide(props: any) {
     const navigate = useNavigate();
     const { login, setLogin } = useContext(Login);
     const { permission, setPermission } = useContext(PermissionConst);
+    const { setUserId, setUserName } = useContext(userIdConst)
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -52,6 +54,8 @@ export default function SignInSide(props: any) {
             const response = await parsedValue[0]?.userName
             const senha = await parsedValue[0]?.userPassword
             const userPermission = await parsedValue[0]?.userPermission
+            const userId = await parsedValue[0]?.iduser
+            const userName = await parsedValue[0]?.userName
             if (response === data.get('email') && senha === data.get('password')) {
                 if (userPermission == 1) {
                     setPermission(1)
@@ -60,6 +64,8 @@ export default function SignInSide(props: any) {
                     setPermission(2)
                     navigate('home/user')
                 }
+                setUserId(userId)
+                setUserName(userName)
                 setLogin(true)
             } else {
                 console.log('Not Authenticated')
