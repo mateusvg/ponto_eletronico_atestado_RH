@@ -16,7 +16,7 @@ import LogoX from '../assets/img/LogoX.jpg'
 
 import { useNavigate } from 'react-router-dom';
 //Context
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Login } from "../contexts/Login";
 import { PermissionConst } from "../contexts/PermissionVisibility";
 import { userIdConst } from '../contexts/UsersId'
@@ -45,6 +45,7 @@ export default function SignInSide(props: any) {
     const { login, setLogin } = useContext(Login);
     const { permission, setPermission } = useContext(PermissionConst);
     const { setUserId, setUserName } = useContext(userIdConst)
+    const [notUser, setNotUser] = useState('')
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -68,7 +69,7 @@ export default function SignInSide(props: any) {
                 setUserName(userName)
                 setLogin(true)
             } else {
-                console.log('Not Authenticated')
+                setNotUser("Usuário não cadastrado ou senha inválida")
             }
 
         } catch (err) {
@@ -133,6 +134,9 @@ export default function SignInSide(props: any) {
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Lembrar-me"
                             />
+                            <Box display={'flex'} flexDirection={'column'} justifyContent={'center'}>
+                                <Typography color={'red'}>{notUser}</Typography>
+                            </Box>
                             <Button
                                 type="submit"
                                 fullWidth
