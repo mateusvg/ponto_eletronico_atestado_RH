@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Box, MenuItem } from '@mui/material';
+import { Box } from '@mui/material';
+import { useContext } from 'react';
+import { userIdConst } from "../contexts/UsersId";
+import { insertTimePointUser } from '../services/Users/insertTimePointUser'
+
+
+import Stack from '@mui/material/Stack';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 const DigitalClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
-  const [date, setDate] = useState(new Date());
+  const timeBRL = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }).split(',')[1]
 
   useEffect(() => {
     const timerID = setInterval(() => tick(), 1000);
@@ -35,11 +42,48 @@ const DigitalClock: React.FC = () => {
       ano = data.getFullYear();
     return dia + "/" + mes + "/" + ano;
   }
+
+
+
   const [isOpen, setIsOpen] = useState(false);
+  const { userId } = useContext(userIdConst);
+
+
+  // Define a function to handle form submission
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    await insertTimePointUser({ userId: userId, time: timeBRL, date: time })
+      .catch((error) => {
+        // Handle the error
+        console.error(error);
+      });
+
+    // Close the dialog
+    setIsOpen(false);
+  };
+
+
+  //ALERT
+  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref,
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+  const [open, setOpen] = React.useState(false);
+  const handleClick = () => {
+    setOpen(true);
+  };
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
 
   return (
     <>
-
       <Box m={4} p={3}>
         <Card sx={{ minWidth: 275 }}>
           <Box p={3} display={'flex'} flexDirection={'column'} alignItems={'center'}>
@@ -50,38 +94,50 @@ const DigitalClock: React.FC = () => {
               {formatTime(time.getMinutes())}:
               {formatTime(time.getSeconds())}
             </h2>
-            <Box display={'flex'} flexDirection={'column'} alignItems={'center'} margin={3}>
+            <Box display={'flex'} flexDirection={'column'} alignItems={'center'} >
               <div>
                 {/* Button to open the dialog */}
                 <Button variant="outlined" onClick={() => setIsOpen(true)}>Registrar</Button>
 
                 {/* Dialog */}
                 <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-                  <form>
-                    <DialogTitle>Registrar Ponto</DialogTitle>
-                    <DialogContent>
-                      <Box display={'flex'} flexDirection={'column'} gap={'10px'} justifyContent={'center'} alignItems={'center'}>
+                  <form onSubmit={handleSubmit}>
+                    <DialogTitle>Deseja registrar o ponto?</DialogTitle>
+                    <Box display={'flex'} flexDirection={'column'} gap={'10px'} justifyContent={'center'} alignItems={'center'}>
+                      <DialogContent>
                         <h2>{dataAtualFormatada()}</h2>
                         <h2>
                           {formatTime(time.getHours())}:
                           {formatTime(time.getMinutes())}:
                           {formatTime(time.getSeconds())}
                         </h2>
-                      </Box>
-                    </DialogContent>
-                    <DialogActions>
-                      {/* Buttons */}
-                      <Button variant="contained" color="error" onClick={() => setIsOpen(false)}>Cancelar</Button>
-                      <Button variant="contained" color="success" type="submit">
-                        Registrar
-                      </Button>
-                    </DialogActions>
+                      </DialogContent>
+                    </Box>
+                    <Box display={'flex'} flexDirection={'column'} gap={'10px'} justifyContent={'center'} alignItems={'center'}>
+                      <DialogActions>
+
+                        {/* Buttons */}
+                        <Button variant="contained" color="error" onClick={() => setIsOpen(false)}>Cancelar</Button>
+                        <Button variant="contained" color="success" type="submit" onClick={handleClick}>
+                          Registrar
+                        </Button>
+                      </DialogActions>
+                    </Box>
                   </form>
                 </Dialog>
               </div>
             </Box>
           </Box>
         </Card>
+
+        <Stack spacing={2} sx={{ width: '100%' }} justifyContent={'center'}>
+          <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+              Registrado com sucesso!
+            </Alert>
+          </Snackbar>
+        </Stack>
+
       </Box>
     </>
   );
