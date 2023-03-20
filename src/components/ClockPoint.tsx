@@ -6,10 +6,12 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from '@mui/material';
+
 import { useContext } from 'react';
 import { userIdConst } from "../contexts/UsersId";
+//Services
 import { insertTimePointUser } from '../services/Users/insertTimePointUser'
-
+import { getUserPointByDate } from '../services/Users/getUserPointByDate'
 
 import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
@@ -43,8 +45,6 @@ const DigitalClock: React.FC = () => {
     return dia + "/" + mes + "/" + ano;
   }
 
-
-
   const [isOpen, setIsOpen] = useState(false);
   const { userId } = useContext(userIdConst);
 
@@ -63,7 +63,7 @@ const DigitalClock: React.FC = () => {
   };
 
 
-  //ALERT
+  //TOAST-STACK BAR
   const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
     ref,
@@ -81,6 +81,10 @@ const DigitalClock: React.FC = () => {
     setOpen(false);
   };
 
+//Get AllPoint from USER by date
+  useEffect(() => {
+    getUserPointByDate(userId)
+}, [])
 
   return (
     <>

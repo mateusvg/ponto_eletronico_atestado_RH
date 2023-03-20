@@ -6,4 +6,9 @@ router.get('/all', controller.getAllUsers)
 
 router.post('/point/insert', controller.insertUserPoint)
 
+router.get('/point/date/:id', controller.getPointDateByUser)
+
+router.get('/point/date/history/:id', controller.getPointDateByUserAllHistory)
+
+
 module.exports = router;
