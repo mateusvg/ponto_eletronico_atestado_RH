@@ -4,11 +4,11 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-
 import DialogTitle from '@mui/material/DialogTitle';
-import { Box, InputLabel, MenuItem, Select } from '@mui/material';
-import { mask } from "../../utils/MaskFormaterCPF"
+import { Box, MenuItem } from '@mui/material';
+
 import { useState } from 'react';
+import { mask } from "../../utils/MaskFormaterCPF"
 
 import { insertNewUserPerson } from '../../services/Admin/insertUserPerson'
 
@@ -61,7 +61,7 @@ export default function FormDialog() {
         <Box display={'flex'} flexDirection={'column'} alignItems={'center'} margin={3}>
             <div>
                 {/* Button to open the dialog */}
-                <Button onClick={() => setIsOpen(true)}>Adicionar colaborador</Button>
+                <Button  variant="outlined" onClick={() => setIsOpen(true)}>Adicionar colaborador</Button>
 
                 {/* Dialog */}
                 <Dialog open={isOpen} onClose={() => setIsOpen(false)}>

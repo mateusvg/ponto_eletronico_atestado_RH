@@ -20,13 +20,14 @@ const DigitalClock: React.FC = () => {
     return value < 10 ? `0${value}` : `${value}`;
   };
 
-  function dataAtualFormatada(){
+  function dataAtualFormatada() {
     var data = new Date(),
-        dia  = data.getDate().toString().padStart(2, '0'),
-        mes  = (data.getMonth()+1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.
-        ano  = data.getFullYear();
-    return dia+"/"+mes+"/"+ano;
-}
+      dia = data.getDate().toString().padStart(2, '0'),
+      mes = (data.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.
+      ano = data.getFullYear();
+    return dia + "/" + mes + "/" + ano;
+  }
+  
 
   return (
     <>

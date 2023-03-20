@@ -4,7 +4,7 @@ import Index from './pages/Login'
 import Person from './pages/Admin/Person'
 import Certificate from './pages/Admin/Certificate'
 import Reports from './pages/Admin/Reports'
-import Point from './pages/User/Point'
+import Point from './pages/Admin/Schedule'
 import Settings from "./pages/Admin/Settings";
 
 import UserHome from "./pages/User/UserHome";
