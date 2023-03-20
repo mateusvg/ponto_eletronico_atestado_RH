@@ -6,6 +6,8 @@ router.get('/all', controller.getAllUsers)
 
 router.post('/point/insert', controller.insertUserPoint)
 
+router.post('/point/insert/exit', controller.insertUserPointExit)
+
 router.get('/point/date/:id', controller.getPointDateByUser)
 
 router.get('/point/date/history/:id', controller.getPointDateByUserAllHistory)

@@ -5,16 +5,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
 import { useContext, useEffect, useState } from 'react';
 import { userIdConst } from '../contexts/UsersId';
+//services
 import { getPointDateByUserAllHistory } from '../services/Users/getPointDateByUserAllHistory'
 
-//services
-
-import { Button } from '@mui/material';
 
 type personsType = {
     ideletronicPoint: number

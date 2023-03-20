@@ -13,6 +13,13 @@ exports.insertUserPoint = async (req, res, next) => {
     res.send().status(200)
 };
 
+exports.insertUserPointExit = async (req, res, next) => {
+    let idEletronicPoint = req.body.idEletronicPoint
+    let finalTime = req.body.finalTime
+    const data = await users.insertUserPointExit(idEletronicPoint, finalTime)
+    res.send().status(200)
+};
+
 exports.getPointDateByUser = async (req, res, next) => {
     let  id  = req.params.id
     const data = await users.getPointDateByUser(id)

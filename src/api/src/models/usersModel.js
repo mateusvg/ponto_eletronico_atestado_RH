@@ -20,7 +20,7 @@ async function insertUserPoint(idUser, time, date) {
 
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('INSERT INTO eletronicpoint VALUES (0,?,null,?, null)', [time, date], (error, results, fields) => {
+            conn.query('INSERT INTO eletronicpoint VALUES (0,?,null,?, null, true, false)', [time, date], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -36,6 +36,39 @@ async function insertUserPoint(idUser, time, date) {
 
         const insertCpf = await new Promise((resolve, reject) => {
             conn.query('INSERT INTO `ponto_atestado`.`eletronicpoint_has_user` (`eletronicPoint_ideletronicPoint`, user_iduser ) VALUES (?,?);', [ideletronicPoint, idUser], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
+async function insertUserPointExit(idEletronicPoint, finalTime) {
+    console.log(date)
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('update eletronicpoint set finalTime = ?, finishWork = true where ideletronicPoint = ?', [finalTime, idEletronicPoint], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+
+        const insertDiffTime = await new Promise((resolve, reject) => {
+            console.log('Diferenaça')
+            conn.query('SELECT TIMEDIFF(eletronicpoint.finalTime, eletronicpoint.initialTime) as totalWorked from eletronicpoint where eletronicpoint.ideletronicPoint = ?', [idEletronicPoint], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+
+        let totalWork = insertDiffTime[0].totalWorked
+        console.log(`total work ${JSON.stringify(totalWork)}`)
+        const updateTotalWork = await new Promise((resolve, reject) => {
+            conn.query('update eletronicpoint set totalWork = ? where ideletronicPoint = ?', [totalWork, idEletronicPoint], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -63,7 +96,10 @@ async function getPointDateByUser(idUser) {
                 return resolve(results);
             });
         });
-        console.log(result[0])
+        if (result[0] === undefined){
+            result[0] = {"ideletronicPoint":0,"initialTime":"0","finalTime":null,"date":"","totalWork":null, "todayEnter": 0, "finishWork":0, "eletronicPoint_ideletronicPoint":27,"user_iduser":2,"iduser":2,"userName":"user1","userPassword":"user1","userPermission":2}
+        } 
+        console.log(`resultado : ${JSON.stringify(result[0])}`)
         return result
     } catch (err) {
         console.log(err)
@@ -86,4 +122,4 @@ async function getPointDateByUserAllHistory(idUser) {
 }
 
 
-module.exports = { selectUser, insertUserPoint, getPointDateByUser, getPointDateByUserAllHistory }
+module.exports = { selectUser, insertUserPoint, getPointDateByUser, getPointDateByUserAllHistory, insertUserPointExit }

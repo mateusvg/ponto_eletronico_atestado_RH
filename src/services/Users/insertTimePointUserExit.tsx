@@ -1,20 +1,19 @@
 import { relativeURI } from '../../helper/RelativeURI'
 
 const uriRelative = relativeURI()
-export const getUserPointByDate = async (...userId: any) => {
-    const uri = `${uriRelative}users/point/date/${userId}`
+export const insertTimePointUserExit = async (...props: any) => {
+    console.log(`PAYLOAD REGISTER${JSON.stringify(props)}`)
+    const uri = `${uriRelative}users/point/insert/exit`
     try {
         const response = await fetch(
             uri, {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
-
+            body: JSON.stringify(props[0]),
         })
-        const jsonObj = await response.json();
-        return jsonObj
     } catch (error) {
         console.error(error);
     }
