@@ -8,3 +8,9 @@ exports.insertUser = async (req, res, next) => {
     const data = await users.insertUser(userName, cpf, status)
     res.status(200).send();
 };
+
+exports.getAllRegistersUsersStatus = async (req, res, next) => {
+    console.log("get all status user by admin")
+    const data = await users.getAllRegistersUsersStatus()
+    res.status(200).send(data);
+};

@@ -1,8 +1,8 @@
-import TableCertificateStatus from '../../components/TableCertificateStatus' 
+import TableCertificateStatusAdmin from '../../components/TableCertificateStatusAdmin' 
 export default function(){
     return(
         <>
-        <TableCertificateStatus/>
+        <TableCertificateStatusAdmin/>
         </>
     )
 }
