@@ -106,6 +106,23 @@ async function getPointDateByUser(idUser) {
     }
 }
 
+
+async function getAllStatusCertificate(idUser) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('select * from medicalcertificate INNER join user_has_medicalcertificate ON user_has_medicalcertificate.medicalCertificate_idmedicalCertificate = medicalcertificate.idmedicalCertificate INNER JOIN user ON user.iduser = user_has_medicalcertificate.user_iduser where user.iduser = ?', [idUser], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(`resultado : ${JSON.stringify(result[0])}`)
+        return result
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
 async function getPointDateByUserAllHistory(idUser) {
     try {
         const result = await new Promise((resolve, reject) => {
@@ -155,4 +172,4 @@ async function postFormUser(idForm, nomePacienteBody, cpfBody, nomeMedicoBody, d
     }
 }
 
-module.exports = { selectUser, insertUserPoint, getPointDateByUser, getPointDateByUserAllHistory, insertUserPointExit, postFormUser }
+module.exports = { selectUser, insertUserPoint, getPointDateByUser, getPointDateByUserAllHistory, insertUserPointExit, postFormUser, getAllStatusCertificate }

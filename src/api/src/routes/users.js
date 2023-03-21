@@ -12,6 +12,8 @@ router.get('/point/date/:id', controller.getPointDateByUser)
 
 router.get('/point/date/history/:id', controller.getPointDateByUserAllHistory)
 
+router.get('/status/certificate/:id', controller.getAllStatusCertificate)
+
 router.post('/form', controller.postFormUser)
 
 module.exports = router;

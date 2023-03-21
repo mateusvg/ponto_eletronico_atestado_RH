@@ -35,6 +35,13 @@ exports.getPointDateByUserAllHistory = async (req, res, next) => {
 };
 
 
+exports.getAllStatusCertificate = async (req, res, next) => {
+    let  id  = req.params.id
+    const data = await users.getAllStatusCertificate(id)
+    res.status(200).send(data);
+};
+
+
 exports.postFormUser = async(req, res, next) => {
     let idForm = 0
     let nomePacienteBody = req.body.nomePaciente
