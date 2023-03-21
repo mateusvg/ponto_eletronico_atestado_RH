@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { MenuItem } from '@mui/material';
+import { Button, MenuItem } from '@mui/material';
 import { useState } from 'react';
 
 export default function BasicTextFields() {
@@ -16,8 +16,10 @@ export default function BasicTextFields() {
     return (
         <Box
             component="form"
-            display={'flex'} flexDirection={'column'} gap={'10px'} justifyContent={'center'} alignItems={'center'} m={3}
+            display={'flex'} flexDirection={'column'} gap={'10px'} justifyContent={'center'} alignItems={'center'}
         >
+            <Box boxShadow={1} display={'flex'} flexDirection={'column'} gap={'10px'} justifyContent={'center'} alignItems={'center'} p={5}>
+
             <TextField id="outlined-basic" label="Nome Paciente" variant="outlined" />
             <TextField id="outlined-basic" label="CPF" variant="outlined" />
             <TextField id="outlined-basic" label="Nome Médico" variant="outlined" />
@@ -44,12 +46,18 @@ export default function BasicTextFields() {
                 <DatePicker />
             </LocalizationProvider>
             <input
-                name='myFile'
-                type="file"
-                required
-                id=''
-                accept="image/png, image/jpeg"
+            style={{marginBottom:20}}
+            name='myFile'
+            type="file"
+            required
+            id=''
+            accept="image/png, image/jpeg"
             />
+            </Box>
+            <Button variant="contained" color="success" type="submit" >
+                Enviar
+            </Button>
         </Box>
+
     );
 }
