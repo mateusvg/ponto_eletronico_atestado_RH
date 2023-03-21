@@ -82,12 +82,12 @@ async function insertUserPointExit(idEletronicPoint, finalTime) {
 async function getPointDateByUser(idUser) {
     function dataAtualFormatada() {
         var data = new Date(),
-          dia = data.getDate().toString().padStart(2, '0'),
-          mes = (data.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.
-          ano = data.getFullYear();
+            dia = data.getDate().toString().padStart(2, '0'),
+            mes = (data.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.
+            ano = data.getFullYear();
         return ano + "-" + mes + "-" + dia;
-      }
-      date = dataAtualFormatada()
+    }
+    date = dataAtualFormatada()
 
     try {
         const result = await new Promise((resolve, reject) => {
@@ -96,9 +96,9 @@ async function getPointDateByUser(idUser) {
                 return resolve(results);
             });
         });
-        if (result[0] === undefined){
-            result[0] = {"ideletronicPoint":0,"initialTime":"0","finalTime":null,"date":"","totalWork":null, "todayEnter": 0, "finishWork":0, "eletronicPoint_ideletronicPoint":27,"user_iduser":2,"iduser":2,"userName":"user1","userPassword":"user1","userPermission":2}
-        } 
+        if (result[0] === undefined) {
+            result[0] = { "ideletronicPoint": 0, "initialTime": "0", "finalTime": null, "date": "", "totalWork": null, "todayEnter": 0, "finishWork": 0, "eletronicPoint_ideletronicPoint": 27, "user_iduser": 2, "iduser": 2, "userName": "user1", "userPassword": "user1", "userPermission": 2 }
+        }
         console.log(`resultado : ${JSON.stringify(result[0])}`)
         return result
     } catch (err) {
@@ -122,4 +122,37 @@ async function getPointDateByUserAllHistory(idUser) {
 }
 
 
-module.exports = { selectUser, insertUserPoint, getPointDateByUser, getPointDateByUserAllHistory, insertUserPointExit }
+async function postFormUser(idForm, nomePacienteBody, cpfBody, nomeMedicoBody, dataBody, aptidaoBody, anexo, userId) {
+    let status = "1"
+    try {
+        const result = await new Promise((resolve, reject) => {
+            console.log('postFormModel')
+            conn.query('INSERT INTO medicalCertificate (`idmedicalCertificate`, `patientName`, `patientCpf`, `doctorName`, `date`, `fitness`, `attachment`, `statusByCpf_idstatusByCpf`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [idForm, nomePacienteBody, cpfBody, nomeMedicoBody, dataBody, aptidaoBody, anexo, status], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+
+        });
+
+        const select = await new Promise((resolve, reject) => {
+            conn.query('SELECT idmedicalCertificate from medicalCertificate order by idmedicalCertificate desc LIMIT 1;', (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        let idmedicalCertificate = select[0].idmedicalCertificate
+
+        const finalInsert = await new Promise((resolve, reject) => {
+            conn.query('INSERT INTO user_has_medicalcertificate (`user_iduser`, `medicalCertificate_idmedicalCertificate`, `medicalCertificate_statusByCpf_idstatusByCpf`) VALUES (?, ?, ?)', [userId, idmedicalCertificate, 1], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+
+        return result
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+module.exports = { selectUser, insertUserPoint, getPointDateByUser, getPointDateByUserAllHistory, insertUserPointExit, postFormUser }

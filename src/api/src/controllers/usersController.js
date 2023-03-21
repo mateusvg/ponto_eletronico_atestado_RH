@@ -34,3 +34,17 @@ exports.getPointDateByUserAllHistory = async (req, res, next) => {
     res.status(200).send(data);
 };
 
+
+exports.postFormUser = async(req, res, next) => {
+    let idForm = 0
+    let nomePacienteBody = req.body.nomePaciente
+    let cpfBody =  req.body.cpf
+    let nomeMedicoBody = req.body.nomeMedico
+    let dataBody =  new Date()
+    let aptidaoBody = req.body.aptidao
+    let anexo = req.body.postImage.myFile
+    let userId = req.body.userId
+    console.log("form Controller ")
+    const data = await users.postFormUser(idForm, nomePacienteBody, cpfBody,nomeMedicoBody, dataBody, aptidaoBody, anexo, userId)
+    res.status(201).send('Formulario recebido com sucesso');
+};

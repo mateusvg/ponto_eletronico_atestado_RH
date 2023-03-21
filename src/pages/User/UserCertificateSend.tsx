@@ -7,9 +7,11 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Button, MenuItem } from '@mui/material';
 import { useState } from 'react';
 import { postFormUser } from '../../services/Users/postFormUser'
-
+import { useContext } from 'react';
+import { userIdConst } from "../../contexts/UsersId";
 
 export default function BasicTextFields() {
+    const { userId, setUserId } = useContext(userIdConst);
     const [status, setStatus] = useState('');
     function handleStatusCHange(event: any) {
         const { value } = event.target
@@ -58,19 +60,21 @@ export default function BasicTextFields() {
     const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
         const postForm = async () => {
-            try {
-                await postFormUser({ nomePaciente: nomePaciente, cpf: cpf, nomeMedico: nomeMedico, data: data, aptidao: status, postImage: postImage })
-
-            } catch (err) {
-                console.log(err);
-            }
+    
+               const response = await postFormUser({ nomePaciente: nomePaciente, cpf: cpf, nomeMedico: nomeMedico, data: data, aptidao: status, postImage: postImage, userId: userId })
+               .catch((error) => {
+                // Handle the error
+                console.error(error);
+            });
+            setTimeout(() => {
+                setNomeMedico('')
+                setNomePaciente('')
+                setCPF('')
+                setData('')
+                setPostImage({ myFile: '' })
+            }, 100)
         }
         postForm()
-        setNomeMedico('')
-        setNomePaciente('')
-        setCPF('')
-        setData('')
-        setPostImage({ myFile: '' })
     }
 
     return (
@@ -102,9 +106,9 @@ export default function BasicTextFields() {
                     </TextField>
 
                 </Box>
-                <LocalizationProvider dateAdapter={AdapterDayjs} >
+                {/* <LocalizationProvider dateAdapter={AdapterDayjs} >
                     <DatePicker onChange={ (e) => handleDataChange(e)} localeText={{ clearButtonLabel: 'Empty', todayButtonLabel: 'Now' }} value={data}/>
-                </LocalizationProvider>
+                </LocalizationProvider> */}
                 <input
                     placeholder='Anexo'
                     name='myFile'

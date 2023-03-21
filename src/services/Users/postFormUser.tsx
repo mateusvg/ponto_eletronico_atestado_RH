@@ -1,6 +1,5 @@
 var relativeURI2 = require('../../helper/RelativeURI').relativeURI()
 export const postFormUser = async (...props: any) => {
-    console.log(JSON.stringify(props))
     const uri = `${relativeURI2}users/form`
     try {
         const response = await fetch(
@@ -14,6 +13,7 @@ export const postFormUser = async (...props: any) => {
         })
         if (response.ok) {
             console.log("Formulario enviado")
+            return ("Formulario Enviado")
         }
     } catch (error) {
         console.error(error);

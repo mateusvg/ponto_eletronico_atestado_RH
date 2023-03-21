@@ -1,10 +1,10 @@
 import { Box } from '@mui/material'
-import Clock from '../../components/Clock'
+import Clock from '../../components/ClockAdmin'
 export default function () {
   return (
     <>
-      HOME ADMIN
-      <Box sx={{ display: 'flex' }} flexDirection={'row'} justifyContent={'center'}>
+      <Box display={'flex'} p={2} flexDirection={'column'} alignItems={'center'} >
+        ADMIN
         <Clock />
       </Box>
 

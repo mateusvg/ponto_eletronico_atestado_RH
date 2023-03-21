@@ -1,3 +1,4 @@
+import { Box, Card, DialogContent } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 
 const DigitalClock: React.FC = () => {
@@ -27,17 +28,22 @@ const DigitalClock: React.FC = () => {
       ano = data.getFullYear();
     return dia + "/" + mes + "/" + ano;
   }
-  
+
 
   return (
     <>
-      <h2>Relógio Digital</h2>
-      <h2>{dataAtualFormatada()}</h2>
-      <h2>
-        {formatTime(time.getHours())}:
-        {formatTime(time.getMinutes())}:
-        {formatTime(time.getSeconds())}
-      </h2>
+      <Card sx={{ minWidth: 275 }}>
+        <Box display={'flex'} p={2} flexDirection={'column'} alignItems={'center'} >
+          <h2>Relógio Digital</h2>
+          <h2>{dataAtualFormatada()}</h2>
+          <h2>
+            {formatTime(time.getHours())}:
+            {formatTime(time.getMinutes())}:
+            {formatTime(time.getSeconds())}
+          </h2>
+        </Box>
+      </Card>
+
     </>
   );
 };
