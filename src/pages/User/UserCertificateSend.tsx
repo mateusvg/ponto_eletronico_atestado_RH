@@ -18,8 +18,8 @@ export default function BasicTextFields() {
             component="form"
             display={'flex'} flexDirection={'column'} gap={'10px'} justifyContent={'center'} alignItems={'center'}
         >
-            <Box boxShadow={1} display={'flex'} flexDirection={'column'} gap={'10px'} justifyContent={'center'} alignItems={'center'} p={5}>
-
+        Formulário Atestado
+            <Box boxShadow={1} display={'flex'} borderRadius={2} flexDirection={'column'} gap={'10px'} justifyContent={'center'} alignItems={'center'} p={5}>
             <TextField id="outlined-basic" label="Nome Paciente" variant="outlined" />
             <TextField id="outlined-basic" label="CPF" variant="outlined" />
             <TextField id="outlined-basic" label="Nome Médico" variant="outlined" />
