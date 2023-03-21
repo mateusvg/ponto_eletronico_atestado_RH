@@ -9,6 +9,8 @@ import { useState } from 'react';
 import { postFormUser } from '../../services/Users/postFormUser'
 import { useContext } from 'react';
 import { userIdConst } from "../../contexts/UsersId";
+import { mask } from "../../utils/MaskFormaterCPF"
+
 
 export default function BasicTextFields() {
     const { userId, setUserId } = useContext(userIdConst);
@@ -44,11 +46,10 @@ export default function BasicTextFields() {
     const handleNomeMedicoChange = async (e: any) => {
         setNomeMedico(e.target.value)
     }
-    const handleCPFChange = async (e: any) => {
-        setCPF(e.target.value)
-    }
-    const handleDataChange = async (e: any) => {
-        setData(e.target.value)
+
+    function handleCPFChange(event: any) {
+        const { value } = event.target
+        setCPF(mask(value))
     }
 
     const [nomePaciente, setNomePaciente] = useState('');
@@ -85,9 +86,9 @@ export default function BasicTextFields() {
         >
             Formulário Atestado
             <Box boxShadow={1} display={'flex'} borderRadius={2} flexDirection={'column'} gap={'10px'} justifyContent={'center'} alignItems={'center'} p={5}>
-                <TextField id="nomePaciente" name={nomePaciente}  label="Nome Paciente" onChange={ (e) => handleNomePacienteChange(e)} variant="outlined" />
-                <TextField id="cpf" name={cpf} label="CPF" onChange={ (e) => handleCPFChange(e)} variant="outlined" />
-                <TextField id="nomeMedico"  name={nomeMedico} onChange={ (e) => handleNomeMedicoChange(e)} label="Nome Médico" variant="outlined" />
+                <TextField id="nomePaciente" name={nomePaciente}  label="Nome Paciente" onChange={handleNomePacienteChange} value={nomePaciente} variant="outlined" />
+                <TextField id="cpf" name={cpf} label="CPF" onChange={handleCPFChange} value={cpf} inputProps={{ maxLength: 14 }} variant="outlined" />
+                <TextField id="nomeMedico"  name={nomeMedico} onChange={handleNomeMedicoChange} value={nomeMedico} label="Nome Médico" variant="outlined" />
                 {/* Dropdown */}
                 <Box width={210}>
 
