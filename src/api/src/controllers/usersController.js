@@ -9,7 +9,8 @@ exports.insertUserPoint = async (req, res, next) => {
     let idUser = req.body.userId
     let time = req.body.time
     let date = req.body.date
-    const data = await users.insertUserPoint(idUser, time, date)
+    let counter = req.body.counter
+    const data = await users.insertUserPoint(idUser, time, date, counter)
     res.send().status(200)
 };
 

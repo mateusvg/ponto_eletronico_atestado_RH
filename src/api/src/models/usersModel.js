@@ -15,12 +15,12 @@ async function selectUser(user) {
     }
 }
 
-async function insertUserPoint(idUser, time, date) {
+async function insertUserPoint(idUser, time, date, counter) {
     console.log(date)
 
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('INSERT INTO eletronicpoint VALUES (0,?,null,?, null, true, false)', [time, date], (error, results, fields) => {
+            conn.query('INSERT INTO eletronicpoint VALUES (0,?,null,?, null, true, false,?)', [time, date, counter], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });

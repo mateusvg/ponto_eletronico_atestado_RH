@@ -18,6 +18,8 @@ import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
+import ClockDiff from './ClockDiff'
+
 type personsType = {
   ideletronicPoint: number
   date: Date
@@ -25,7 +27,8 @@ type personsType = {
   finalTime: string
   totalWork: string
   todayEnter: boolean
-  finishWork:boolean
+  finishWork: boolean
+  counter: number
 }
 
 const DigitalClock: React.FC = () => {
@@ -68,6 +71,9 @@ const DigitalClock: React.FC = () => {
   useEffect(() => {
     getAllHistoryRegisters()
   }, [])
+  let counterMap = registerUserToday.map((key) => (key.counter))
+
+
 
 
   // Define a function to handle form submission
@@ -77,7 +83,7 @@ const DigitalClock: React.FC = () => {
     let idEletronicPointMap = registerUserToday.map((key) => (key.ideletronicPoint))
 
     if (Number(newRegister) === 0) {
-      await insertTimePointUser({ userId: userId, time: timeBRL, date: time })
+      await insertTimePointUser({ userId: userId, time: timeBRL, date: time, counter: new Date().getTime() })
         .catch((error) => {
           // Handle the error
           console.error(error);
@@ -133,12 +139,13 @@ const DigitalClock: React.FC = () => {
               {formatTime(time.getMinutes())}:
               {formatTime(time.getSeconds())}
             </h2>
+
             <Box  >
               <div>
                 {/* Button to open the dialog */}
                 {registerUserToday.map(history => {
                   return Number(history.finishWork) != 0 ? <>Hora do descanço</> :
-                    <Button variant="outlined" onClick={() => setIsOpen(true)}>Registrar</Button>  
+                    <Button variant="outlined" onClick={() => setIsOpen(true)}>Registrar</Button>
                 })}
 
                 {/* Dialog */}
@@ -187,7 +194,22 @@ const DigitalClock: React.FC = () => {
 
                 return Number(history.todayEnter) == 1 ?
                   <h2 key={history.ideletronicPoint}>{history.initialTime}</h2> :
-                  <h3>Sem registros</h3>
+                  <h2>Sem registros</h2>
+              })}
+            </Box>
+          </Card>
+          <Card sx={{ minWidth: 275 }} style={{ backgroundColor: "#C6DEEC" }}>
+            <Box p={3} display={'flex'} flexDirection={'column'} alignItems={'center'}>
+              <h2>Registrado</h2>
+              {registerUserToday.map(history => {
+                if (history.finalTime === null && Number(history.todayEnter) === 0  && Number(history.finishWork) === 0) {
+                  return <h2>Sem dados</h2>
+                } else if (history.finalTime === null && Number(history.todayEnter) === 1  && Number(history.finishWork) === 0) {
+                  return <ClockDiff counter={counterMap} />
+                } else if (history.finalTime !== null && Number(history.todayEnter) === 1 && Number(history.finishWork) === 1){
+                  return <h2>{history?.totalWork}</h2>
+                }
+
               })}
             </Box>
           </Card>
@@ -195,10 +217,8 @@ const DigitalClock: React.FC = () => {
             <Box p={3} display={'flex'} flexDirection={'column'} alignItems={'center'}>
               <h2>Saida</h2>
               {registerUserToday.map(history => {
-
                 return history.finalTime === null ?
-
-                  <h3>Sem registros</h3> : <h2 key={history.ideletronicPoint}>{history.finalTime}</h2>
+                  <h2>Sem registros</h2> : <h2 key={history.ideletronicPoint}>{history.finalTime}</h2>
               })}
             </Box>
           </Card>
