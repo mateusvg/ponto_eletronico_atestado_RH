@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { userIdConst } from '../../contexts/UsersId';
 import { getPointDateByUserAllHistory } from '../../services/Users/getPointDateByUserAllHistory'
 import TableUserHistoryPoint from '../../components/TableUserHistoryPoint'
+import { Box } from '@mui/material';
 
 
 export default function () {
@@ -12,10 +13,10 @@ export default function () {
         getPointDateByUserAllHistory(userId)
     }, [])
     return (
-        <>
-            USER HISTORY POINT
+        <Box  display={'flex'} flexDirection={'column'} gap={'10px'} justifyContent={'center'} alignItems={'center'} p={2}>
+            Histórico de ponto eletrônico
             <TableUserHistoryPoint />
 
-        </>
+        </Box>
     )
 }
