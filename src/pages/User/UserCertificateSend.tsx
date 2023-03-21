@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Button, MenuItem } from '@mui/material';
+import { Alert, Button, MenuItem, Snackbar, Stack } from '@mui/material';
 import { useState } from 'react';
 import { postFormUser } from '../../services/Users/postFormUser'
 import { useContext } from 'react';
@@ -52,6 +52,7 @@ export default function BasicTextFields() {
         setCPF(mask(value))
     }
 
+
     const [nomePaciente, setNomePaciente] = useState('');
     const [cpf, setCPF] = useState('');
     const [nomeMedico, setNomeMedico] = useState('');
@@ -61,22 +62,34 @@ export default function BasicTextFields() {
     const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
         const postForm = async () => {
-    
-               const response = await postFormUser({ nomePaciente: nomePaciente, cpf: cpf, nomeMedico: nomeMedico, data: data, aptidao: status, postImage: postImage, userId: userId })
-               .catch((error) => {
-                // Handle the error
-                console.error(error);
-            });
+
+            const response = await postFormUser({ nomePaciente: nomePaciente, cpf: cpf, nomeMedico: nomeMedico, data: data, aptidao: status, postImage: postImage, userId: userId })
+                .catch((error) => {
+                    // Handle the error
+                    console.error(error);
+                });
             setTimeout(() => {
                 setNomeMedico('')
                 setNomePaciente('')
                 setCPF('')
                 setData('')
-                setPostImage({ myFile: '' })
+                setPostImage({myFile: ''})
             }, 100)
         }
         postForm()
     }
+
+    const [open, setOpen] = React.useState(false);
+    const handleClick = () => {
+        setOpen(true);
+
+    };
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
 
     return (
         <Box
@@ -86,9 +99,9 @@ export default function BasicTextFields() {
         >
             Formulário Atestado
             <Box boxShadow={1} display={'flex'} borderRadius={2} flexDirection={'column'} gap={'10px'} justifyContent={'center'} alignItems={'center'} p={5}>
-                <TextField id="nomePaciente" name={nomePaciente}  label="Nome Paciente" onChange={handleNomePacienteChange} value={nomePaciente} variant="outlined" />
-                <TextField id="cpf" name={cpf} label="CPF" onChange={handleCPFChange} value={cpf} inputProps={{ maxLength: 14 }} variant="outlined" />
-                <TextField id="nomeMedico"  name={nomeMedico} onChange={handleNomeMedicoChange} value={nomeMedico} label="Nome Médico" variant="outlined" />
+                <TextField id="nomePaciente" name={nomePaciente} required label="Nome Paciente" onChange={handleNomePacienteChange} value={nomePaciente} variant="outlined" />
+                <TextField id="cpf" name={cpf} label="CPF" required onChange={handleCPFChange} value={cpf} inputProps={{ maxLength: 14 }} variant="outlined" />
+                <TextField id="nomeMedico" name={nomeMedico} onChange={handleNomeMedicoChange} value={nomeMedico} label="Nome Médico" variant="outlined" />
                 {/* Dropdown */}
                 <Box width={210}>
 
@@ -120,9 +133,18 @@ export default function BasicTextFields() {
                     onChange={(e) => handleFileUpload(e)}
                 />
             </Box>
-            <Button variant="contained" color="success" type="submit" >
+            <Button variant="contained" color="success" type="submit" onClick={handleClick}>
                 Enviar
             </Button>
+
+            {/* alert after register point */}
+            <Stack spacing={2} sx={{ width: '100%' }} justifyContent={'center'}>
+                <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                        Registrado com sucesso!
+                    </Alert>
+                </Snackbar>
+            </Stack>
         </Box>
 
     );
