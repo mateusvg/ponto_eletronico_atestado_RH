@@ -4,7 +4,9 @@ export default function () {
   return (
     <>
       <Box display={'flex'} p={2} flexDirection={'column'} alignItems={'center'} >
-        ADMIN
+        <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} margin={3}>
+          Home Admin
+        </Box>
         <Clock />
       </Box>
 
