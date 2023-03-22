@@ -18,7 +18,7 @@ async function insertUser(userName, cpf, statusReq) {
         });
 
         let userLastId = select[0].idUser
-        
+
         function changeStatus(status) {
             if (status === 'Ativo') {
                 return 1
@@ -55,7 +55,22 @@ async function getAllRegistersUsersStatus() {
     } catch (err) {
         console.log(err)
     }
-
 }
 
-module.exports = { insertUser, getAllRegistersUsersStatus }
+async function deletePersonStatusCertificateId(id) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('DELETE from medicalcertificate where idmedicalCertificate = ?', [id], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
+module.exports = { insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId }
