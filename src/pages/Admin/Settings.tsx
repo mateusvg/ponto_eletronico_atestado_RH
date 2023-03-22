@@ -20,6 +20,7 @@ export default function FormDialog() {
     // Define state variables for the form data and dialog visibility
 
     const [isOpen, setIsOpen] = useState(false);
+    const [isOpenAlterPass, setIsOpenAlterPass] = useState(false)
 
     //CPF mask
     const [cpf, setCPF] = useState('');
@@ -42,7 +43,7 @@ export default function FormDialog() {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-       await insertNewUserPerson({ userName: data.get('name'), cpf: data.get('cpf'), status: data.get('status') })
+        await insertNewUserPerson({ userName: data.get('name'), cpf: data.get('cpf'), status: data.get('status') })
             .catch((error) => {
                 // Handle the error
                 console.error(error);
@@ -58,10 +59,16 @@ export default function FormDialog() {
 
 
     return (
-        <Box display={'flex'} flexDirection={'column'} alignItems={'center'} margin={3}>
+        <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
+            <Box display={'flex'} flexDirection={'column'} alignItems={'center'} margin={4}>
+                Configurações
+            </Box>
             <div>
                 {/* Button to open the dialog */}
-                <Button  variant="outlined" onClick={() => setIsOpen(true)}>Adicionar colaborador</Button>
+                <Box boxShadow={1} borderRadius={2} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} gap={'20px'} padding={4}>
+                    <Button variant="outlined" onClick={() => setIsOpen(true)}>Adicionar colaborador</Button>
+                    <Button variant="outlined" onClick={() => setIsOpenAlterPass(true)}>Alterar senha</Button>
+                </Box>
 
                 {/* Dialog */}
                 <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
@@ -119,6 +126,6 @@ export default function FormDialog() {
                     </form>
                 </Dialog>
             </div>
-        </Box>
+        </Box >
     );
 }

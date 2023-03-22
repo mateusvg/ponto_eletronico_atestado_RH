@@ -4,7 +4,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 export default function ControlledAccordions() {
   const [expanded, setExpanded] = React.useState<string | false>(false);
@@ -16,6 +16,9 @@ export default function ControlledAccordions() {
 
   return (
     <div>
+      < Box  display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} margin={3}>
+        Relatórios
+      </Box>
       <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -69,7 +72,7 @@ export default function ControlledAccordions() {
           </Button>
         </AccordionDetails>
       </Accordion>
-      
-    </div>
+
+    </div >
   );
 }

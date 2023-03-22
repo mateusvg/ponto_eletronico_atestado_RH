@@ -11,7 +11,7 @@ import UserHome from "./pages/User/UserHome";
 import UserHistory from "./pages/User/UserHistory";
 import UserSettings from "./pages/User/UserSettings"
 import UserCertificate from "./pages/User/UserCertificate";
-import UserCertificateSend from "./pages/User/UserCertificateSend";
+import UserCertificateSend from "./pages/User/UserCertificateSendForm";
 
 export default function PagesRoutes() {
     return (
