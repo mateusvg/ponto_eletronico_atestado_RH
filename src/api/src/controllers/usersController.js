@@ -27,10 +27,9 @@ exports.getPointDateByUser = async (req, res, next) => {
     res.status(200).send(data);
 };
 
-
 exports.getPointDateByUserAllHistory = async (req, res, next) => {
     let  id  = req.params.id
-    const data = await users.getPointDateByUser(id)
+    const data = await users.getPointDateByUserAllHistory(id)
     res.status(200).send(data);
 };
 

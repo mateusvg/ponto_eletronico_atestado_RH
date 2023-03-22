@@ -2,7 +2,7 @@ import { relativeURI } from '../../helper/RelativeURI'
 
 const uriRelative = relativeURI()
 export const getPointDateByUserAllHistory = async (userId: any) => {
-    const uri = `${uriRelative}users/point/date/${userId}`
+    const uri = `${uriRelative}users/point/date/all/${userId}`
     try {
         const response = await fetch(
             uri, {

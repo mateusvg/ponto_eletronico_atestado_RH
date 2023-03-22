@@ -10,6 +10,8 @@ router.post('/point/insert/exit', controller.insertUserPointExit)
 
 router.get('/point/date/:id', controller.getPointDateByUser)
 
+router.get('/point/date/all/:id', controller.getPointDateByUserAllHistory)
+
 router.get('/point/date/history/:id', controller.getPointDateByUserAllHistory)
 
 router.get('/status/certificate/:id', controller.getAllStatusCertificate)
