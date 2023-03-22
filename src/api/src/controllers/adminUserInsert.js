@@ -22,3 +22,9 @@ exports.deletePersonStatusCertificateId = async (req, res, next) => {
     const data = await users.deletePersonStatusCertificateId(id)
     res.status(200).send(data);
 }
+
+exports.getAllUserSchedule = async (req, res, next) => {
+    console.log("get all schedule user by admin ")
+    const data = await users.getAllUserSchedule()
+    res.status(200).send(data);
+};

@@ -57,6 +57,22 @@ async function getAllRegistersUsersStatus() {
     }
 }
 
+async function getAllUserSchedule() {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('select * from user where user.userPermission = 2', (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        //console.log(JSON.stringify(result))
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 async function deletePersonStatusCertificateId(id) {
     try {
         const result = await new Promise((resolve, reject) => {
@@ -73,4 +89,4 @@ async function deletePersonStatusCertificateId(id) {
 }
 
 
-module.exports = { insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId }
+module.exports = { insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule }
