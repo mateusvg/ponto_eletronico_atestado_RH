@@ -33,6 +33,13 @@ export default function BasicTable() {
         getAllHistoryRegisters()
     }, [])
 
+    function convert(str: any) {
+        var date = new Date(str),
+          mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+          day = ("0" + date.getDate()).slice(-2);
+        return [day ,mnth, date.getFullYear()].join("/");
+      }
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -47,7 +54,7 @@ export default function BasicTable() {
                 <TableBody>
                     {allHistoryRegisters.map((history) => (
                         <TableRow key={history.ideletronicPoint}>
-                            <TableCell>{history.date.toString()}</TableCell>
+                            <TableCell>{convert(history.date.toString())}</TableCell>
                             <TableCell>{history.initialTime}</TableCell>
                             <TableCell>{history.finalTime}</TableCell>
                             <TableCell>{history.totalWork}</TableCell>
