@@ -1,4 +1,4 @@
-import { relativeURI } from '../../helper/RelativeURI'
+import { relativeURI } from '../../../helper/RelativeURI'
 
 const uriRelative = relativeURI()
 export const insertNewSchedule = async (...props: any) => {

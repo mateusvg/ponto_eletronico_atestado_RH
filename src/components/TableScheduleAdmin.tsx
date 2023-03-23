@@ -16,13 +16,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import { mask } from "../utils/MaskFormaterCPF"
 import { phoneMask } from '../utils/MaskPhone';
-import { insertNewSchedule } from '../services/Admin/insertNewSchedule'
+import { insertNewSchedule } from '../services/Admin//Schedule/insertNewSchedule'
 
 import SearchUserSchedule from './SeachUserSchedule'
 
 //services
 import { getAllUsers } from '../services/Users/getAllUsers'
-import { getAllSchedules } from '../services/Admin/getAllSchedules'
+import { getAllSchedules } from '../services/Admin/Schedule/getAllSchedules'
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import React from 'react';
 import Calendar from 'react-calendar'
