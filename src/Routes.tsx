@@ -24,7 +24,7 @@ export default function PagesRoutes() {
             <Route path="/home/reports" element={<Reports />} />
             <Route path="/home/point" element={<Point />} />
             <Route path="/home/settings" element={<Settings />} />
-            <Route path="/home/user/point/history" element={<UserAdminHistory />} />
+            <Route path="/home/user/point/history/:topicId" element={<UserAdminHistory />} />
             
             <Route path="/home/user" element={<UserHome />} />
             <Route path="/home/user/settings" element={<UserSettings />} />

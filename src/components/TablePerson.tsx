@@ -20,6 +20,7 @@ type personsType = {
   userName: string
   status: string
   cpf: string
+  iduser: number
 }
 
 export default function BasicTable() {
@@ -78,13 +79,14 @@ export default function BasicTable() {
                   return post;
                 }
               }).map((person) => (
+                
                 <TableRow key={person.userName}>
                   <TableCell align="center">{person.userName}</TableCell>
                   <TableCell align="center">{person.status}</TableCell>
                   <TableCell align="center">{person.cpf}</TableCell>
                   <TableCell align="center"><Button><ModeEditIcon /></Button></TableCell>
                   <TableCell align="center"><Button><DeleteIcon /></Button></TableCell>
-                  <TableCell align="center"><Button onClick={() => navigate('/home/user/point/history')}><VisibilityIcon /></Button></TableCell>
+                  <TableCell align="center"><Button onClick={() => navigate(`/home/user/point/history/${person.iduser}`, {state:{topicId:person.iduser}})}><VisibilityIcon /></Button></TableCell>
                 </TableRow>
               ))}
           </TableBody>

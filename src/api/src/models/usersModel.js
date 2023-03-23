@@ -3,12 +3,12 @@ const conn = require('../db/connection')
 async function selectUser(user) {
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('select user.userName, userpersonaldata.cpf, statususer.status  from user INNER join userpersonaldata on user.iduser = userpersonaldata.user_iduser INNER join statususer ON statususer.idtable1 = userpersonaldata.statusUser_idtable1 where user.userPermission = 2 ', (error, results, fields) => {
+            conn.query('select user.userName, userpersonaldata.cpf, statususer.status, user.iduser  from user INNER join userpersonaldata on user.iduser = userpersonaldata.user_iduser INNER join statususer ON statususer.idtable1 = userpersonaldata.statusUser_idtable1 where user.userPermission = 2 ', (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
         });
-        console.log(result[0])
+        console.log(`seleciona todos usuarios ${JSON.stringify(result)}`)
         return result
     } catch (err) {
         console.log(err)

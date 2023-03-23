@@ -13,7 +13,7 @@ export const getPointDateByUserAllHistory = async (userId: any) => {
             },
 
         })
-        const jsonObj = await response.json();
+        const jsonObj = await Promise.resolve(response.json());
         return jsonObj
     } catch (error) {
         console.error(error);

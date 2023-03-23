@@ -1,4 +1,4 @@
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Box } from '@mui/material'
 import CircleIcon from '@mui/icons-material/Circle';
 import { useState, useEffect } from 'react'
 import { getAllStatusCertificate } from '../../services/Users/getAllStatusCertificate'
@@ -30,7 +30,9 @@ export default function () {
     }, [])
 
     return (
-        <>
+
+        <Box display={'flex'} flexDirection={'column'} gap={'10px'} justifyContent={'center'} alignItems={'center'} p={2}>
+            Status de Atestados enviados
 
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -54,6 +56,6 @@ export default function () {
                     </TableBody>
                 </Table>
             </TableContainer>
-        </>
+        </Box>
     )
 }
