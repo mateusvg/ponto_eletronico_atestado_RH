@@ -28,3 +28,21 @@ exports.getAllUserSchedule = async (req, res, next) => {
     const data = await users.getAllUserSchedule()
     res.status(200).send(data);
 };
+
+
+exports.insertNewSchedule = async (req, res, next) => {
+    console.log("insert user by admin schedule")
+    let userName = req.body.userName
+    let cpf = req.body.cpf
+    let date = req.body.data
+    let phone = req.body.telefone
+    const data = await users.insertNewSchedule(userName, cpf, date, phone)
+    res.status(200).send();
+};
+
+exports.getAllSchedules = async (req, res, next) => {
+    console.log("get all schedule user by admin ")
+    let date = req.body.data
+    const data = await users.getAllSchedules(date)
+    res.status(200).send(data);
+};

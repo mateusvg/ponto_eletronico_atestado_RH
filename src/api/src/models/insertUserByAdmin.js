@@ -89,4 +89,39 @@ async function deletePersonStatusCertificateId(id) {
 }
 
 
-module.exports = { insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule }
+async function insertNewSchedule(userName, cpf, date, phone) {
+
+    let status = 'Agendado'
+
+    try {
+        const insertUser = await new Promise((resolve, reject) => {
+            conn.query('INSERT INTO schedule ( userName, userCpf, schaduleDate, userPhone, status) VALUES (?,?,?,?,?)', [userName, cpf, date, phone, status], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+
+    } catch (err) {
+        console.log(err)
+    }
+
+}
+
+async function getAllSchedules(date) {
+    console.log(date)
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('SELECT * FROM `schedule`', (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(JSON.stringify(result))
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+module.exports = { insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules }

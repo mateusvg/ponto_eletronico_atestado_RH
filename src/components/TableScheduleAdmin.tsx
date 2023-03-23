@@ -11,12 +11,13 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
 import { mask } from "../utils/MaskFormaterCPF"
 import { phoneMask } from '../utils/MaskPhone';
-import {insertNewSchedule} from '../services/Admin/insertNewSchedule'
+import { insertNewSchedule } from '../services/Admin/insertNewSchedule'
 
 import SearchUserSchedule from './SeachUserSchedule'
 
 //services
 import { getAllUsers } from '../services/Users/getAllUsers'
+import { getAllSchedules } from '../services/Admin/getAllSchedules'
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 
 type personsType = {
@@ -25,13 +26,30 @@ type personsType = {
   cpf: string
 }
 
-export default function BasicTable() {
+type sheduleType = {
+  userName: string
+  id: number
+  userCpf: string
+  status: string
+  userPhone: string
+  schaduleDate: string
+}
+
+export default function BasicTable(props: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [persons, setPerson] = useState<personsType[] | []>([]);
+
+  const [shedules, setShedules] = useState<sheduleType[] | []>([]);
+
+  const getAllHistoryRegisters = async () => {
+    const data1 = await getAllSchedules(props)
+    setShedules(data1)
+  };
 
   useEffect(() => {
     getAllUsers()
       .then(data => setPerson(data))
+    getAllHistoryRegisters()
   }, [])
 
   const [cpf, setCPF] = useState('');
@@ -39,14 +57,14 @@ export default function BasicTable() {
     const { value } = event.target
     setCPF(mask(value))
   }
-const [phone, setPhone] = useState('');
-function handlePhoneMask(event: any) {
-  const { value } = event.target
-  setPhone(phoneMask(value))
-}
+  const [phone, setPhone] = useState('');
+  function handlePhoneMask(event: any) {
+    const { value } = event.target
+    setPhone(phoneMask(value))
+  }
   const [date, setDate] = useState("");
 
-  const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeDate = (event: any) => {
     const inputDate = event.target.value;
     const formattedDate = inputDate
       .replace(/\D/g, "") // remove all non-numeric characters
@@ -54,30 +72,30 @@ function handlePhoneMask(event: any) {
       .replace(/(\d{2})(\d)/, "$1/$2") // add a slash after the next two digits
       .replace(/(\d{4})\d+?$/, "$1"); // limit the year to four digits
 
-    setDate(formattedDate);
+    setDate(formattedDate)
   };
 
-  const [userName, setUserName] =useState();
+  const [userName, setUserName] = useState();
   const pull_data = (data: any) => {
-      setUserName(data);
+    setUserName(data);
   }
 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(data)
 
-
-
-    await insertNewSchedule({ userName: userName, cpf: data.get('cpf'), status: data.get('status') })
-        .catch((error) => {
-            // Handle the error
-            console.error(error);
-        });
+    await insertNewSchedule({ userName: userName, cpf: data.get('cpf'), status: data.get('status'), data: data.get('date'), telefone: data.get('phone') })
+      .catch((error) => {
+        // Handle the error
+        console.error(error);
+      });
 
     // Close the dialog
     setIsOpen(false);
+    setCPF('')
+    setPhone('')
+    setDate('')
 
   };
 
@@ -92,27 +110,27 @@ function handlePhoneMask(event: any) {
           <TableHead>
             <TableRow>
               <TableCell>Nome Colaborador</TableCell>
-              <TableCell>Status</TableCell>
               <TableCell>CPF</TableCell>
+              <TableCell>Telefone</TableCell>
+              <TableCell>Status</TableCell>
               <TableCell>Editar</TableCell>
               <TableCell>Deletar</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-
-            <TableRow >
-              <TableCell>asd</TableCell>
-              <TableCell><Button color='success' variant='contained' size='small'>Confirmado</Button></TableCell>
-              <TableCell>ads</TableCell>
-              <TableCell><Button><ModeEditIcon /></Button></TableCell>
-              <TableCell><Button><DeleteIcon /></Button></TableCell>
-            </TableRow>
-
+            {shedules.map((shedule) => (
+              <TableRow key={shedule.id} >
+                <TableCell>{shedule.userName}</TableCell>
+                <TableCell>{shedule.userPhone}</TableCell>
+                <TableCell>{shedule.userCpf}</TableCell>
+                <TableCell><Button color='success' variant='contained' size='small'>{shedule.status}</Button></TableCell>
+                <TableCell><Button><ModeEditIcon /></Button></TableCell>
+                <TableCell><Button><DeleteIcon /></Button></TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
-
-
 
 
 
@@ -126,7 +144,7 @@ function handlePhoneMask(event: any) {
             <Box display={'flex'} flexDirection={'column'} gap={'10px'} margin={3}>
 
               {/* Name Input */}
-              <SearchUserSchedule func={pull_data}/>
+              <SearchUserSchedule func={pull_data} />
 
               {/* CPF Input */}
               <TextField
@@ -142,14 +160,14 @@ function handlePhoneMask(event: any) {
 
               {/* telefone Input */}
               <TextField
-                name="cpf"
+                name="phone"
                 required
                 label="Telefone"
                 value={phone}
                 inputProps={{ maxLength: 14 }}
                 onChange={handlePhoneMask}
                 fullWidth
-                id="cpf"
+                id="phone"
               />
 
 

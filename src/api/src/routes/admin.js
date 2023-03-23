@@ -10,5 +10,11 @@ router.delete('/user/status/certificate/delete/:id', controller.deletePersonStat
 
 router.get('/user/schedule', controller.getAllUserSchedule)
 
+router.post('/user/schedule/insert', controller.insertNewSchedule)
+
+router.post('/schedule/allSchedules', controller.getAllSchedules)
+
+
+
 
 module.exports = router;
