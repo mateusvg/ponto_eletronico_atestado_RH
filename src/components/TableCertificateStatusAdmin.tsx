@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CircleIcon from '@mui/icons-material/Circle';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 //services
 import { getAllRegistersUsersStatus } from '../services/Admin/getAllRegistersUsersStatus'
@@ -18,6 +19,7 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuIte
 type personsType = {
   idmedicalCertificate: string
   patientName: string
+  attachment: any
   patientCpf: string
   fitness: string
 }
@@ -70,6 +72,17 @@ export default function BasicTable() {
     setIsOpen(false);
     getAllHistoryRegisters()
   };
+
+  const handleDownload = (anexo: any) => {
+    anexo = anexo.replace('data:image/png;base64,', '')
+    const payload = { anexo: anexo }
+     //console.log(payload.anexo)
+    var a = document.createElement("a"); //Create <a>
+    a.href = "data:image/png;base64," + payload.anexo; //Image Base64 Goes here
+    a.download = "Image.png"; //File name Here
+    a.click(); //Downloaded file
+  };
+
   return (
     <Box>
       <TableContainer component={Paper}>
@@ -78,6 +91,7 @@ export default function BasicTable() {
             <TableRow>
               <TableCell>Nome Colaborador</TableCell>
               <TableCell>Cpf</TableCell>
+              <TableCell>Anexo</TableCell>
               <TableCell>Status</TableCell>
               <TableCell></TableCell>
               <TableCell>Editar</TableCell>
@@ -89,6 +103,7 @@ export default function BasicTable() {
               <TableRow key={person.idmedicalCertificate}>
                 <TableCell>{person.patientName}</TableCell>
                 <TableCell>{person.patientCpf}</TableCell>
+                <TableCell><Button onClick={() => handleDownload(person.attachment)}><CloudDownloadIcon /></Button></TableCell>
                 <TableCell>{person.fitness}</TableCell>
                 <TableCell><CircleIcon color={`${setStatusColorIcon(person.fitness)}`} /></TableCell>
                 <TableCell><Button><ModeEditIcon /></Button></TableCell>
