@@ -10,11 +10,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
 import { mask } from "../utils/MaskFormaterCPF"
+import { phoneMask } from '../utils/MaskPhone';
+import {insertNewSchedule} from '../services/Admin/insertNewSchedule'
+
 import SearchUserSchedule from './SeachUserSchedule'
 
 //services
 import { getAllUsers } from '../services/Users/getAllUsers'
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 
 type personsType = {
   userName: string
@@ -35,31 +38,43 @@ export default function BasicTable() {
   function handleChangeMask(event: any) {
     const { value } = event.target
     setCPF(mask(value))
+  }
+const [phone, setPhone] = useState('');
+function handlePhoneMask(event: any) {
+  const { value } = event.target
+  setPhone(phoneMask(value))
 }
+  const [date, setDate] = useState("");
 
-const [date, setDate] = useState("");
+  const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputDate = event.target.value;
+    const formattedDate = inputDate
+      .replace(/\D/g, "") // remove all non-numeric characters
+      .replace(/(\d{2})(\d)/, "$1/$2") // add a slash after the first two digits
+      .replace(/(\d{2})(\d)/, "$1/$2") // add a slash after the next two digits
+      .replace(/(\d{4})\d+?$/, "$1"); // limit the year to four digits
 
-const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const inputDate = event.target.value;
-  const formattedDate = inputDate
-    .replace(/\D/g, "") // remove all non-numeric characters
-    .replace(/(\d{2})(\d)/, "$1/$2") // add a slash after the first two digits
-    .replace(/(\d{2})(\d)/, "$1/$2") // add a slash after the next two digits
-    .replace(/(\d{4})\d+?$/, "$1"); // limit the year to four digits
+    setDate(formattedDate);
+  };
 
-  setDate(formattedDate);
-};
-
+  const [userName, setUserName] =useState();
+  const pull_data = (data: any) => {
+      setUserName(data);
+  }
 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // await insertNewUserPerson({ userName: data.get('name'), cpf: data.get('cpf'), status: data.get('status') })
-    //     .catch((error) => {
-    //         // Handle the error
-    //         console.error(error);
-    //     });
+    console.log(data)
+
+
+
+    await insertNewSchedule({ userName: userName, cpf: data.get('cpf'), status: data.get('status') })
+        .catch((error) => {
+            // Handle the error
+            console.error(error);
+        });
 
     // Close the dialog
     setIsOpen(false);
@@ -70,7 +85,7 @@ const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
   return (
     <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} margin={1}>
       <Box margin={3}>
-      <Button variant="contained" onClick={() => setIsOpen(true)}>Adicionar agendamento</Button>
+        <Button variant="contained" onClick={() => setIsOpen(true)}>Adicionar agendamento</Button>
       </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -111,7 +126,7 @@ const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
             <Box display={'flex'} flexDirection={'column'} gap={'10px'} margin={3}>
 
               {/* Name Input */}
-              <SearchUserSchedule/>
+              <SearchUserSchedule func={pull_data}/>
 
               {/* CPF Input */}
               <TextField
@@ -124,7 +139,20 @@ const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
                 fullWidth
                 id="cpf"
               />
-              {/* Dropdown */}
+
+              {/* telefone Input */}
+              <TextField
+                name="cpf"
+                required
+                label="Telefone"
+                value={phone}
+                inputProps={{ maxLength: 14 }}
+                onChange={handlePhoneMask}
+                fullWidth
+                id="cpf"
+              />
+
+
               <TextField
                 name="date"
                 required
