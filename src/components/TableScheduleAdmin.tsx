@@ -23,7 +23,7 @@ import SearchUserSchedule from './SeachUserSchedule'
 //services
 import { getAllUsers } from '../services/Users/getAllUsers'
 import { getAllSchedules } from '../services/Admin/Schedule/getAllSchedules'
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField } from '@mui/material';
 import React from 'react';
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
@@ -62,6 +62,8 @@ export default function BasicTable() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
+  const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
+
   const [persons, setPerson] = useState<personsType[] | []>([]);
 
   const [shedules, setShedules] = useState<sheduleType[] | []>([]);
@@ -111,19 +113,79 @@ export default function BasicTable() {
     setCPF('')
     setPhone('')
     getAllHistoryRegisters()
-  };
+  }
+
+  const handleSubmitEdit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // const data = new FormData(event.currentTarget);
+
+    // await insertNewSchedule({ userName: userName, cpf: data.get('cpf'), status: data.get('status'), data: selectedDate, telefone: data.get('phone') })
+    //   .catch((error) => {
+    //     // Handle the error
+    //     console.error(error);
+    //   });
+
+    // // Close the dialog
+    setIsOpenModalEdit(false);
+    // setCPF('')
+    // setPhone('')
+    // getAllHistoryRegisters()
+  }
+
+  const handleSubmitDelete = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // const data = new FormData(event.currentTarget);
+
+    // await insertNewSchedule({ userName: userName, cpf: data.get('cpf'), status: data.get('status'), data: selectedDate, telefone: data.get('phone') })
+    //   .catch((error) => {
+    //     // Handle the error
+    //     console.error(error);
+    //   });
+
+    // // Close the dialog
+    setIsOpenModalDelete(false);
+    // setCPF('')
+    // setPhone('')
+    // getAllHistoryRegisters()
+  }
+
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
   };
-  
 
-//DeleteModal
-const [idModal, setIdModal] = useState('')
-  function handleOpenModal(idschedule: any) {
+
+  //DeleteModal
+  const [idModal, setIdModal] = useState('')
+  function handleOpenModalDelete(idschedule: any) {
     setIdModal(idschedule)
     setIsOpenModalDelete(true)
   }
+
+  //EditModal
+  const [idEdit, setIdEdit] = useState('')
+  function handleOpenModalEdit(idschedule: any) {
+    setIdEdit(idschedule)
+    setIsOpenModalEdit(true)
+  }
+  const [status, setStatus] = useState('');
+  function handleStatusCHange(event: any) {
+    const { value } = event.target
+    setStatus(value)
+  }
+
+
+  const setStatusColorIcon = (Status: string) => {
+    if (Status === 'Agendado') {
+      return 'warning'
+    } else if (Status === 'Cancelado') {
+      return 'error'
+    }
+    else {
+      return 'success'
+    }
+  }
+
 
   return (
     <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} margin={1}>
@@ -151,9 +213,9 @@ const [idModal, setIdModal] = useState('')
                   <TableCell>{shedule.userName}</TableCell>
                   <TableCell>{shedule.userPhone}</TableCell>
                   <TableCell>{shedule.userCpf}</TableCell>
-                  <TableCell><Button color='success' variant='contained' size='small'>{shedule.status}</Button></TableCell>
-                  <TableCell><Button><ModeEditIcon /></Button></TableCell>
-                  <TableCell><Button onClick={() => handleOpenModal(shedule.idschedule)}><DeleteIcon /></Button></TableCell>
+                  <TableCell><Button variant='contained' size='small' color={`${setStatusColorIcon(shedule.status)}`}>{shedule.status}</Button></TableCell>
+                  <TableCell><Button onClick={() => handleOpenModalEdit(shedule.idschedule)}><ModeEditIcon /></Button></TableCell>
+                  <TableCell><Button onClick={() => handleOpenModalDelete(shedule.idschedule)}><DeleteIcon /></Button></TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -239,10 +301,10 @@ const [idModal, setIdModal] = useState('')
       </Dialog>
 
 
-  {/* BOX DELETAR */}
-  <div>
+      {/* BOX DELETAR */}
+      <div>
         <Dialog open={isOpenModalDelete} onClose={() => setIsOpenModalDelete(false)}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmitDelete}>
             <Box display={'flex'} flexDirection={'column'} gap={'10px'} margin={3}>
               <DialogTitle>Deseja deletar agendamento ?</DialogTitle>
               <DialogContent>
@@ -261,6 +323,46 @@ const [idModal, setIdModal] = useState('')
           </form>
         </Dialog>
       </div>
+
+
+
+
+      {/* MODAL EDIT */}
+      <Dialog open={isOpenModalEdit} onClose={() => setIsOpenModalEdit(false)}>
+        <form onSubmit={handleSubmitEdit}>
+          <DialogTitle>Editar agendamento </DialogTitle>
+          <DialogContent>
+            <Box display={'flex'} flexDirection={'column'} gap={'10px'} margin={3}>
+
+              <TextField
+                select
+                fullWidth
+                name="status"
+                label="Status"
+                id="status"
+                value={status}
+                onChange={handleStatusCHange}
+
+              >
+                <MenuItem value="Agendado">Agendado</MenuItem>
+                <MenuItem value="Cancelado">Cancelado</MenuItem>
+                <MenuItem value="Confirmado">Confirmado</MenuItem>
+              </TextField>
+
+
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            {/* Buttons */}
+            <Button variant="contained" color="error" onClick={() => setIsOpenModalEdit(false)}>Cancelar</Button>
+            <Button variant="contained" color="success" type="submit">
+              Enviar
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+
+
 
     </Box>
   );
