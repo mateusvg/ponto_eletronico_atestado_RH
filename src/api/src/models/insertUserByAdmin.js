@@ -124,4 +124,38 @@ async function getAllSchedules(date) {
     }
 }
 
-module.exports = { insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules }
+
+async function deleteScheduleApointmentByAdmin(id) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('DELETE FROM `schedule` where idSchedule  = ?',[id], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(JSON.stringify(result))
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+}
+async function updateStatusScheduleByAdmin(status, id) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('update `schedule` SET status =? where idSchedule  = ?',[status,id], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(JSON.stringify(result))
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
+
+module.exports = { insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }

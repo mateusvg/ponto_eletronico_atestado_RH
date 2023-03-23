@@ -46,3 +46,20 @@ exports.getAllSchedules = async (req, res, next) => {
     const data = await users.getAllSchedules(date)
     res.status(200).send(data);
 };
+
+exports.deleteScheduleApointmentByAdmin = async (req, res, next) => {
+    let id = req.params.id
+    console.log(id)
+    const data = await users.deleteScheduleApointmentByAdmin(id)
+    res.status(200).send(data);
+};
+
+
+exports.updateStatusScheduleByAdmin = async (req, res, next) => {
+    let status = req.body.status
+    let id = req.body.id
+    console.log(status)
+    const data = await users.updateStatusScheduleByAdmin(status, id)
+    res.status(200).send(data);
+};
+

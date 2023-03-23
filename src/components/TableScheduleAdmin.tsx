@@ -1,3 +1,4 @@
+import React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -12,21 +13,22 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField } from '@mui/material';
 
 
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css';
 import { mask } from "../utils/MaskFormaterCPF"
 import { phoneMask } from '../utils/MaskPhone';
-import { insertNewSchedule } from '../services/Admin//Schedule/insertNewSchedule'
 
 import SearchUserSchedule from './SeachUserSchedule'
 
 //services
 import { getAllUsers } from '../services/Users/getAllUsers'
+import { insertNewSchedule } from '../services/Admin//Schedule/insertNewSchedule'
 import { getAllSchedules } from '../services/Admin/Schedule/getAllSchedules'
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField } from '@mui/material';
-import React from 'react';
-import Calendar from 'react-calendar'
-import 'react-calendar/dist/Calendar.css';
+import { deleteScheduleApointmentByAdmin } from '../services/Admin/Schedule/deleteScheduleApointmentByAdmin'
+import { updateStatusScheduleByAdmin } from '../services/Admin/Schedule/updateStatusScheduleByAdmin'
 
 
 type personsType = {
@@ -117,36 +119,36 @@ export default function BasicTable() {
 
   const handleSubmitEdit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
+    const data = new FormData(event.currentTarget);
 
-    // await insertNewSchedule({ userName: userName, cpf: data.get('cpf'), status: data.get('status'), data: selectedDate, telefone: data.get('phone') })
-    //   .catch((error) => {
-    //     // Handle the error
-    //     console.error(error);
-    //   });
+    await updateStatusScheduleByAdmin({ status: status, id: idEdit })
+      .catch((error) => {
+        // Handle the error
+        console.error(error);
+      });
 
     // // Close the dialog
     setIsOpenModalEdit(false);
     // setCPF('')
     // setPhone('')
-    // getAllHistoryRegisters()
+    getAllHistoryRegisters()
   }
 
   const handleSubmitDelete = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
+    const data = new FormData(event.currentTarget);
 
-    // await insertNewSchedule({ userName: userName, cpf: data.get('cpf'), status: data.get('status'), data: selectedDate, telefone: data.get('phone') })
-    //   .catch((error) => {
-    //     // Handle the error
-    //     console.error(error);
-    //   });
+    await deleteScheduleApointmentByAdmin({ scheduleId: idModal })
+      .catch((error) => {
+        // Handle the error
+        console.error(error);
+      });
 
     // // Close the dialog
     setIsOpenModalDelete(false);
     // setCPF('')
     // setPhone('')
-    // getAllHistoryRegisters()
+    getAllHistoryRegisters()
   }
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -168,8 +170,9 @@ export default function BasicTable() {
     setIdEdit(idschedule)
     setIsOpenModalEdit(true)
   }
+
   const [status, setStatus] = useState('');
-  function handleStatusCHange(event: any) {
+  function handleStatusChange(event: any) {
     const { value } = event.target
     setStatus(value)
   }
@@ -341,7 +344,7 @@ export default function BasicTable() {
                 label="Status"
                 id="status"
                 value={status}
-                onChange={handleStatusCHange}
+                onChange={handleStatusChange}
 
               >
                 <MenuItem value="Agendado">Agendado</MenuItem>
