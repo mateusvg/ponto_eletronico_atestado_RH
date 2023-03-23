@@ -25,7 +25,8 @@ import { getAllUsers } from '../services/Users/getAllUsers'
 import { getAllSchedules } from '../services/Admin/getAllSchedules'
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import React from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css';
 
 
 type personsType = {
@@ -43,7 +44,21 @@ type sheduleType = {
   schaduleDate: string
 }
 
-export default function BasicTable(props: any) {
+export default function BasicTable() {
+
+
+
+  const [valueDate, onChange] = useState(new Date())
+
+  function convert(str: any) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [day, mnth, date.getFullYear()].join("/");
+  }
+  let dateToday = convert(valueDate)
+
+
 
   const [isOpen, setIsOpen] = useState(false);
   const [persons, setPerson] = useState<personsType[] | []>([]);
@@ -51,15 +66,16 @@ export default function BasicTable(props: any) {
   const [shedules, setShedules] = useState<sheduleType[] | []>([]);
 
   const getAllHistoryRegisters = async () => {
-    const data1 = await getAllUsers(props)
-    setPerson(data1)  
-    const data2 = await getAllSchedules(props)
+    const data1 = await getAllUsers(valueDate)
+    setPerson(data1)
+    const data2 = await getAllSchedules(valueDate.toISOString().slice(0, 10))
     setShedules(data2)
   };
 
   useEffect(() => {
     getAllHistoryRegisters()
-  }, [])
+  }, [valueDate])
+
 
   const [cpf, setCPF] = useState('');
   function handleChangeMask(event: any) {
@@ -93,7 +109,7 @@ export default function BasicTable(props: any) {
     setIsOpen(false);
     setCPF('')
     setPhone('')
-
+    getAllHistoryRegisters()
   };
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const handleDateChange = (date: Date | null) => {
@@ -102,9 +118,12 @@ export default function BasicTable(props: any) {
 
   return (
     <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} margin={1}>
+      Agendamentos do dia {dateToday}
+      <Calendar onChange={onChange} value={valueDate} locale={'pt'} />
       <Box margin={3}>
         <Button variant="contained" onClick={() => setIsOpen(true)}>Adicionar agendamento</Button>
       </Box>
+      
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>

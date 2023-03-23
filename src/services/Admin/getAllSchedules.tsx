@@ -3,6 +3,7 @@ import { relativeURI } from '../../helper/RelativeURI'
 const uriRelative = relativeURI()
 export const getAllSchedules = async (...props: any) => {
 
+    console.log(JSON.stringify(props))
     const uri = `${uriRelative}admin/schedule/allSchedules`
     try {
         const response = await fetch(
@@ -12,7 +13,7 @@ export const getAllSchedules = async (...props: any) => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(props[0]),
+            body: JSON.stringify(props),
         })
         const jsonObj = await Promise.resolve(response.json())
         return jsonObj

@@ -41,8 +41,8 @@ exports.insertNewSchedule = async (req, res, next) => {
 };
 
 exports.getAllSchedules = async (req, res, next) => {
-    console.log("get all schedule user by admin ")
-    let date = req.body.date
+    console.log("get all schedule by admin ")
+    let date = req.body[0]
     const data = await users.getAllSchedules(date)
     res.status(200).send(data);
 };

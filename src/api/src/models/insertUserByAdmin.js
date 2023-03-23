@@ -108,7 +108,7 @@ async function insertNewSchedule(userName, cpf, date, phone) {
 }
 
 async function getAllSchedules(date) {
-    console.log(date)
+
     try {
         const result = await new Promise((resolve, reject) => {
             conn.query('SELECT * FROM `schedule` where scheduleDate  = ?',[date], (error, results, fields) => {
