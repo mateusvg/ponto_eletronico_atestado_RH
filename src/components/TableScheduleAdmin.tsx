@@ -9,6 +9,11 @@ import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
+
 import { mask } from "../utils/MaskFormaterCPF"
 import { phoneMask } from '../utils/MaskPhone';
 import { insertNewSchedule } from '../services/Admin/insertNewSchedule'
@@ -19,6 +24,9 @@ import SearchUserSchedule from './SeachUserSchedule'
 import { getAllUsers } from '../services/Users/getAllUsers'
 import { getAllSchedules } from '../services/Admin/getAllSchedules'
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import React from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+
 
 type personsType = {
   userName: string
@@ -36,19 +44,20 @@ type sheduleType = {
 }
 
 export default function BasicTable(props: any) {
+
   const [isOpen, setIsOpen] = useState(false);
   const [persons, setPerson] = useState<personsType[] | []>([]);
 
   const [shedules, setShedules] = useState<sheduleType[] | []>([]);
 
   const getAllHistoryRegisters = async () => {
-    const data1 = await getAllSchedules(props)
-    setShedules(data1)
+    const data1 = await getAllUsers(props)
+    setPerson(data1)  
+    const data2 = await getAllSchedules(props)
+    setShedules(data2)
   };
 
   useEffect(() => {
-    getAllUsers()
-      .then(data => setPerson(data))
     getAllHistoryRegisters()
   }, [])
 
@@ -62,18 +71,7 @@ export default function BasicTable(props: any) {
     const { value } = event.target
     setPhone(phoneMask(value))
   }
-  const [date, setDate] = useState("");
 
-  const handleChangeDate = (event: any) => {
-    const inputDate = event.target.value;
-    const formattedDate = inputDate
-      .replace(/\D/g, "") // remove all non-numeric characters
-      .replace(/(\d{2})(\d)/, "$1/$2") // add a slash after the first two digits
-      .replace(/(\d{2})(\d)/, "$1/$2") // add a slash after the next two digits
-      .replace(/(\d{4})\d+?$/, "$1"); // limit the year to four digits
-
-    setDate(formattedDate)
-  };
 
   const [userName, setUserName] = useState();
   const pull_data = (data: any) => {
@@ -85,7 +83,7 @@ export default function BasicTable(props: any) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    await insertNewSchedule({ userName: userName, cpf: data.get('cpf'), status: data.get('status'), data: data.get('date'), telefone: data.get('phone') })
+    await insertNewSchedule({ userName: userName, cpf: data.get('cpf'), status: data.get('status'), data: selectedDate, telefone: data.get('phone') })
       .catch((error) => {
         // Handle the error
         console.error(error);
@@ -95,10 +93,12 @@ export default function BasicTable(props: any) {
     setIsOpen(false);
     setCPF('')
     setPhone('')
-    setDate('')
 
   };
-
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+  };
 
   return (
     <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} margin={1}>
@@ -118,7 +118,7 @@ export default function BasicTable(props: any) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {shedules.map((shedule) => (
+            {shedules?.map((shedule) => (
               <TableRow key={shedule.id} >
                 <TableCell>{shedule.userName}</TableCell>
                 <TableCell>{shedule.userPhone}</TableCell>
@@ -170,17 +170,15 @@ export default function BasicTable(props: any) {
                 id="phone"
               />
 
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker']}>
+                  <DatePicker label="Select Date"
+                    value={selectedDate}
+                    onChange={handleDateChange} />
+                </DemoContainer>
+              </LocalizationProvider>
 
-              <TextField
-                name="date"
-                required
-                label="dd/mm/yyyy"
-                value={date}
-                onChange={handleChangeDate}
-                fullWidth
-                id="date"
-                inputProps={{ maxLength: 14 }}
-              />
+
             </Box>
           </DialogContent>
           <DialogActions>

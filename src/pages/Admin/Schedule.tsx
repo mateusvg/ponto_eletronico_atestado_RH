@@ -7,7 +7,6 @@ import TableScheduleAdmin from '../../components/TableScheduleAdmin';
 
 export default function () {
   const [value, onChange] = useState(new Date())
-  console.log(value)
 
   function convert(str: any) {
     var date = new Date(str),
@@ -27,7 +26,7 @@ export default function () {
         <Calendar onChange={onChange} value={value} locale={'pt'} />
         <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} margin={3}>
           Agendamentos do dia {dateToday}
-          <TableScheduleAdmin date={dateToday} />
+          <TableScheduleAdmin date={value} />
         </Box>
       </Box>
     </>

@@ -95,7 +95,7 @@ async function insertNewSchedule(userName, cpf, date, phone) {
 
     try {
         const insertUser = await new Promise((resolve, reject) => {
-            conn.query('INSERT INTO schedule ( userName, userCpf, schaduleDate, userPhone, status) VALUES (?,?,?,?,?)', [userName, cpf, date, phone, status], (error, results, fields) => {
+            conn.query('INSERT INTO schedule ( userName, userCpf, scheduleDate, userPhone, status) VALUES (?,?,?,?,?)', [userName, cpf, date, phone, status], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -111,7 +111,7 @@ async function getAllSchedules(date) {
     console.log(date)
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('SELECT * FROM `schedule`', (error, results, fields) => {
+            conn.query('SELECT * FROM `schedule` where scheduleDate  = ?',[date], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });

@@ -2,7 +2,7 @@ import { relativeURI } from '../../helper/RelativeURI'
 
 const uriRelative = relativeURI()
 export const getAllSchedules = async (...props: any) => {
-    console.log(...props)
+
     const uri = `${uriRelative}admin/schedule/allSchedules`
     try {
         const response = await fetch(
