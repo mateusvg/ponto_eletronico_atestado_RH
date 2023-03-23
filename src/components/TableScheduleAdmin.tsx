@@ -37,7 +37,7 @@ type personsType = {
 
 type sheduleType = {
   userName: string
-  id: number
+  idschedule: number
   userCpf: string
   status: string
   userPhone: string
@@ -61,6 +61,7 @@ export default function BasicTable() {
 
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
   const [persons, setPerson] = useState<personsType[] | []>([]);
 
   const [shedules, setShedules] = useState<sheduleType[] | []>([]);
@@ -115,6 +116,14 @@ export default function BasicTable() {
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
   };
+  
+
+//DeleteModal
+const [idModal, setIdModal] = useState('')
+  function handleOpenModal(idschedule: any) {
+    setIdModal(idschedule)
+    setIsOpenModalDelete(true)
+  }
 
   return (
     <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} margin={1}>
@@ -123,33 +132,52 @@ export default function BasicTable() {
       <Box margin={3}>
         <Button variant="contained" onClick={() => setIsOpen(true)}>Adicionar agendamento</Button>
       </Box>
-      
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Nome Colaborador</TableCell>
-              <TableCell>CPF</TableCell>
-              <TableCell>Telefone</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Editar</TableCell>
-              <TableCell>Deletar</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {shedules?.map((shedule) => (
-              <TableRow key={shedule.id} >
-                <TableCell>{shedule.userName}</TableCell>
-                <TableCell>{shedule.userPhone}</TableCell>
-                <TableCell>{shedule.userCpf}</TableCell>
-                <TableCell><Button color='success' variant='contained' size='small'>{shedule.status}</Button></TableCell>
-                <TableCell><Button><ModeEditIcon /></Button></TableCell>
-                <TableCell><Button><DeleteIcon /></Button></TableCell>
+      {shedules.length > 0 ?
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Nome Colaborador</TableCell>
+                <TableCell>CPF</TableCell>
+                <TableCell>Telefone</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Editar</TableCell>
+                <TableCell>Deletar</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {shedules?.map((shedule) => (
+                <TableRow key={shedule.idschedule} >
+                  <TableCell>{shedule.userName}</TableCell>
+                  <TableCell>{shedule.userPhone}</TableCell>
+                  <TableCell>{shedule.userCpf}</TableCell>
+                  <TableCell><Button color='success' variant='contained' size='small'>{shedule.status}</Button></TableCell>
+                  <TableCell><Button><ModeEditIcon /></Button></TableCell>
+                  <TableCell><Button onClick={() => handleOpenModal(shedule.idschedule)}><DeleteIcon /></Button></TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        : <> <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Nome Colaborador</TableCell>
+                <TableCell>CPF</TableCell>
+                <TableCell>Telefone</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Editar</TableCell>
+                <TableCell>Deletar</TableCell>
+              </TableRow>
+            </TableHead>
+          </Table>
+        </TableContainer>
+
+          <Box display={'flex'} flexDirection={'row'} justifyContent={'center'} alignItems={'center'} margin={4} >
+            Sem agendamentos
+          </Box>
+        </>}
 
 
 
@@ -209,6 +237,31 @@ export default function BasicTable() {
           </DialogActions>
         </form>
       </Dialog>
+
+
+  {/* BOX DELETAR */}
+  <div>
+        <Dialog open={isOpenModalDelete} onClose={() => setIsOpenModalDelete(false)}>
+          <form onSubmit={handleSubmit}>
+            <Box display={'flex'} flexDirection={'column'} gap={'10px'} margin={3}>
+              <DialogTitle>Deseja deletar agendamento ?</DialogTitle>
+              <DialogContent>
+                {idModal}
+              </DialogContent>
+              <Box display={'flex'} flexDirection={'column'} gap={'10px'} margin={3}>
+                <DialogActions>
+                  {/* Buttons */}
+                  <Button variant="contained" color="error" onClick={() => setIsOpenModalDelete(false)}>Cancelar</Button>
+                  <Button variant="contained" color="success" type="submit">
+                    Deletar
+                  </Button>
+                </DialogActions>
+              </Box>
+            </Box>
+          </form>
+        </Dialog>
+      </div>
+
     </Box>
   );
 }
