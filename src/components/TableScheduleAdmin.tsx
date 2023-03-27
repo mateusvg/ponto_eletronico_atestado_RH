@@ -284,7 +284,7 @@ export default function BasicTable() {
 
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={['DatePicker']}>
-                  <DatePicker label="Select Date"
+                  <DatePicker label="Selecione a data"
                     value={selectedDate}
                     onChange={handleDateChange} />
                 </DemoContainer>

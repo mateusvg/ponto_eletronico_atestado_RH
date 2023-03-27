@@ -108,10 +108,9 @@ async function insertNewSchedule(userName, cpf, date, phone) {
 }
 
 async function getAllSchedules(date) {
-
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('SELECT * FROM `schedule` where scheduleDate  = ?',[date], (error, results, fields) => {
+            conn.query('SELECT * FROM `schedule` where scheduleDate  = ?', [date], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -128,7 +127,7 @@ async function getAllSchedules(date) {
 async function deleteScheduleApointmentByAdmin(id) {
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('DELETE FROM `schedule` where idSchedule  = ?',[id], (error, results, fields) => {
+            conn.query('DELETE FROM `schedule` where idSchedule  = ?', [id], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -143,7 +142,7 @@ async function deleteScheduleApointmentByAdmin(id) {
 async function updateStatusScheduleByAdmin(status, id) {
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('update `schedule` SET status =? where idSchedule  = ?',[status,id], (error, results, fields) => {
+            conn.query('update `schedule` SET status =? where idSchedule  = ?', [status, id], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -156,6 +155,36 @@ async function updateStatusScheduleByAdmin(status, id) {
     }
 }
 
+async function getAllRegisterByMonthService(my_month, userId) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('select * from eletronicpoint INNER JOIN eletronicpoint_has_user ON eletronicpoint.ideletronicPoint = eletronicpoint_has_user.eletronicPoint_ideletronicPoint inner join user ON user.iduser = eletronicpoint_has_user.user_iduser where user.iduser = ? and month(eletronicpoint.date) = ?', [ userId, my_month], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(JSON.stringify(result))
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+}
 
+async function getAllRegisterByMonthServiceTotalHours(my_month, userId) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(eletronicpoint.totalWork))) as totalWork FROM eletronicpoint INNER JOIN eletronicpoint_has_user ON eletronicpoint.ideletronicPoint = eletronicpoint_has_user.eletronicPoint_ideletronicPoint inner join user ON user.iduser = eletronicpoint_has_user.user_iduser where user.iduser = ? and month(eletronicpoint.date) = ?', [ userId, my_month], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(JSON.stringify(result))
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+}
 
-module.exports = { insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }
+module.exports = { getAllRegisterByMonthServiceTotalHours, getAllRegisterByMonthService, insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }

@@ -8,6 +8,10 @@ router.get('/user/status/certificate', controller.getAllRegistersUsersStatus)
 
 router.delete('/user/status/certificate/delete/:id', controller.deletePersonStatusCertificateId)
 
+router.post('/user/history/month', controller.getAllRegisterByMonthService)
+
+router.post('/user/history/month/total', controller.getAllRegisterByMonthServiceTotalHours)
+
 
 //Schedules
 router.get('/user/schedule', controller.getAllUserSchedule)

@@ -18,7 +18,7 @@ exports.getAllRegistersUsersStatus = async (req, res, next) => {
 
 exports.deletePersonStatusCertificateId = async (req, res, next) => {
     console.log("DELETE CERTIFICATE BY ID")
-    let  id  = req.params.id
+    let id = req.params.id
     const data = await users.deletePersonStatusCertificateId(id)
     res.status(200).send(data);
 }
@@ -63,3 +63,23 @@ exports.updateStatusScheduleByAdmin = async (req, res, next) => {
     res.status(200).send(data);
 };
 
+exports.getAllRegisterByMonthService = async (req, res, next) => {
+    let inicialDateMonth = req.body.inicialDate
+    var my_month = new Date(`${inicialDateMonth}`).getMonth() + 1
+    let userId = req.body.userId
+    const data = await users.getAllRegisterByMonthService(my_month, userId)
+    res.status(200).send(data);
+};
+
+exports.getAllRegisterByMonthServiceTotalHours = async (req, res, next) => {
+    let inicialDateMonth = req.body.inicialDate
+    var my_month = new Date(`${inicialDateMonth}`).getMonth() + 1
+    let userId = req.body.userId
+    const data = await users.getAllRegisterByMonthServiceTotalHours(my_month, userId)
+    res.status(200).send(data);
+};
+
+
+//Seleciona o ultimo dia do mes seleiconado
+// var my_date = new Date(`${inicialDate}`);
+// var last_date = new Date(my_date.getFullYear(), my_date.getMonth() + 1, 0);

@@ -5,7 +5,7 @@ import Person from './pages/Admin/Person'
 import Certificate from './pages/Admin/Certificate'
 import Reports from './pages/Admin/Reports'
 import Point from './pages/Admin/Schedule'
-import UserAdminHistory from "./pages/Admin/UserAdminHistory";
+import UserAdminHistory from "./pages/Admin/UserHistory";
 import Settings from "./pages/Admin/Settings";
 
 import UserHome from "./pages/User/UserHome";

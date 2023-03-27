@@ -173,4 +173,10 @@ async function postFormUser(idForm, nomePacienteBody, cpfBody, nomeMedicoBody, d
     }
 }
 
+
+
+//SELECT SEC_TO_TIME(SUM(eletronicpoint.finalTime - eletronicpoint.initialTime)) as totalWorked from eletronicpoint INNER JOIN eletronicpoint_has_user on eletronicpoint_has_user.eletronicPoint_ideletronicPoint = eletronicpoint.ideletronicPoint where eletronicpoint_has_user.user_iduser = 2;
+
+//SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(eletronicpoint.totalWork))) FROM eletronicpoint INNER JOIN eletronicpoint_has_user ON eletronicpoint.ideletronicPoint = eletronicpoint_has_user.eletronicPoint_ideletronicPoint inner join user ON user.iduser = eletronicpoint_has_user.user_iduser where user.iduser = 2 and month(eletronicpoint.date) = 3
+
 module.exports = { selectUser, insertUserPoint, getPointDateByUser, getPointDateByUserAllHistory, insertUserPointExit, postFormUser, getAllStatusCertificate }
