@@ -158,7 +158,7 @@ async function updateStatusScheduleByAdmin(status, id) {
 async function getAllRegisterByMonthService(my_month, userId) {
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('select * from eletronicpoint INNER JOIN eletronicpoint_has_user ON eletronicpoint.ideletronicPoint = eletronicpoint_has_user.eletronicPoint_ideletronicPoint inner join user ON user.iduser = eletronicpoint_has_user.user_iduser where user.iduser = ? and month(eletronicpoint.date) = ?', [ userId, my_month], (error, results, fields) => {
+            conn.query('select * from eletronicpoint INNER JOIN eletronicpoint_has_user ON eletronicpoint.ideletronicPoint = eletronicpoint_has_user.eletronicPoint_ideletronicPoint inner join user ON user.iduser = eletronicpoint_has_user.user_iduser where user.iduser = ? and month(eletronicpoint.date) = ?', [userId, my_month], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -174,7 +174,7 @@ async function getAllRegisterByMonthService(my_month, userId) {
 async function getAllRegisterByMonthServiceTotalHours(my_month, userId) {
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(eletronicpoint.totalWork))) as totalWork FROM eletronicpoint INNER JOIN eletronicpoint_has_user ON eletronicpoint.ideletronicPoint = eletronicpoint_has_user.eletronicPoint_ideletronicPoint inner join user ON user.iduser = eletronicpoint_has_user.user_iduser where user.iduser = ? and month(eletronicpoint.date) = ?', [ userId, my_month], (error, results, fields) => {
+            conn.query('SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(eletronicpoint.totalWork))) as totalWork FROM eletronicpoint INNER JOIN eletronicpoint_has_user ON eletronicpoint.ideletronicPoint = eletronicpoint_has_user.eletronicPoint_ideletronicPoint inner join user ON user.iduser = eletronicpoint_has_user.user_iduser where user.iduser = ? and month(eletronicpoint.date) = ?', [userId, my_month], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -187,4 +187,31 @@ async function getAllRegisterByMonthServiceTotalHours(my_month, userId) {
     }
 }
 
-module.exports = { getAllRegisterByMonthServiceTotalHours, getAllRegisterByMonthService, insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }
+async function updateStatusCertificateByAdmin(status, idMedical) {
+
+    function statusNumber(status) {
+        if (status == 'Em processamento') {
+            return 1
+        } else if (status == 'Aprovado') {
+            return 2
+        } else if (status == 'Reprovado') {
+            return 3
+        }
+    }
+    let statusNumberVar = statusNumber(status)
+
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('update medicalcertificate SET medicalcertificate.statusByCpf_idstatusByCpf = ? where medicalcertificate.idmedicalCertificate = ? ', [statusNumberVar, idMedical], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(JSON.stringify(result))
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+}
+module.exports = { updateStatusCertificateByAdmin, getAllRegisterByMonthServiceTotalHours, getAllRegisterByMonthService, insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }

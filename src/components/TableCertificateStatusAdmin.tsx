@@ -10,11 +10,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CircleIcon from '@mui/icons-material/Circle';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField } from '@mui/material';
 
 //services
 import { getAllRegistersUsersStatus } from '../services/Admin/getAllRegistersUsersStatus'
 import { deletePersonStatusCertificateId } from '../services/Admin/deletePersonStatusCertificateId'
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField } from '@mui/material';
+import { updateStatusCertificateByAdmin } from '../services/Admin/updateStatusCertificateByAdmin'
 
 type personsType = {
   idmedicalCertificate: string
@@ -27,6 +28,7 @@ type personsType = {
 
 export default function BasicTable() {
 
+  const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [persons, setPerson] = useState<personsType[] | []>([]);
 
@@ -76,6 +78,9 @@ export default function BasicTable() {
     getAllHistoryRegisters()
   };
 
+
+
+
   const handleDownload = (anexo: any) => {
     anexo = anexo.replace('data:image/png;base64,', '')
     const payload = { anexo: anexo }
@@ -85,6 +90,35 @@ export default function BasicTable() {
     a.download = "Image.png"; //File name Here
     a.click(); //Downloaded file
   };
+
+
+
+
+  function handleOpenModalEdit(idMedical: any, personName: any) {
+    setIdModal(idMedical)
+    setNameModal(personName)
+    setIsOpenModalEdit(true)
+  }
+  const handleSubmitEdit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
+    await updateStatusCertificateByAdmin({ status: status , idMedical: idModal})
+      .catch((error) => {
+        // Handle the error
+        console.error(error);
+      });
+
+    // // Close the dialog
+    setIsOpenModalEdit(false);
+    getAllHistoryRegisters()
+  }
+
+  const [status, setStatus] = useState('');
+  function handleStatusChange(event: any) {
+    const { value } = event.target
+    setStatus(value)
+  }
 
   return (
     <Box>
@@ -111,7 +145,7 @@ export default function BasicTable() {
                 <TableCell>{person.fitness}</TableCell>
                 <TableCell>{person.status}</TableCell>
                 <TableCell><CircleIcon color={`${setStatusColorIcon(person.status)}`} /></TableCell>
-                <TableCell><Button><ModeEditIcon /></Button></TableCell>
+                <TableCell><Button onClick={() => handleOpenModalEdit(person.idmedicalCertificate, person.patientName)}><ModeEditIcon /></Button></TableCell>
                 <TableCell><Button onClick={() => handleOpenModal(person.idmedicalCertificate, person.patientName)}><DeleteIcon /></Button></TableCell>
               </TableRow>
             ))}
@@ -142,6 +176,43 @@ export default function BasicTable() {
           </form>
         </Dialog>
       </div>
+
+
+
+      {/* MODAL EDIT */}
+      <Dialog open={isOpenModalEdit} onClose={() => setIsOpenModalEdit(false)}>
+        <form onSubmit={handleSubmitEdit}>
+          <DialogTitle>Editar agendamento </DialogTitle>
+          <DialogContent>
+            <Box display={'flex'} flexDirection={'column'} gap={'10px'} margin={3}>
+
+              <TextField
+                select
+                fullWidth
+                name="status"
+                label="Status"
+                id="status"
+                value={status}
+                onChange={handleStatusChange}
+
+              >
+                <MenuItem value="Em processamento">Em processamento</MenuItem>
+                <MenuItem value="Aprovado">Aprovado</MenuItem>
+                <MenuItem value="Reprovado">Reprovado</MenuItem>
+              </TextField>
+
+
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            {/* Buttons */}
+            <Button variant="contained" color="error" onClick={() => setIsOpenModalEdit(false)}>Cancelar</Button>
+            <Button variant="contained" color="success" type="submit">
+              Enviar
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
 
 
     </Box>

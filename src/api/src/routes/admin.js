@@ -12,6 +12,9 @@ router.post('/user/history/month', controller.getAllRegisterByMonthService)
 
 router.post('/user/history/month/total', controller.getAllRegisterByMonthServiceTotalHours)
 
+router.put('/user/status/certificates/update', controller.updateStatusCertificateByAdmin)
+
+
 
 //Schedules
 router.get('/user/schedule', controller.getAllUserSchedule)

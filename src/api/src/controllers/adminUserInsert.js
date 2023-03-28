@@ -77,9 +77,15 @@ exports.getAllRegisterByMonthServiceTotalHours = async (req, res, next) => {
     let userId = req.body.userId
     const data = await users.getAllRegisterByMonthServiceTotalHours(my_month, userId)
     res.status(200).send(data);
+    //Seleciona o ultimo dia do mes seleiconado
+    // var my_date = new Date(`${inicialDate}`);
+    // var last_date = new Date(my_date.getFullYear(), my_date.getMonth() + 1, 0);
 };
 
+exports.updateStatusCertificateByAdmin = async (req, res, next) => {
+    let status = req.body.status
+    let idMedical = req.body.idMedical
+    const data = await users.updateStatusCertificateByAdmin(status, idMedical)
+    res.status(200).send(data);
+};
 
-//Seleciona o ultimo dia do mes seleiconado
-// var my_date = new Date(`${inicialDate}`);
-// var last_date = new Date(my_date.getFullYear(), my_date.getMonth() + 1, 0);
