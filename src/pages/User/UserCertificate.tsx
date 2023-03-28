@@ -11,15 +11,18 @@ type personsType = {
     patientName: string
     patientCpf: string
     fitness: string
+    status: string
 }
 
 export default function () {
     //Method static status color
     const setStatusColorIcon = (Status: string) => {
-        if (Status === 'Inapto') {
-            return 'error'
-        } else {
+        if (Status === 'Em processamento') {
+            return 'primary'
+        } else if (Status === 'Aprovado'){
             return 'success'
+        } else{
+            return 'error'
         }
     }
     const [persons, setPerson] = useState<personsType[] | []>([]);
@@ -40,6 +43,7 @@ export default function () {
                         <TableRow>
                             <TableCell>Nome Colaborador</TableCell>
                             <TableCell>Cpf</TableCell>
+                            <TableCell>Aptidão</TableCell>
                             <TableCell>Status</TableCell>
                             <TableCell></TableCell>
                         </TableRow>
@@ -50,7 +54,8 @@ export default function () {
                                 <TableCell>{person.patientName}</TableCell>
                                 <TableCell>{person.patientCpf}</TableCell>
                                 <TableCell>{person.fitness}</TableCell>
-                                <TableCell><CircleIcon color={`${setStatusColorIcon(person.fitness)}`} /></TableCell>
+                                <TableCell>{person.status}</TableCell>
+                                <TableCell><CircleIcon color={`${setStatusColorIcon(person.status)}`} /></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

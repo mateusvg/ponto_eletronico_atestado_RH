@@ -45,7 +45,7 @@ async function insertUser(userName, cpf, statusReq) {
 async function getAllRegistersUsersStatus() {
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('SELECT * FROM medicalcertificate inner join user_has_medicalcertificate ON user_has_medicalcertificate.medicalCertificate_idmedicalCertificate = medicalcertificate.idmedicalCertificate INNER join user ON user.iduser = user_has_medicalcertificate.user_iduser order by medicalcertificate.idmedicalCertificate asc', (error, results, fields) => {
+            conn.query('SELECT * FROM medicalcertificate inner join user_has_medicalcertificate ON user_has_medicalcertificate.medicalCertificate_idmedicalCertificate = medicalcertificate.idmedicalCertificate INNER join user ON user.iduser = user_has_medicalcertificate.user_iduser inner join statusbycpf on statusbycpf.idstatusByCpf = medicalcertificate.statusByCpf_idstatusByCpf order by medicalcertificate.idmedicalCertificate asc', (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });

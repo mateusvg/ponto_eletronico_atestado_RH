@@ -22,6 +22,7 @@ type personsType = {
   attachment: any
   patientCpf: string
   fitness: string
+  status: string
 }
 
 export default function BasicTable() {
@@ -44,11 +45,13 @@ export default function BasicTable() {
   }, [])
 
   //Method static status color
-  const setStatusColorIcon = (Status: string) => {
-    if (Status === 'Inapto') {
-      return 'error'
-    } else {
+  const setStatusColorIcon = (status: string) => {
+    if (status === 'Em processamento') {
+      return 'primary'
+    } else if (status === 'Aprovado') {
       return 'success'
+    } else {
+      return 'error'
     }
   }
 
@@ -76,7 +79,7 @@ export default function BasicTable() {
   const handleDownload = (anexo: any) => {
     anexo = anexo.replace('data:image/png;base64,', '')
     const payload = { anexo: anexo }
-     //console.log(payload.anexo)
+    //console.log(payload.anexo)
     var a = document.createElement("a"); //Create <a>
     a.href = "data:image/png;base64," + payload.anexo; //Image Base64 Goes here
     a.download = "Image.png"; //File name Here
@@ -92,6 +95,7 @@ export default function BasicTable() {
               <TableCell>Nome Colaborador</TableCell>
               <TableCell>Cpf</TableCell>
               <TableCell>Anexo</TableCell>
+              <TableCell>Aptidão</TableCell>
               <TableCell>Status</TableCell>
               <TableCell></TableCell>
               <TableCell>Editar</TableCell>
@@ -105,7 +109,8 @@ export default function BasicTable() {
                 <TableCell>{person.patientCpf}</TableCell>
                 <TableCell><Button onClick={() => handleDownload(person.attachment)}><CloudDownloadIcon /></Button></TableCell>
                 <TableCell>{person.fitness}</TableCell>
-                <TableCell><CircleIcon color={`${setStatusColorIcon(person.fitness)}`} /></TableCell>
+                <TableCell>{person.status}</TableCell>
+                <TableCell><CircleIcon color={`${setStatusColorIcon(person.status)}`} /></TableCell>
                 <TableCell><Button><ModeEditIcon /></Button></TableCell>
                 <TableCell><Button onClick={() => handleOpenModal(person.idmedicalCertificate, person.patientName)}><DeleteIcon /></Button></TableCell>
               </TableRow>

@@ -99,7 +99,7 @@ async function getPointDateByUser(idUser) {
         if (result[0] === undefined) {
             result[0] = { "ideletronicPoint": 0, "initialTime": "0", "finalTime": null, "date": "", "totalWork": null, "todayEnter": 0, "finishWork": 0, "eletronicPoint_ideletronicPoint": 27, "user_iduser": 2, "iduser": 2, "userName": "user1", "userPassword": "user1", "userPermission": 2 }
         }
-        console.log(`resultado : ${JSON.stringify(result[0])}`)
+        console.log(`resultado getPointDateByUser: ${JSON.stringify(result[0])}`)
         return result
     } catch (err) {
         console.log(err)
@@ -117,7 +117,7 @@ async function getPointDateByUserAllHistory(idUser) {
         if (result[0] === undefined) {
             result[0] = { "ideletronicPoint": 0, "initialTime": "0", "finalTime": null, "date": "", "totalWork": null, "todayEnter": 0, "finishWork": 0, "eletronicPoint_ideletronicPoint": 27, "user_iduser": 2, "iduser": 2, "userName": "user1", "userPassword": "user1", "userPermission": 2 }
         }
-        console.log(`resultado : ${JSON.stringify(result[0])}`)
+        console.log(`resultado get point date by yser all history : ${JSON.stringify(result[0])}`)
         return result
     } catch (err) {
         console.log(err)
@@ -127,12 +127,12 @@ async function getPointDateByUserAllHistory(idUser) {
 async function getAllStatusCertificate(idUser) {
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('select * from medicalcertificate INNER join user_has_medicalcertificate ON user_has_medicalcertificate.medicalCertificate_idmedicalCertificate = medicalcertificate.idmedicalCertificate INNER JOIN user ON user.iduser = user_has_medicalcertificate.user_iduser where user.iduser = ?', [idUser], (error, results, fields) => {
+            conn.query('select * from medicalcertificate INNER join user_has_medicalcertificate ON user_has_medicalcertificate.medicalCertificate_idmedicalCertificate = medicalcertificate.idmedicalCertificate INNER JOIN user ON user.iduser = user_has_medicalcertificate.user_iduser Inner JOIN statusbycpf on statusbycpf.idstatusByCpf = medicalcertificate.statusByCpf_idstatusByCpf where user.iduser = ?', [idUser], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
         });
-        console.log(`resultado : ${JSON.stringify(result[0])}`)
+        console.log(`resultado get all status certificate : ${JSON.stringify(result[0])}`)
         return result
     } catch (err) {
         console.log(err)
