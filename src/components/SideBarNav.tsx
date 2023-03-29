@@ -378,7 +378,7 @@ export default function MiniDrawer() {
                     </ListItem>
                 </List>
 
-                <Divider />
+                {permission == 2 ? <Divider /> : <></>}
 
                 <List>
                     <ListItem disablePadding sx={{ display: 'block' }}>
