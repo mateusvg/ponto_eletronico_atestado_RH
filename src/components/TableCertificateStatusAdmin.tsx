@@ -182,7 +182,7 @@ export default function BasicTable() {
       {/* MODAL EDIT */}
       <Dialog open={isOpenModalEdit} onClose={() => setIsOpenModalEdit(false)}>
         <form onSubmit={handleSubmitEdit}>
-          <DialogTitle>Editar agendamento </DialogTitle>
+          <DialogTitle>Editar status </DialogTitle>
           <DialogContent>
             <Box display={'flex'} flexDirection={'column'} gap={'10px'} margin={3}>
 
