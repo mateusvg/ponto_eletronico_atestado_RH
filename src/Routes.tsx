@@ -13,6 +13,7 @@ import UserHistory from "./pages/User/UserHistory";
 import UserSettings from "./pages/User/UserSettings"
 import UserCertificate from "./pages/User/UserCertificate";
 import UserCertificateSend from "./pages/User/UserCertificateSendForm";
+import UserSchedules from './pages/User/UserSchedules'
 
 export default function PagesRoutes() {
     return (
@@ -31,6 +32,10 @@ export default function PagesRoutes() {
             <Route path="/home/user/history" element={<UserHistory />} />
             <Route path="/home/user/certificate" element={<UserCertificate />} />
             <Route path="/home/user/certificate/send" element={<UserCertificateSend />} />
+            <Route path="/home/user/schedules" element={<UserSchedules />} />
+
+
+            
         </Routes>
     )
 

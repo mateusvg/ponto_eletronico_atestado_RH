@@ -174,9 +174,23 @@ async function postFormUser(idForm, nomePacienteBody, cpfBody, nomeMedicoBody, d
 }
 
 
+async function getUserScheduleApointment(idUser) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('SELECT * FROM `schedule` inner join user ON user.userName = schedule.userName where user.iduser = ?', [idUser], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        return result
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 
 //SELECT SEC_TO_TIME(SUM(eletronicpoint.finalTime - eletronicpoint.initialTime)) as totalWorked from eletronicpoint INNER JOIN eletronicpoint_has_user on eletronicpoint_has_user.eletronicPoint_ideletronicPoint = eletronicpoint.ideletronicPoint where eletronicpoint_has_user.user_iduser = 2;
 
 //SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(eletronicpoint.totalWork))) FROM eletronicpoint INNER JOIN eletronicpoint_has_user ON eletronicpoint.ideletronicPoint = eletronicpoint_has_user.eletronicPoint_ideletronicPoint inner join user ON user.iduser = eletronicpoint_has_user.user_iduser where user.iduser = 2 and month(eletronicpoint.date) = 3
 
-module.exports = { selectUser, insertUserPoint, getPointDateByUser, getPointDateByUserAllHistory, insertUserPointExit, postFormUser, getAllStatusCertificate }
+module.exports = { getUserScheduleApointment, selectUser, insertUserPoint, getPointDateByUser, getPointDateByUserAllHistory, insertUserPointExit, postFormUser, getAllStatusCertificate }

@@ -72,7 +72,7 @@ export default function BasicTable() {
           </TableHead>
           <TableBody>
             {
-              persons.filter(post => {
+              persons?.filter(post => {
                 if (searchInput === '') {
                   return post;
                 } else if (post.userName.toLowerCase().includes(searchInput.toLowerCase())) {

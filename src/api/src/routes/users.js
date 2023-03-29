@@ -18,4 +18,6 @@ router.get('/status/certificate/:id', controller.getAllStatusCertificate)
 
 router.post('/form', controller.postFormUser)
 
+router.get('/schedule/:id', controller.getUserScheduleApointment)
+
 module.exports = router;

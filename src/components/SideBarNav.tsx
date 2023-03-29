@@ -142,7 +142,7 @@ export default function MiniDrawer() {
                     >
                         <MenuIcon />
                     </IconButton>
-                        <img src={Logo} alt="Logo" width={"3%"} />
+                    <img src={Logo} alt="Logo" width={"3%"} />
                     <Grid container justifyContent="flex-end">
                         <ProfileIcon />
                     </Grid>
@@ -158,26 +158,26 @@ export default function MiniDrawer() {
                 <List>
 
                     <ListItem disablePadding sx={{ display: 'block' }}>
-                    {permission == 1 ? 
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                            }}
-                        >
-                            <ListItemIcon
+                        {permission == 1 ?
+                            <ListItemButton
                                 sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
                                 }}
-                                onClick={() => navigate('/home')}
                             >
-                                <AccessAlarmsIcon />
-                            </ListItemIcon>
-                            <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home')}>Home</ListItemText>
-                        </ListItemButton>  : <></>}
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                    onClick={() => navigate('/home')}
+                                >
+                                    <AccessAlarmsIcon />
+                                </ListItemIcon>
+                                <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home')}>Home</ListItemText>
+                            </ListItemButton> : <></>}
 
                         {permission == 1 ? <ListItemButton
                             sx={{
@@ -265,25 +265,25 @@ export default function MiniDrawer() {
 
                         {/* MENU USUARIO */}
                         {permission == 2 ?
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                            }}
-                        >
-                            <ListItemIcon
+                            <ListItemButton
                                 sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
                                 }}
-                                onClick={() => navigate('/home/user')}
                             >
-                                <AccessAlarmsIcon />
-                            </ListItemIcon>
-                            <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/user')}>Ponto</ListItemText>
-                        </ListItemButton> : <></>}
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                    onClick={() => navigate('/home/user')}
+                                >
+                                    <AccessAlarmsIcon />
+                                </ListItemIcon>
+                                <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/user')}>Ponto</ListItemText>
+                            </ListItemButton> : <></>}
 
                         {permission == 2 ? <ListItemButton
                             sx={{
@@ -348,6 +348,34 @@ export default function MiniDrawer() {
                         </ListItemButton> : <></>}
                     </ListItem>
 
+                </List>
+
+                <Divider />
+
+                <List>
+                    <ListItem disablePadding sx={{ display: 'block' }}>
+
+                        {permission == 2 ? <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                                onClick={() => navigate('/home/user/schedules')}
+                            >
+
+                                <CalendarMonthIcon />
+                            </ListItemIcon>
+                            <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/user/schedules')}>Agendamento</ListItemText>
+                        </ListItemButton> : <></>}
+                    </ListItem>
                 </List>
 
                 <Divider />

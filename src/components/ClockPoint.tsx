@@ -71,7 +71,7 @@ const DigitalClock: React.FC = () => {
   useEffect(() => {
     getAllHistoryRegisters()
   }, [])
-  let counterMap = registerUserToday.map((key) => (key.counter))
+  let counterMap = registerUserToday?.map((key) => (key.counter))
 
 
 
@@ -79,8 +79,8 @@ const DigitalClock: React.FC = () => {
   // Define a function to handle form submission
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    let newRegister = registerUserToday.map((key) => (key.todayEnter))
-    let idEletronicPointMap = registerUserToday.map((key) => (key.ideletronicPoint))
+    let newRegister = registerUserToday?.map((key) => (key.todayEnter))
+    let idEletronicPointMap = registerUserToday?.map((key) => (key.ideletronicPoint))
 
     if (Number(newRegister) === 0) {
       await insertTimePointUser({ userId: userId, time: timeBRL, date: time, counter: new Date().getTime() })
@@ -143,7 +143,7 @@ const DigitalClock: React.FC = () => {
             <Box  >
               <div>
                 {/* Button to open the dialog */}
-                {registerUserToday.map(history => {
+                {registerUserToday?.map(history => {
                   return Number(history.finishWork) != 0 ? <>Hora do descanço</> :
                     <Button variant="outlined" onClick={() => setIsOpen(true)}>Registrar</Button>
                 })}
@@ -168,7 +168,7 @@ const DigitalClock: React.FC = () => {
                         {/* Buttons */}
                         <Button variant="contained" color="error" onClick={() => setIsOpen(false)}>Cancelar</Button>
 
-                        {registerUserToday.map(history => {
+                        {registerUserToday?.map(history => {
                           return Number(history.todayEnter) == 1 ?
                             <Button variant="contained" color="success" type="submit" onClick={handleClick}>
                               Registrar Saida
@@ -190,7 +190,7 @@ const DigitalClock: React.FC = () => {
           <Card sx={{ minWidth: 275 }} style={{ backgroundColor: "#C6DEEC" }}>
             <Box p={3} display={'flex'} flexDirection={'column'} alignItems={'center'}>
               <h2>Entrada</h2>
-              {registerUserToday.map(history => {
+              {registerUserToday?.map(history => {
 
                 return Number(history.todayEnter) == 1 ?
                   <h2 key={history.ideletronicPoint}>{history.initialTime}</h2> :
@@ -201,7 +201,7 @@ const DigitalClock: React.FC = () => {
           <Card sx={{ minWidth: 275 }} style={{ backgroundColor: "#C6DEEC" }}>
             <Box p={3} display={'flex'} flexDirection={'column'} alignItems={'center'}>
               <h2>Registrado</h2>
-              {registerUserToday.map(history => {
+              {registerUserToday?.map(history => {
                 if (history.finalTime === null && Number(history.todayEnter) === 0  && Number(history.finishWork) === 0) {
                   return <h2>Sem dados</h2>
                 } else if (history.finalTime === null && Number(history.todayEnter) === 1  && Number(history.finishWork) === 0) {
@@ -216,7 +216,7 @@ const DigitalClock: React.FC = () => {
           <Card sx={{ minWidth: 275 }} style={{ backgroundColor: "#C6DEEC" }}>
             <Box p={3} display={'flex'} flexDirection={'column'} alignItems={'center'}>
               <h2>Saida</h2>
-              {registerUserToday.map(history => {
+              {registerUserToday?.map(history => {
                 return history.finalTime === null ?
                   <h2>Sem registros</h2> : <h2 key={history.ideletronicPoint}>{history.finalTime}</h2>
               })}

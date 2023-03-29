@@ -54,3 +54,9 @@ exports.postFormUser = async(req, res, next) => {
     const data = await users.postFormUser(idForm, nomePacienteBody, cpfBody,nomeMedicoBody, dataBody, aptidaoBody, anexo, userId)
     res.status(201).send('Formulario recebido com sucesso');
 };
+
+exports.getUserScheduleApointment = async (req, res, next) => {
+    let  id  = req.params.id
+    const data = await users.getUserScheduleApointment(id)
+    res.status(200).send(data);
+};
