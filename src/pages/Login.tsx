@@ -12,7 +12,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import LogoX from '../assets/img/LogoX.jpg'
+import LogoX from '../assets/img/people.jpeg'
 
 import { useNavigate } from 'react-router-dom';
 //Context
@@ -88,7 +88,7 @@ export default function SignInSide(props: any) {
                     container justifyContent="center"
                 >
                     <Grid container direction="column" justifyContent="center" alignContent={'center'}>
-                        <img src={LogoX} alt="Logo" width={"30%"} />
+                        <img src={LogoX} alt="Logo" width={"80%"} />
                     </Grid>
                 </Grid>
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -102,7 +102,7 @@ export default function SignInSide(props: any) {
                         }}
 
                     >
-                        <Typography  >Sistema RH</Typography>
+                        <Typography  >Gestão Inteligente</Typography>
                         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                             <LockOutlinedIcon />
                         </Avatar>
