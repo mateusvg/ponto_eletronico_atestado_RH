@@ -35,6 +35,7 @@ const DigitalClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const timeBRL = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }).split(',')[1]
 
+
   useEffect(() => {
     const timerID = setInterval(() => tick(), 1000);
     return () => {
@@ -56,6 +57,14 @@ const DigitalClock: React.FC = () => {
       mes = (data.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.
       ano = data.getFullYear();
     return dia + "/" + mes + "/" + ano;
+  }
+
+  function dataAtualFormatadaMYSQL() {
+    var data = new Date(),
+      dia = data.getDate().toString().padStart(2, '0'),
+      mes = (data.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.
+      ano = data.getFullYear();
+    return ano + "-" + mes + "-" + dia  
   }
 
   const [isOpen, setIsOpen] = useState(false);
@@ -83,7 +92,8 @@ const DigitalClock: React.FC = () => {
     let idEletronicPointMap = registerUserToday?.map((key) => (key.ideletronicPoint))
 
     if (Number(newRegister) === 0) {
-      await insertTimePointUser({ userId: userId, time: timeBRL, date: time, counter: new Date().getTime() })
+      let horario = dataAtualFormatadaMYSQL()
+      await insertTimePointUser({ userId: userId, time: timeBRL, date: horario, counter: new Date().getTime() })
         .catch((error) => {
           // Handle the error
           console.error(error);
