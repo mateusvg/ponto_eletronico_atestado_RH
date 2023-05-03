@@ -8,6 +8,7 @@ import { Box, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getAllRegistersUsersStatus } from '../../services/Admin/getAllRegistersUsersStatus'
 import { getAllColaboradoresService } from '../../services/Admin/getAllColaboradores'
+import { getAllExtratoService } from '../../services/Admin/getAllExtrato'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 
@@ -30,6 +31,9 @@ export default function ControlledAccordions() {
     status: string
     userName: string
     cpf: string
+    initialTime: string
+    date: string
+    finalTime: string
   }
   const [persons, setPerson] = useState<personsType[] | []>([]);
   useEffect(() => {
@@ -48,6 +52,15 @@ export default function ControlledAccordions() {
   const getAllColaboradores = async () => {
     const data1 = await getAllColaboradoresService()
     setColaboradores(data1)
+  };
+
+  const [extrato, setExtrato] = useState<personsType[] | []>([]);
+  useEffect(() => {
+    getAllExtrato()
+  }, [])
+  const getAllExtrato = async () => {
+    const data1 = await getAllExtratoService()
+    setExtrato(data1)
   };
 
 
@@ -90,6 +103,23 @@ export default function ControlledAccordions() {
     doc.save("Total Colaboradores.pdf");
   }
 
+  function downloadFileExtrato(e: any) {
+    let arraySemAnexo: any = []
+    extrato?.map(function (item, indice) {
+      arraySemAnexo.push([`${extrato[indice]['userName']} `, `${extrato[indice]['date']}`,  `${extrato[indice]['initialTime']}` , `${extrato[indice]['finalTime']}`])
+
+    });
+    console.log(arraySemAnexo);
+    doc.text("Total extrato", 70, 10);
+    autoTable(doc, {
+      head: [['Nome de usuário', 'Data', 'Horario Inicial', 'Horario Final']],
+      body: extrato?.map(object => {
+        return [object.userName, object.date, object.initialTime, object.finalTime];
+      }),
+    })
+    doc.save("Extrato Ponto.pdf");
+  }
+
 
   return (
     <div>
@@ -126,7 +156,7 @@ export default function ControlledAccordions() {
           <Typography sx={{ color: 'text.secondary' }}>Relatório de extrato de ponto</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Button >
+          <Button onClick={downloadFileExtrato}>
             Executar
           </Button>
         </AccordionDetails>

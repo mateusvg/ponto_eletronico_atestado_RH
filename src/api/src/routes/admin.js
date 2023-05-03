@@ -8,6 +8,8 @@ router.get('/user/status/certificate', controller.getAllRegistersUsersStatus)
 
 router.get('/user/all', controller.getAllColaboradores)
 
+router.get('/user/extrato', controller.getAllExtrato)
+
 router.delete('/user/status/certificate/delete/:id', controller.deletePersonStatusCertificateId)
 
 router.post('/user/history/month', controller.getAllRegisterByMonthService)
