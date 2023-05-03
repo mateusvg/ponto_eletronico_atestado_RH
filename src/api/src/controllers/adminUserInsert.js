@@ -15,6 +15,12 @@ exports.getAllRegistersUsersStatus = async (req, res, next) => {
     res.status(200).send(data);
 };
 
+exports.getAllColaboradores = async (req, res, next) => {
+    console.log("get all colaboradores")
+    const data = await users.getAllColaboradores()
+    res.status(200).send(data);
+};
+
 
 exports.deletePersonStatusCertificateId = async (req, res, next) => {
     console.log("DELETE CERTIFICATE BY ID")

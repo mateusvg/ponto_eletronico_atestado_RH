@@ -7,6 +7,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Box, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getAllRegistersUsersStatus } from '../../services/Admin/getAllRegistersUsersStatus'
+import { getAllColaboradoresService } from '../../services/Admin/getAllColaboradores'
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 
 export default function ControlledAccordions() {
   const [expanded, setExpanded] = React.useState<string | false>(false);
@@ -25,35 +28,69 @@ export default function ControlledAccordions() {
     patientCpf: string
     fitness: string
     status: string
+    userName: string
+    cpf: string
   }
   const [persons, setPerson] = useState<personsType[] | []>([]);
   useEffect(() => {
     getAllHistoryRegisters()
   }, [])
-
   const getAllHistoryRegisters = async () => {
     const data1 = await getAllRegistersUsersStatus()
     setPerson(data1)
   };
 
 
+  const [colaboradores, setColaboradores] = useState<personsType[] | []>([]);
+  useEffect(() => {
+    getAllColaboradores()
+  }, [])
+  const getAllColaboradores = async () => {
+    const data1 = await getAllColaboradoresService()
+    setColaboradores(data1)
+  };
 
-  // Download file report XLS OR TXT
+
+
+  const doc = new jsPDF();
+  // Download file PDF
   function downloadFile(e: any) {
     const element = document.createElement("a")
-    let novoArray: any = ["ID", "Nome", "CPF", "Status", "Aptidão"]
     let arraySemAnexo: any = []
     persons?.map(function (item, indice) {
-      return arraySemAnexo.push(` \n ${persons[indice]['idmedicalCertificate']}, ${persons[indice]['patientName']} , ${persons[indice]['patientCpf']} , ${persons[indice]['status'] }, ${persons[indice]['fitness'] }`)
+      arraySemAnexo.push([`${persons[indice]['idmedicalCertificate']} `, `${persons[indice]['patientName']}`, `${persons[indice]['patientCpf']}`, `${persons[indice]['status']}`, `${persons[indice]['fitness']}`])
+
     });
-
-    const file = new Blob([`${novoArray} \n ${arraySemAnexo}`]);
-    e.preventDefault()
-    element.href = URL.createObjectURL(file);
-    element.download = `Relatorio.xlsx`
-    element.click();
-
+    console.log(arraySemAnexo);
+    doc.text("Relatório Status de Atestado ", 70, 10);
+    autoTable(doc, {
+      head: [['ID', 'Nome', 'CPF', 'Status', 'Aptidão']],
+      body: persons?.map(object => {
+        return [object.idmedicalCertificate, object.patientName, object.patientCpf, object.status, object.fitness];
+      }),
+    })
+    doc.save("StatusAtestado.pdf");
   }
+
+
+  function downloadFileColaboradores(e: any) {
+    let arraySemAnexo: any = []
+    colaboradores?.map(function (item, indice) {
+      arraySemAnexo.push([`${colaboradores[indice]['userName']} `, `${colaboradores[indice]['patientCpf']}`])
+
+    });
+    console.log(arraySemAnexo);
+    doc.text("Total Colaboradores", 70, 10);
+    autoTable(doc, {
+      head: [['Nome de usuário', 'CPF']],
+      body: colaboradores?.map(object => {
+        return [object.userName, object.cpf];
+      }),
+    })
+    doc.save("Total Colaboradores.pdf");
+  }
+
+
   return (
     <div>
       < Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} margin={3}>
@@ -107,7 +144,7 @@ export default function ControlledAccordions() {
           <Typography sx={{ color: 'text.secondary' }}>Relatório de número total de colaboradores</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Button>
+          <Button onClick={downloadFileColaboradores}>
             Executar
           </Button>
         </AccordionDetails>

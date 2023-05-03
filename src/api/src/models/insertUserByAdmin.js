@@ -57,6 +57,22 @@ async function getAllRegistersUsersStatus() {
     }
 }
 
+async function getAllColaboradores() {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('SELECT * FROM `user` inner join userpersonaldata on userpersonaldata.user_iduser = user.iduser where user.userPermission = "2" ', (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
 async function getAllUserSchedule() {
     try {
         const result = await new Promise((resolve, reject) => {
@@ -214,4 +230,4 @@ async function updateStatusCertificateByAdmin(status, idMedical) {
         console.log(err)
     }
 }
-module.exports = { updateStatusCertificateByAdmin, getAllRegisterByMonthServiceTotalHours, getAllRegisterByMonthService, insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }
+module.exports = {getAllColaboradores, updateStatusCertificateByAdmin, getAllRegisterByMonthServiceTotalHours, getAllRegisterByMonthService, insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }

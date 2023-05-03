@@ -6,6 +6,8 @@ router.post('/user/insert', controller.insertUser)
 
 router.get('/user/status/certificate', controller.getAllRegistersUsersStatus)
 
+router.get('/user/all', controller.getAllColaboradores)
+
 router.delete('/user/status/certificate/delete/:id', controller.deletePersonStatusCertificateId)
 
 router.post('/user/history/month', controller.getAllRegisterByMonthService)

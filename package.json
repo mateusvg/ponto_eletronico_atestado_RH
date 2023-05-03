@@ -19,6 +19,8 @@
     "@types/react-dom": "^18.0.11",
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.7",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.28",
     "react": "^18.2.0",
     "react-calendar": "^4.0.0",
     "react-dom": "^18.2.0",
