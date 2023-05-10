@@ -57,6 +57,7 @@ export default function SignInSide(props: any) {
             const userPermission = await parsedValue[0]?.userPermission
             const userId = await parsedValue[0]?.iduser
             const userName = await parsedValue[0]?.userName
+            //User permissions
             if (response === data.get('email') && senha === data.get('password')) {
                 if (userPermission == 1) {
                     setPermission(1)
@@ -64,7 +65,11 @@ export default function SignInSide(props: any) {
                 } else if (userPermission == 2) {
                     setPermission(2)
                     navigate('home/user')
+                } else if (userPermission == 3) {
+                    setPermission(3)
+                    navigate('home/seler')
                 }
+
                 setUserId(userId)
                 setUserName(userName)
                 setLogin(true)

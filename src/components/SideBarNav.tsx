@@ -392,6 +392,70 @@ export default function MiniDrawer() {
                         </ListItemButton> : <></>}
                     </ListItem>
 
+                     {/* MENU SELER */}
+                     {permission == 3 ?
+                            <ListItemButton
+                                sx={{
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
+                                }}
+                            >
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                    onClick={() => navigate('/home/seler')}
+                                >
+                                    <AccessAlarmsIcon />
+                                </ListItemIcon>
+                                <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/user')}>Ponto</ListItemText>
+                            </ListItemButton> : <></>}
+
+                     {permission == 3 ?
+                            <ListItemButton
+                                sx={{
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
+                                }}
+                            >
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                    onClick={() => navigate('/home/stock')}
+                                >
+                                    <InventoryIcon />
+                                </ListItemIcon>
+                                <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/stock')}>Estoque</ListItemText>
+                            </ListItemButton> : <></>}
+
+                            {permission == 3 ?
+                            <ListItemButton
+                                sx={{
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
+                                }}
+                            >
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                    onClick={() => navigate('/home/sale')}
+                                >
+                                    <PointOfSaleIcon />
+                                </ListItemIcon>
+                                <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/sale')}>Vendas</ListItemText>
+                            </ListItemButton> : <></>}
+
                 </List>
 
                 <Divider />

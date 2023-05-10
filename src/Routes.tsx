@@ -17,6 +17,8 @@ import UserCertificate from "./pages/User/UserCertificate";
 import UserCertificateSend from "./pages/User/UserCertificateSendForm";
 import UserSchedules from './pages/User/UserSchedules'
 
+import SelerHome from "./pages/Seler/SelerHome"
+
 export default function PagesRoutes() {
     return (
         <Routes>
@@ -38,6 +40,7 @@ export default function PagesRoutes() {
             <Route path="/home/user/certificate/send" element={<UserCertificateSend />} />
             <Route path="/home/user/schedules" element={<UserSchedules />} />
 
+            <Route path="/home/seler" element={<SelerHome />} />
 
             
         </Routes>
