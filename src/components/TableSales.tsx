@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import { TextField, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Grid } from '@mui/material';
+import { TextField, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Grid, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -38,29 +38,44 @@ export default function TemporaryDrawer() {
         price: number
         quantidade: number
     }
+    const [isOpenModaCloseSale, setIsOpenModaCloseSale] = useState(false);
+    const handleSubmitSale = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
 
+        // await deleteProduct({ idStock: idStock })
+        //   .catch((error) => {
+        //     // Handle the error
+        //     console.error(error);
+        //   });
+
+        // // Close the dialog
+        setIsOpenModaCloseSale(false);
+        getAllStock()
+            .then(data => setStock(data))
+            
+        setCart([]);
+        setTotalGeral(0)
+    }
+
+
+
+    //CART
     const [cart, setCart] = useState<ObjectInterface[]>([]);
     const [totalGeral, setTotalGeral] = useState<number>(0)
-
-
 
     function deleteObject(id: number, preco: number) {
         const filteredArray = cart.filter((obj) => obj.idStock !== id);
         setCart(filteredArray);
         setTotalGeral(totalGeral - preco)
     }
-
     function handleCloseSale() {
         //onOpenFinalSale()
     }
-
     function clearProducts() {
         setCart([]);
         setTotalGeral(0)
     }
-
-    
-
     function addOnCart(...data: any) {
         setCart([...cart, data[0]]);
         setTotalGeral(totalGeral + data[0].price)
@@ -222,13 +237,48 @@ export default function TemporaryDrawer() {
                             <Grid container justifyContent="flex-end" marginLeft={-2} marginBottom={2}>
                                 <Button
                                     variant="contained"
-                                    onClick={handleCloseSale}>
+                                    onClick={() => setIsOpenModaCloseSale(true)}>
                                     Finalizar Venda
                                 </Button>
                             </Grid>
 
                         </TableContainer>
                     }
+
+
+
+
+                    {/* BOX FINALIZAR COMPRA */}
+                    <div>
+                        <Dialog open={isOpenModaCloseSale} onClose={() => setIsOpenModaCloseSale(false)}>
+                            <form onSubmit={handleSubmitSale}>
+                                <Box display={'flex'} flexDirection={'column'} gap={'10px'} margin={3}>
+                                    <DialogTitle>Deseja finalizar venda?</DialogTitle>
+                                    <DialogContent>
+                                        Total: <br></br>
+                                        <Typography variant="h5">{totalGeral} </Typography>
+                                    </DialogContent>
+                                    <Box display={'flex'} flexDirection={'column'} gap={'10px'} margin={3}>
+                                        <DialogActions>
+                                            {/* Buttons */}
+                                            <Button variant="contained" color="error" onClick={() => setIsOpenModaCloseSale(false)}>Cancelar</Button>
+                                            <Button variant="contained" color="success" type="submit">
+                                                Finalizar
+                                            </Button>
+                                        </DialogActions>
+                                    </Box>
+                                </Box>
+                            </form>
+                        </Dialog>
+                    </div>
+
+
+
+
+
+
+
+
 
                     <Drawer
                         anchor={anchor}
