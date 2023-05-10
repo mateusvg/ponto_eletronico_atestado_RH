@@ -133,6 +133,23 @@ async function deleteStock(id) {
     }
 }
 
+async function updateStock(name, price, quantity, id) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('update `stock` SET name =?, price = ?, quantity=? where idStock  = ?', [name, price, quantity, id], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(JSON.stringify(result))
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
 
 
 
@@ -171,7 +188,7 @@ async function insertSale(values) {
                 return resolve(results);
             });
         })
-        
+
         let quantidade = -1
         const updateStockQuantity = await quantidadesStockUpdate.map(obj => [obj.idStock]);
         await new Promise((resolve, reject) => {
@@ -345,4 +362,4 @@ async function updateStatusCertificateByAdmin(status, idMedical) {
         console.log(err)
     }
 }
-module.exports = { insertSale, deleteStock, insertStock, getAllStock, getAllExtrato, getAllColaboradores, updateStatusCertificateByAdmin, getAllRegisterByMonthServiceTotalHours, getAllRegisterByMonthService, insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }
+module.exports = { updateStock, insertSale, deleteStock, insertStock, getAllStock, getAllExtrato, getAllColaboradores, updateStatusCertificateByAdmin, getAllRegisterByMonthServiceTotalHours, getAllRegisterByMonthService, insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }

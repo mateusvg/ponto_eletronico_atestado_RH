@@ -15,6 +15,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { getAllStock } from '../services/Admin/getAllStock'
 import { insertProduct } from '../services/Admin/insertProduct'
 import { deleteProduct } from '../services/Admin/deleteProduct'
+import { updateStockProduct } from '../services/Admin/updateStockProduct'
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material';
 
 
@@ -87,9 +88,52 @@ export default function BasicTable() {
   }
 
 
+  //EditModal
+  const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
+  const [idEdit, setIdEdit] = useState('')
+  const [productEdit, setProduct] = useState('')
+  const [priceEdit, setPrice] = useState('')
+  const [quantityEdit, setQuantity] = useState('')
+  function handleProductEdit(event: any) {
+    const { value } = event.target
+    setProduct(value)
+  }
+  function handlePriceEdit(event: any) {
+    const { value } = event.target
+    setPrice(value)
+  }
+  function handleQuantityEdit(event: any) {
+    const { value } = event.target
+    setQuantity(value)
+  }
+  function handleOpenModalEdit(idschedule: any, product: any, price: any, quantity: any) {
+    setIdEdit(idschedule)
+    setProduct(product)
+    setPrice(price)
+    setQuantity(quantity)
+    setIsOpenModalEdit(true)
+  }
+
+  const handleSubmitEdit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
+    await updateStockProduct({ id: idEdit, productEdit: productEdit, priceEdit: priceEdit, quantityEdit: quantityEdit})
+      .catch((error) => {
+        // Handle the error
+        console.error(error);
+      });
+
+    // // Close the dialog
+    setIsOpenModalEdit(false);
+    getAllStock()
+      .then(data => setStock(data))
+  }
 
 
-  //DeleteModal
+
+
+  //Delete Modal
   const [idStock, setIdStock] = useState('')
   const [nameProduct, setNameProduct] = useState('')
   function handleOpenModalDelete(idStock: any, name: any) {
@@ -152,7 +196,7 @@ export default function BasicTable() {
                   <TableCell align="center">{product.name}</TableCell>
                   <TableCell align="center">{product.price}</TableCell>
                   <TableCell align="center">{product.quantity}</TableCell>
-                  <TableCell align="center"><Button><ModeEditIcon /></Button></TableCell>
+                  <TableCell align="center"><Button onClick={() => handleOpenModalEdit(product.idStock, product.name, product.price, product.quantity)}><ModeEditIcon /></Button></TableCell>
                   <TableCell align="center"><Button onClick={() => handleOpenModalDelete(product.idStock, product.name)}><DeleteIcon /></Button></TableCell>
                 </TableRow>
               ))}
@@ -217,6 +261,58 @@ export default function BasicTable() {
       </Dialog>
 
 
+
+      {/* MODAL EDIT */}
+      <Dialog open={isOpenModalEdit} onClose={() => setIsOpenModalEdit(false)}>
+        <form onSubmit={handleSubmitEdit}>
+          <DialogTitle>Editar produto </DialogTitle>
+          <DialogContent>
+            <Box display={'flex'} flexDirection={'column'} gap={'10px'} margin={3}>
+
+              {/* Nome Produto Input */}
+              <TextField
+                name="nomeProduto"
+                required
+                label="Nome Produto"
+                value={productEdit}
+                onChange={handleProductEdit}
+                fullWidth
+                id="nomeProduto"
+              />
+
+              {/* quantidade Input */}
+              <TextField
+                name="quantidade"
+                required
+                label="Quant"
+                value={quantityEdit}
+                onChange={handleQuantityEdit}
+                fullWidth
+                id="quantidade"
+              />
+
+              {/* quantidade Input */}
+              <TextField
+                name="quantidade"
+                required
+                label="Preço R$"
+                value={priceEdit}
+                onChange={handlePriceEdit}
+                fullWidth
+                id="preco"
+              />
+
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            {/* Buttons */}
+            <Button variant="contained" color="error" onClick={() => setIsOpenModalEdit(false)}>Cancelar</Button>
+            <Button variant="contained" color="success" type="submit">
+              Enviar
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
 
 
 

@@ -28,6 +28,8 @@ router.post('/stock/insert', controller.insertStock)
 
 router.delete('/stock/delete/:id', controller.deleteStock)
 
+router.put('/stock/update', controller.updateStock)
+
 
 //Schedules
 router.get('/user/schedule', controller.getAllUserSchedule)

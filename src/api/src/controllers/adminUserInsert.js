@@ -51,6 +51,16 @@ exports.deleteStock = async (req, res, next) => {
     res.status(200).send(data);
 }
 
+exports.updateStock = async (req, res, next) => {
+    console.log("UPDATE STOCK")
+    let name = req.body.productEdit
+    let id = req.body.id
+    let price = req.body.priceEdit
+    let quantity = req.body.quantityEdit
+    const data = await users.updateStock(name, price, quantity, id)
+    res.status(200).send(data);
+};
+
 exports.insertSale = async (req, res, next) => {
     console.log("insert sales by admin")
     let cart = req.body
