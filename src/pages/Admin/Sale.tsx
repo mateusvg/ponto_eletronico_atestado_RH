@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import TableStatus from '../../components/TablePerson'
+import TableStatus from '../../components/TableSales'
 export default function () {
     return (
         <Box>
