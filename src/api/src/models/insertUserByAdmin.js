@@ -87,6 +87,53 @@ async function getAllExtrato() {
     }
 }
 
+async function getAllStock() {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('SELECT * FROM `stock`', (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
+async function insertStock(nomeProduto, quantidade, preco) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('INSERT INTO stock (name, price, quantity) VALUES (?,?,?)', [nomeProduto, preco, quantidade], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+async function deleteStock(id) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('DELETE from stock where idStock = ?', [id], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
 async function getAllUserSchedule() {
     try {
         const result = await new Promise((resolve, reject) => {
@@ -244,4 +291,4 @@ async function updateStatusCertificateByAdmin(status, idMedical) {
         console.log(err)
     }
 }
-module.exports = {getAllExtrato, getAllColaboradores, updateStatusCertificateByAdmin, getAllRegisterByMonthServiceTotalHours, getAllRegisterByMonthService, insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }
+module.exports = { deleteStock, insertStock, getAllStock, getAllExtrato, getAllColaboradores, updateStatusCertificateByAdmin, getAllRegisterByMonthServiceTotalHours, getAllRegisterByMonthService, insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }

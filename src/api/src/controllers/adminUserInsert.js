@@ -28,6 +28,29 @@ exports.getAllExtrato = async (req, res, next) => {
     res.status(200).send(data);
 };
 
+exports.getAllStock = async (req, res, next) => {
+    console.log("get all stock")
+    const data = await users.getAllStock()
+    console.log(data)
+    res.status(200).send(data);
+};
+
+exports.insertStock = async (req, res, next) => {
+    console.log("insert stock by admin")
+    let nomeProduto = req.body.nomeProduto
+    let quantidade = req.body.quantidade
+    let preco = req.body.preco
+    const data = await users.insertStock(nomeProduto, quantidade, preco)
+    res.status(200).send();
+};
+
+exports.deleteStock = async (req, res, next) => {
+    console.log("DELETE STOCK BY ID")
+    let id = req.params.id
+    const data = await users.deleteStock(id)
+    res.status(200).send(data);
+}
+
 
 exports.deletePersonStatusCertificateId = async (req, res, next) => {
     console.log("DELETE CERTIFICATE BY ID")

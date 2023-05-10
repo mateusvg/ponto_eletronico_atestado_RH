@@ -19,6 +19,13 @@ router.post('/user/history/month/total', controller.getAllRegisterByMonthService
 router.put('/user/status/certificates/update', controller.updateStatusCertificateByAdmin)
 
 
+//STOCK
+router.get('/stock/all', controller.getAllStock)
+
+router.post('/stock/insert', controller.insertStock)
+
+router.delete('/stock/delete/:id', controller.deleteStock)
+
 
 //Schedules
 router.get('/user/schedule', controller.getAllUserSchedule)

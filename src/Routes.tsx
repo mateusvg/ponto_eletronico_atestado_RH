@@ -7,6 +7,8 @@ import Reports from './pages/Admin/Reports'
 import Point from './pages/Admin/Schedule'
 import UserAdminHistory from "./pages/Admin/UserHistory";
 import Settings from "./pages/Admin/Settings";
+import Stock from "./pages/Admin/Stock"
+import Sale from "./pages/Admin/Sale"
 
 import UserHome from "./pages/User/UserHome";
 import UserHistory from "./pages/User/UserHistory";
@@ -21,6 +23,8 @@ export default function PagesRoutes() {
             <Route path="/" element={<Index />} />
             <Route path="/home" element={<Home />} />
             <Route path="/home/person" element={<Person />} />
+            <Route path="/home/stock" element={<Stock />} />
+            <Route path="/home/sale" element={<Sale />} />
             <Route path="/home/certificate" element={<Certificate />} />
             <Route path="/home/reports" element={<Reports />} />
             <Route path="/home/point" element={<Point />} />

@@ -32,6 +32,8 @@ import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import HistoryIcon from '@mui/icons-material/History';
 import AddAlertIcon from '@mui/icons-material/AddAlert';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { Grid } from '@mui/material';
 
 
@@ -261,6 +263,48 @@ export default function MiniDrawer() {
                                     <Assessment />
                                 </ListItemIcon>
                                 <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/reports')}>Relatórios</ListItemText>
+                            </ListItemButton> : <></>}
+
+                            {permission == 1 ?
+                            <ListItemButton
+                                sx={{
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
+                                }}
+                            >
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                    onClick={() => navigate('/home/stock')}
+                                >
+                                    <InventoryIcon />
+                                </ListItemIcon>
+                                <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/stock')}>Estoque</ListItemText>
+                            </ListItemButton> : <></>}
+
+                            {permission == 1 ?
+                            <ListItemButton
+                                sx={{
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
+                                }}
+                            >
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                    onClick={() => navigate('/home/sale')}
+                                >
+                                    <PointOfSaleIcon />
+                                </ListItemIcon>
+                                <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/sale')}>Vendas</ListItemText>
                             </ListItemButton> : <></>}
 
                         {/* MENU USUARIO */}
