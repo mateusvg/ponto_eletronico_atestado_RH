@@ -134,6 +134,60 @@ async function deleteStock(id) {
 }
 
 
+
+
+const strGeneretor = (length) => {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        counter += 1;
+    }
+    return result;
+}
+
+
+let date = new Date()
+date = date.toISOString().split('T')[0]
+
+
+
+async function insertSale(values) {
+
+    let quantidadesStockUpdate = values
+    let idSale = strGeneretor(10)
+
+    try {
+        let idSales = 0
+        const insertValues = await values.map(obj => [idSales, 1, obj.idStock, idSale, date]);
+        console.log(JSON.stringify(insertValues))
+
+        const query = 'INSERT into sales (idSales, quantity, idStockProduct, idSale, date) VALUES ?'
+        await new Promise((resolve, reject) => {
+            conn.query(query, [insertValues], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        })
+        
+        let quantidade = -1
+        const updateStockQuantity = await quantidadesStockUpdate.map(obj => [obj.idStock]);
+        await new Promise((resolve, reject) => {
+            updateStockQuantity.forEach(function (item) {
+                conn.query('update stock set  quantity = quantity ?  where idStock = ?', [quantidade, item], (error, results, fields) => {
+                    if (error) return reject(error);
+                    return resolve(results);
+                })
+            })
+        })
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 async function getAllUserSchedule() {
     try {
         const result = await new Promise((resolve, reject) => {
@@ -291,4 +345,4 @@ async function updateStatusCertificateByAdmin(status, idMedical) {
         console.log(err)
     }
 }
-module.exports = { deleteStock, insertStock, getAllStock, getAllExtrato, getAllColaboradores, updateStatusCertificateByAdmin, getAllRegisterByMonthServiceTotalHours, getAllRegisterByMonthService, insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }
+module.exports = { insertSale, deleteStock, insertStock, getAllStock, getAllExtrato, getAllColaboradores, updateStatusCertificateByAdmin, getAllRegisterByMonthServiceTotalHours, getAllRegisterByMonthService, insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }

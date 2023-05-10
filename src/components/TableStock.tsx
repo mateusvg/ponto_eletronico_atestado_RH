@@ -16,7 +16,6 @@ import { getAllStock } from '../services/Admin/getAllStock'
 import { insertProduct } from '../services/Admin/insertProduct'
 import { deleteProduct } from '../services/Admin/deleteProduct'
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 
 
 type stockType = {

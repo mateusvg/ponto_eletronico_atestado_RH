@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import { TextField, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Grid, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { TextField, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Grid, Dialog, DialogActions, DialogContent, DialogTitle, Alert, Snackbar, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -12,6 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 //services
 import { getAllStock } from '../services/Admin/getAllStock'
+import { saleProduct } from '../services/Admin/saleProduct'
 
 type Anchor = 'bottom'
 
@@ -39,21 +40,25 @@ export default function TemporaryDrawer() {
         quantidade: number
     }
     const [isOpenModaCloseSale, setIsOpenModaCloseSale] = useState(false);
+
+
     const handleSubmitSale = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        console.log(cart)
 
-        // await deleteProduct({ idStock: idStock })
-        //   .catch((error) => {
-        //     // Handle the error
-        //     console.error(error);
-        //   });
+        await saleProduct(cart)
+            .catch((error) => {
+                // Handle the error
+                console.error(error);
+            });
 
         // // Close the dialog
         setIsOpenModaCloseSale(false);
+        handleClick()
         getAllStock()
             .then(data => setStock(data))
-            
+
         setCart([]);
         setTotalGeral(0)
     }
@@ -68,9 +73,6 @@ export default function TemporaryDrawer() {
         const filteredArray = cart.filter((obj) => obj.idStock !== id);
         setCart(filteredArray);
         setTotalGeral(totalGeral - preco)
-    }
-    function handleCloseSale() {
-        //onOpenFinalSale()
     }
     function clearProducts() {
         setCart([]);
@@ -104,6 +106,21 @@ export default function TemporaryDrawer() {
         })
     }
 
+
+    const [open, setOpen] = React.useState(false);
+    const handleClick = () => {
+      setOpen(true);
+      getAllStock()
+      .then(data => setStock(data))
+    };
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setOpen(false);
+      getAllStock()
+      .then(data => setStock(data))
+    };
 
 
 
@@ -273,10 +290,14 @@ export default function TemporaryDrawer() {
                     </div>
 
 
-
-
-
-
+                    {/* alert after register point */}
+                    <Stack spacing={2} sx={{ width: '100%' }} justifyContent={'center'}>
+                        <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+                            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                                Venda registrada com sucesso!
+                            </Alert>
+                        </Snackbar>
+                    </Stack>
 
 
 

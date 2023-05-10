@@ -18,6 +18,8 @@ router.post('/user/history/month/total', controller.getAllRegisterByMonthService
 
 router.put('/user/status/certificates/update', controller.updateStatusCertificateByAdmin)
 
+//Sale
+router.post('/sale', controller.insertSale)
 
 //STOCK
 router.get('/stock/all', controller.getAllStock)

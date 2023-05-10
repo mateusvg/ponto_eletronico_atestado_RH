@@ -51,6 +51,13 @@ exports.deleteStock = async (req, res, next) => {
     res.status(200).send(data);
 }
 
+exports.insertSale = async (req, res, next) => {
+    console.log("insert sales by admin")
+    let cart = req.body
+    console.log(cart)
+    const data = await users.insertSale(cart)
+    res.status(200).send();
+};
 
 exports.deletePersonStatusCertificateId = async (req, res, next) => {
     console.log("DELETE CERTIFICATE BY ID")
