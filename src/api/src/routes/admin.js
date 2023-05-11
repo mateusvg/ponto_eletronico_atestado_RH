@@ -20,6 +20,7 @@ router.put('/user/status/certificates/update', controller.updateStatusCertificat
 
 //Sale
 router.post('/sale', controller.insertSale)
+router.get('/sales/all', controller.getAllSales)
 
 //STOCK
 router.get('/stock/all', controller.getAllStock)

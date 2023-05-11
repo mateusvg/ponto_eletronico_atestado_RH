@@ -25,6 +25,7 @@ import PagesRoute from '../Routes';
 
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 
 import PersonIcon from '@mui/icons-material/Person';
 import Assessment from '@mui/icons-material/Assessment';
@@ -305,6 +306,27 @@ export default function MiniDrawer() {
                                     <PointOfSaleIcon />
                                 </ListItemIcon>
                                 <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/sale')}>Vendas</ListItemText>
+                            </ListItemButton> : <></>}
+
+                            {permission == 1 ?
+                            <ListItemButton
+                                sx={{
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
+                                }}
+                            >
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                    onClick={() => navigate('/home/receipt')}
+                                >
+                                    <ReceiptIcon />
+                                </ListItemIcon>
+                                <ListItemText sx={{ opacity: open ? 1 : 0 }} onClick={() => navigate('/home/receipt')}>Recibos Vendas</ListItemText>
                             </ListItemButton> : <></>}
 
                         {/* MENU USUARIO */}

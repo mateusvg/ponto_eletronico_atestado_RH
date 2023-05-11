@@ -69,6 +69,12 @@ exports.insertSale = async (req, res, next) => {
     res.status(200).send();
 };
 
+exports.getAllSales = async (req, res, next) => {
+    console.log("get all Sales")
+    const data = await users.getAllSales()
+    res.status(200).send(data);
+};
+
 exports.deletePersonStatusCertificateId = async (req, res, next) => {
     console.log("DELETE CERTIFICATE BY ID")
     let id = req.params.id

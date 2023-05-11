@@ -205,6 +205,23 @@ async function insertSale(values) {
     }
 }
 
+
+async function getAllSales() {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('SELECT * FROM `sales` inner join stock ON sales.IdStockProduct = stock.idStock', (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
 async function getAllUserSchedule() {
     try {
         const result = await new Promise((resolve, reject) => {
@@ -362,4 +379,4 @@ async function updateStatusCertificateByAdmin(status, idMedical) {
         console.log(err)
     }
 }
-module.exports = { updateStock, insertSale, deleteStock, insertStock, getAllStock, getAllExtrato, getAllColaboradores, updateStatusCertificateByAdmin, getAllRegisterByMonthServiceTotalHours, getAllRegisterByMonthService, insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }
+module.exports = { getAllSales, updateStock, insertSale, deleteStock, insertStock, getAllStock, getAllExtrato, getAllColaboradores, updateStatusCertificateByAdmin, getAllRegisterByMonthServiceTotalHours, getAllRegisterByMonthService, insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }
