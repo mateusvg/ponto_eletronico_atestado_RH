@@ -7,18 +7,22 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal, useEffect, useState } from 'react';
 
-
-import * as React from 'react';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import localept from 'date-fns/locale/pt-BR'
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DateFnsUtils from "@date-io/date-fns";
 
 //services
 import { getAllSales } from '../services/Admin/getAllSales'
+import { getAllSalesByDateService } from '../services/Admin/getAllSalesByDate'
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material';
-import { access } from 'fs';
+
+
 
 
 type saleReceiptType = {
@@ -54,7 +58,7 @@ export default function BasicTable() {
         price: number;
     };
 
-    let teste5 = (stock as any[]).reduce((acc: { [x: string]: any[]; }, sale: { IdSale: string | number; }) => {
+    let teste5 = (stock as any[])?.reduce((acc: { [x: string]: any[]; }, sale: { IdSale: string | number; }) => {
         if (!acc[sale.IdSale]) {
             acc[sale.IdSale] = [sale];
         } else {
@@ -72,13 +76,13 @@ export default function BasicTable() {
         //console.log(` ${JSON.stringify(teste5[key])}`);
         myArray.push(teste5[key])
     }
-    console.log(myArray)
+    //console.log(myArray)
 
 
     const teste = (
 
         myArray?.map((product, index) => {
-            console.log(JSON.stringify(product) + "o produto");
+            //console.log(JSON.stringify(product) + "o produto");
             return (
                 <Box margin={5}>
                     <Accordion>
@@ -122,10 +126,40 @@ export default function BasicTable() {
     )
 
 
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const handleDateChange = (date: Date | null) => {
+        setSelectedDate(date);
+    };
+
+    function convert(str: any) {
+        var date = new Date(str),
+            mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+            day = ("0" + date.getDate()).slice(-2);
+        return [date.getFullYear(), mnth, day].join("-");
+    }
+    let dateToday = convert(selectedDate)
+
+    const getAllSalesByDate = async () => {
+        const data1 = await getAllSalesByDateService({ date: dateToday })
+        setStock(data1)
+    }
+
+
+
+
     return (
         <Box>
-            <Box display={'flex'} flexDirection={'row'} justifyContent={'center'} alignItems={'center'} margin={3}>
-                Data
+            <Box display={'flex'} gap={2} flexDirection={'row'} justifyContent={'center'} alignItems={'center'} margin={2}>
+                <LocalizationProvider dateAdapter={AdapterDayjs} locale={localept} utils={DateFnsUtils}>
+                    <DemoContainer components={['DatePicker', 'DatePicker', 'DatePicker']}>
+                        <DatePicker label={'Mês/Ano'} views={['day', 'month', 'year']} value={selectedDate}
+                            onChange={handleDateChange} />
+                    </DemoContainer>
+                    <Button variant='contained' onClick={getAllSalesByDate} >Buscar</Button>
+                </LocalizationProvider>
+            </Box>
+            <Box>
+                Vendas do Dia :
             </Box>
             {teste}
         </Box >

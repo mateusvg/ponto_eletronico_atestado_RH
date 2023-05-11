@@ -207,13 +207,39 @@ async function insertSale(values) {
 
 
 async function getAllSales() {
+
+    
+    function convert(str) {
+        var date = new Date(str),
+            mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+            day = ("0" + date.getDate()).slice(-2);
+        return [date.getFullYear(), mnth, day].join("-");
+    }
+    let dateToday = convert(new Date())
+
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('SELECT * FROM `sales` inner join stock ON sales.IdStockProduct = stock.idStock', (error, results, fields) => {
+            conn.query('SELECT * FROM `sales` inner join stock ON sales.IdStockProduct = stock.idStock where date =?',[dateToday], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
         });
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+async function getAllSalesByDate(date) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('SELECT * FROM `sales` inner join stock ON sales.IdStockProduct = stock.idStock WHERE date = ?',[date], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(JSON.stringify(result))
         let tratado = JSON.stringify(result)
         return tratado
     } catch (err) {
@@ -379,4 +405,4 @@ async function updateStatusCertificateByAdmin(status, idMedical) {
         console.log(err)
     }
 }
-module.exports = { getAllSales, updateStock, insertSale, deleteStock, insertStock, getAllStock, getAllExtrato, getAllColaboradores, updateStatusCertificateByAdmin, getAllRegisterByMonthServiceTotalHours, getAllRegisterByMonthService, insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }
+module.exports = {getAllSalesByDate, getAllSales, updateStock, insertSale, deleteStock, insertStock, getAllStock, getAllExtrato, getAllColaboradores, updateStatusCertificateByAdmin, getAllRegisterByMonthServiceTotalHours, getAllRegisterByMonthService, insertUser, getAllRegistersUsersStatus, deletePersonStatusCertificateId, getAllUserSchedule, insertNewSchedule, getAllSchedules, deleteScheduleApointmentByAdmin, updateStatusScheduleByAdmin }

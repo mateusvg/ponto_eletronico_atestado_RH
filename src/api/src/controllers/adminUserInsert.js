@@ -75,6 +75,13 @@ exports.getAllSales = async (req, res, next) => {
     res.status(200).send(data);
 };
 
+exports.getAllSalesByDate = async (req, res, next) => {
+    console.log("get all sales by date")
+    let date = req.body.date
+    const data = await users.getAllSalesByDate(date)
+    res.status(200).send(data);
+};
+
 exports.deletePersonStatusCertificateId = async (req, res, next) => {
     console.log("DELETE CERTIFICATE BY ID")
     let id = req.params.id
