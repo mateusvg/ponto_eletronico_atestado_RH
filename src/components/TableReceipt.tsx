@@ -8,6 +8,12 @@ import Paper from '@mui/material/Paper';
 import { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal, useEffect, useState } from 'react';
 
 
+import * as React from 'react';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 //services
 import { getAllSales } from '../services/Admin/getAllSales'
@@ -66,54 +72,62 @@ export default function BasicTable() {
         //console.log(` ${JSON.stringify(teste5[key])}`);
         myArray.push(teste5[key])
     }
-
+    console.log(myArray)
 
 
     const teste = (
 
-        myArray?.map((product) => {
-            return product?.map((innerEl: { idSale: Key | null | undefined; name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; price: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; quantity: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; IdSale: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }) => (
+        myArray?.map((product, index) => {
+            console.log(JSON.stringify(product) + "o produto");
+            return (
+                <Box margin={5}>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Typography>Venda - {index} </Typography>
+                        </AccordionSummary>
+                        <Typography marginLeft={3}>Sumário da venda: </Typography>
+                        <TableContainer component={Paper}>
+                            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell align="center">Nome Produto</TableCell>
+                                        <TableCell align="center">Preço</TableCell>
+                                        <TableCell align="center">Quantidade</TableCell>
 
-                
-                <TableRow key={innerEl.idSale}>
-                    <TableCell align="center">{innerEl.name}</TableCell>
-                    <TableCell align="center">{innerEl.price}</TableCell>
-                    <TableCell align="center">{innerEl.quantity}</TableCell>
-                    <TableCell align="center">{innerEl.IdSale}</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                {product.map((innerEl: { idSale: Key | null | undefined; name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; price: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; quantity: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; IdSale: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }) => (
 
-                </TableRow>
-            ))
-        }
-        )
+                                    <TableBody>
+                                        <TableRow key={innerEl.idSale}>
+                                            <TableCell align="center">{innerEl.name}</TableCell>
+                                            <TableCell align="center">{innerEl.price}</TableCell>
+                                            <TableCell align="center">1</TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                ))}
 
+
+                            </Table>
+
+                        </TableContainer>
+                    </Accordion>
+                </Box>
+            )
+        })
     )
 
 
     return (
         <Box>
             <Box display={'flex'} flexDirection={'row'} justifyContent={'center'} alignItems={'center'} margin={3}>
-                DATE
-
+                Data
             </Box>
-
-
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="center">Nome Produto</TableCell>
-                            <TableCell align="center">Preço</TableCell>
-                            <TableCell align="center">Quantidade</TableCell>
-
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {teste}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-
-
+            {teste}
         </Box >
     );
 }
