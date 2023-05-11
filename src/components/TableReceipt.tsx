@@ -80,49 +80,54 @@ export default function BasicTable() {
 
 
     const teste = (
+        myArray.length == 0 ? 
+        <Box display={'flex'} flexDirection={'row'} justifyContent={'center'} alignItems={'center'} margin={5}>
+            <Typography variant="h5">Sem vendas realizadas no dia</Typography>
+        </Box>
+            :
+            myArray?.map((product, index) => {
+                //console.log(JSON.stringify(product) + "o produto");
+                return (
+                    <Box margin={5}>
+                        <Accordion>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
+                            >
+                                <Typography>Venda - {index} </Typography>
+                            </AccordionSummary>
+                            <Typography marginLeft={3}>Sumário da venda: </Typography>
+                            <TableContainer component={Paper}>
+                                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell align="center">Nome Produto</TableCell>
+                                            <TableCell align="center">Preço</TableCell>
+                                            <TableCell align="center">Quantidade</TableCell>
 
-        myArray?.map((product, index) => {
-            //console.log(JSON.stringify(product) + "o produto");
-            return (
-                <Box margin={5}>
-                    <Accordion>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                        >
-                            <Typography>Venda - {index} </Typography>
-                        </AccordionSummary>
-                        <Typography marginLeft={3}>Sumário da venda: </Typography>
-                        <TableContainer component={Paper}>
-                            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell align="center">Nome Produto</TableCell>
-                                        <TableCell align="center">Preço</TableCell>
-                                        <TableCell align="center">Quantidade</TableCell>
-
-                                    </TableRow>
-                                </TableHead>
-                                {product.map((innerEl: { idSale: Key | null | undefined; name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; price: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; quantity: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; IdSale: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }) => (
-
-                                    <TableBody>
-                                        <TableRow key={innerEl.idSale}>
-                                            <TableCell align="center">{innerEl.name}</TableCell>
-                                            <TableCell align="center">{innerEl.price}</TableCell>
-                                            <TableCell align="center">1</TableCell>
                                         </TableRow>
-                                    </TableBody>
-                                ))}
+                                    </TableHead>
+                                    {product.map((innerEl: { idSale: Key | null | undefined; name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; price: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; quantity: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; IdSale: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }) => (
+
+                                        <TableBody>
+                                            <TableRow key={innerEl.idSale}>
+                                                <TableCell align="center">{innerEl.name}</TableCell>
+                                                <TableCell align="center">{innerEl.price}</TableCell>
+                                                <TableCell align="center">1</TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    ))}
+
+                                </Table>
+
+                            </TableContainer>
+                        </Accordion>
+                    </Box>
+                )
+            })
 
 
-                            </Table>
-
-                        </TableContainer>
-                    </Accordion>
-                </Box>
-            )
-        })
     )
 
 
