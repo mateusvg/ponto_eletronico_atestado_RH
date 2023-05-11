@@ -11,6 +11,7 @@ import { getAllColaboradoresService } from '../../services/Admin/getAllColaborad
 import { getAllExtratoService } from '../../services/Admin/getAllExtrato'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
+import { getAllSales } from '../../services/Admin/getAllSales';
 
 export default function ControlledAccordions() {
   const [expanded, setExpanded] = React.useState<string | false>(false);
@@ -21,6 +22,7 @@ export default function ControlledAccordions() {
     };
 
 
+    
 
   type personsType = {
     idmedicalCertificate: string
@@ -34,6 +36,14 @@ export default function ControlledAccordions() {
     initialTime: string
     date: string
     finalTime: string
+
+    idStock: string
+    name: string
+    price: number
+    quantity: number
+    IdSale: string
+    idSale: string
+    IdStockProduct: number,
   }
   const [persons, setPerson] = useState<personsType[] | []>([]);
   useEffect(() => {
@@ -52,6 +62,15 @@ export default function ControlledAccordions() {
   const getAllColaboradores = async () => {
     const data1 = await getAllColaboradoresService()
     setColaboradores(data1)
+  };
+
+  const [vendas, setVendas] = useState<personsType[] | []>([]);
+  useEffect(() => {
+    getAllSale()
+  }, [])
+  const getAllSale = async () => {
+    const data1 = await getAllSales()
+    setVendas(data1)
   };
 
   const [extrato, setExtrato] = useState<personsType[] | []>([]);
@@ -74,7 +93,7 @@ export default function ControlledAccordions() {
       arraySemAnexo.push([`${persons[indice]['idmedicalCertificate']} `, `${persons[indice]['patientName']}`, `${persons[indice]['patientCpf']}`, `${persons[indice]['status']}`, `${persons[indice]['fitness']}`])
 
     });
-    console.log(arraySemAnexo);
+    //console.log(arraySemAnexo);
     doc.text("Relatório Status de Atestado ", 70, 10);
     autoTable(doc, {
       head: [['ID', 'Nome', 'CPF', 'Status', 'Aptidão']],
@@ -92,8 +111,8 @@ export default function ControlledAccordions() {
       arraySemAnexo.push([`${colaboradores[indice]['userName']} `, `${colaboradores[indice]['patientCpf']}`])
 
     });
-    console.log(arraySemAnexo);
-    doc.text("Total Colaboradores", 70, 10);
+    //console.log(arraySemAnexo);
+    doc.text("Total Colaboradores", 85, 10);
     autoTable(doc, {
       head: [['Nome de usuário', 'CPF']],
       body: colaboradores?.map(object => {
@@ -103,14 +122,32 @@ export default function ControlledAccordions() {
     doc.save("Total Colaboradores.pdf");
   }
 
+
+  function downloadFileVendas(e: any) {
+    let arraySemAnexo: any = []
+    vendas?.map(function (item, indice) {
+      arraySemAnexo.push([`${vendas[indice]['IdSale']} `, `${vendas[indice]['name']}` , `${vendas[indice]['price']}`, , `${vendas[indice]['quantity']}`])
+
+    });
+    console.log(arraySemAnexo);
+    doc.text("Total Vendas", 85, 10);
+    autoTable(doc, {
+      head: [['Id da Venda', 'Produto', 'Quantidade', 'Preço']],
+      body: vendas?.map(object => {
+        return [object.IdSale, object.name, '1' ,object.price];
+      }),
+    })
+    doc.save("Total Vendas.pdf");
+  }
+
   function downloadFileExtrato(e: any) {
     let arraySemAnexo: any = []
     extrato?.map(function (item, indice) {
       arraySemAnexo.push([`${extrato[indice]['userName']} `, `${extrato[indice]['date']}`,  `${extrato[indice]['initialTime']}` , `${extrato[indice]['finalTime']}`])
 
     });
-    console.log(arraySemAnexo);
-    doc.text("Total extrato", 70, 10);
+    //console.log(arraySemAnexo);
+    doc.text("Total extrato", 85, 10);
     autoTable(doc, {
       head: [['Nome de usuário', 'Data', 'Horario Inicial', 'Horario Final']],
       body: extrato?.map(object => {
@@ -175,6 +212,24 @@ export default function ControlledAccordions() {
         </AccordionSummary>
         <AccordionDetails>
           <Button onClick={downloadFileColaboradores}>
+            Executar
+          </Button>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
+        >
+          <Typography sx={{ width: '33%', flexShrink: 0 }}>
+            Total vendas do dia
+          </Typography>
+          <Typography sx={{ color: 'text.secondary' }}>Relatório de número total de vendas realizadas no dia</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Button onClick={downloadFileVendas}>
             Executar
           </Button>
         </AccordionDetails>
