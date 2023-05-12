@@ -3,7 +3,7 @@ import {
 } from 'react-router-dom';
 
 import SideNavBar from './components/SideBarNav'
-import LoginPage from '../src/pages/Login'
+import Index from '../src/pages/Index'
 
 import { useState } from 'react';
 import { Login } from "./contexts/Login";
@@ -22,7 +22,7 @@ function App() {
       <userIdConst.Provider value={{ userId, setUserId, userName, setUserName }}>
         <PermissionConst.Provider value={{ permission, setPermission }}>
           <Login.Provider value={{ login, setLogin }}>
-            {login ? <SideNavBar /> : <LoginPage />}
+            {login ? <SideNavBar /> : <Index />}
           </Login.Provider>
         </PermissionConst.Provider>
       </userIdConst.Provider>

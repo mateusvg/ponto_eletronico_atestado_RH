@@ -4,25 +4,21 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import LogoX from '../assets/img/people.jpeg'
 
 import { useNavigate } from 'react-router-dom';
-//Context
-import { useContext, useState } from "react";
-import { Login } from "../contexts/Login";
-import { PermissionConst } from "../contexts/PermissionVisibility";
-import { userIdConst } from '../contexts/UsersId'
 
 //Service
-import { getLoginUserUser } from '../services/Login/getLoginUser'
+import { insertNewUser } from '../services/Login/insertNewUser'
+import { FormControl, FormLabel, RadioGroup, Radio, Alert, Snackbar, Stack } from '@mui/material';
+import { useState } from 'react';
 
 function Copyright(props: any) {
     return (
@@ -42,44 +38,37 @@ const theme = createTheme();
 export default function SignInSide(props: any) {
 
     const navigate = useNavigate();
-    const { login, setLogin } = useContext(Login);
-    const { permission, setPermission } = useContext(PermissionConst);
-    const { setUserId, setUserName } = useContext(userIdConst)
-    const [notUser, setNotUser] = useState('')
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const [open, setOpen] = React.useState(false);
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
+
+
+    const [radio, setRadio] = useState('');
+    function handleChangeRadio(event: any) {
+        const { value } = event.target
+        console.log(value)
+        setRadio(value)
+    }
+
+    const handleSubmitNewUser = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        try {
-            const parsedValue = await getLoginUserUser({ user: data.get('email'), password: data.get('password') })
-            const response = await parsedValue[0]?.userName
-            const senha = await parsedValue[0]?.userPassword
-            const userPermission = await parsedValue[0]?.userPermission
-            const userId = await parsedValue[0]?.iduser
-            const userName = await parsedValue[0]?.userName
-            //User permissions
-            if (response === data.get('email') && senha === data.get('password')) {
-                if (userPermission == 1) {
-                    setPermission(1)
-                    navigate('home')
-                } else if (userPermission == 2) {
-                    setPermission(2)
-                    navigate('home/user')
-                } else if (userPermission == 3) {
-                    setPermission(3)
-                    navigate('home/seler')
-                }
 
-                setUserId(userId)
-                setUserName(userName)
-                setLogin(true)
-            } else {
-                setNotUser("Usuário não cadastrado ou senha inválida")
-            }
+        await insertNewUser({ user: data.get('email'), password: data.get('password'), radio: radio })
+            .catch((error) => {
+                console.error(error);
+            });
 
-        } catch (err) {
-            console.log(err);
-        }
+        setOpen(true);
+        setTimeout(function(){
+            //do what you need here
+            navigate('/')
+        }, 4000);
     };
     return (
         <ThemeProvider theme={theme}>
@@ -109,12 +98,12 @@ export default function SignInSide(props: any) {
                     >
                         <Typography  >Gestão Inteligente</Typography>
                         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
+                            <VpnKeyIcon />
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Login
+                            CADASTRAR
                         </Typography>
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                        <Box component="form" noValidate onSubmit={handleSubmitNewUser} sx={{ mt: 1 }}>
                             <TextField
                                 margin="normal"
                                 required
@@ -135,39 +124,61 @@ export default function SignInSide(props: any) {
                                 id="password"
                                 autoComplete="current-password"
                             />
-                            <FormControlLabel
-                                control={<Checkbox value="remember" color="primary" />}
-                                label="Lembrar-me"
-                            />
-                            <Box display={'flex'} flexDirection={'column'} justifyContent={'center'}>
-                                <Typography color={'red'}>{notUser}</Typography>
+
+                            <Box display={'flex'} margin={1} flexDirection={'row'} justifyContent={'center'} >
+                                <Typography variant='h5'>Escolha o tipo de conta:</Typography>
                             </Box>
+
+                            <FormControl >
+                                <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
+                                <RadioGroup
+                                    aria-labelledby="demo-radio-buttons-group-label"
+                                    defaultValue="1"
+                                    name="radio-buttons-group"
+                                    value={radio}
+                                    onChange={handleChangeRadio}
+                                >
+                                    <Box display={'flex'} flexDirection={'row'} justifyContent={'center'} alignItems={'center'}>
+                                        <FormControlLabel value="1" control={<Radio />} label="Administrador" />
+                                        <FormControlLabel value="2" control={<Radio />} label="Colaborador" />
+                                        <FormControlLabel value="3" control={<Radio />} label="Vendedor" />
+                                    </Box>
+                                </RadioGroup>
+                            </FormControl>
+
                             <Button
                                 type="submit"
                                 fullWidth
+                                color="success"
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
-                            // onClick={() => {handleSubmit}}
                             >
-                                Acessar
+                                Cadastrar
                             </Button>
                             <Grid container>
-                                <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Esqueceu a senha?
-                                    </Link>
-                                </Grid>
                                 <Grid item>
-                                    <Link href="/register" variant="body2">
-                                        {"Não possui uma conta? Cadastrar"}
+                                    <Link href="/" variant="body2">
+                                        {"Voltar"}
                                     </Link>
                                 </Grid>
                             </Grid>
-                            <Copyright sx={{ mt: 5 }} />
+                            <Copyright sx={{ mt: 2 }} />
                         </Box>
                     </Box>
                 </Grid>
             </Grid>
+            {/* alert after register point */}
+            <Stack spacing={2} sx={{ width: '100%' }} justifyContent={'center'}>
+                <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                        Usuário cadastrado com sucesso <br></br>
+                        Aguarde aprovação
+                    </Alert>
+                </Snackbar>
+            </Stack>
         </ThemeProvider>
+
+
     );
 }
+

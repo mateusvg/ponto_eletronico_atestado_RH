@@ -14,7 +14,22 @@ async function selectUser(user) {
     } catch (err) {
         console.log(err)
     }
-
 }
 
-module.exports = { selectUser }
+async function insertNewUser(user, password, permission) {
+    let id = 0
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('INSERT INTO user VALUES (?, ?, ?, ?) ', [id, user, password, permission], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(result[0])
+        return result
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+module.exports = { selectUser, insertNewUser }
