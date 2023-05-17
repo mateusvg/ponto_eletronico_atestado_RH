@@ -3,7 +3,7 @@ const conn = require('../db/connection')
 async function selectUser(user) {
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('select user.userName, userpersonaldata.cpf, statususer.status, user.iduser  from user INNER join userpersonaldata on user.iduser = userpersonaldata.user_iduser INNER join statususer ON statususer.idtable1 = userpersonaldata.statusUser_idtable1 where user.userPermission = 2 ', (error, results, fields) => {
+            conn.query('select user.userName, userpersonaldata.cpf, statususer.status, user.iduser  from user INNER join userpersonaldata on user.iduser = userpersonaldata.user_iduser INNER join statususer ON statususer.idtable1 = userpersonaldata.statusUser_idtable1 where user.userPermission IN ("2","3") ', (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -78,6 +78,22 @@ async function insertUserPointExit(idEletronicPoint, finalTime) {
         console.log(err)
     }
 }
+
+
+async function updateStatusUser(idUser, status) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('update userpersonaldata set statusUser_idtable1 = ? where user_iduser = ?', [status, idUser], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 
 async function getPointDateByUser(idUser) {
     function dataAtualFormatada() {
@@ -193,4 +209,4 @@ async function getUserScheduleApointment(idUser) {
 
 //SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(eletronicpoint.totalWork))) FROM eletronicpoint INNER JOIN eletronicpoint_has_user ON eletronicpoint.ideletronicPoint = eletronicpoint_has_user.eletronicPoint_ideletronicPoint inner join user ON user.iduser = eletronicpoint_has_user.user_iduser where user.iduser = 2 and month(eletronicpoint.date) = 3
 
-module.exports = { getUserScheduleApointment, selectUser, insertUserPoint, getPointDateByUser, getPointDateByUserAllHistory, insertUserPointExit, postFormUser, getAllStatusCertificate }
+module.exports = {updateStatusUser, getUserScheduleApointment, selectUser, insertUserPoint, getPointDateByUser, getPointDateByUserAllHistory, insertUserPointExit, postFormUser, getAllStatusCertificate }

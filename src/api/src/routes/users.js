@@ -8,6 +8,8 @@ router.post('/point/insert', controller.insertUserPoint)
 
 router.post('/point/insert/exit', controller.insertUserPointExit)
 
+router.post('/status/update', controller.updateStatusUser)
+
 router.get('/point/date/:id', controller.getPointDateByUser)
 
 router.get('/point/date/all/:id', controller.getPointDateByUserAllHistory)

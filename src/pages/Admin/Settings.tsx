@@ -5,7 +5,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Box, MenuItem } from '@mui/material';
+import { Alert, Box, FormControl, FormControlLabel, FormLabel, MenuItem, Radio, RadioGroup, Snackbar, Stack } from '@mui/material';
 
 import { useState } from 'react';
 import { mask } from "../../utils/MaskFormaterCPF"
@@ -17,7 +17,7 @@ import { userIdConst } from "../../contexts/UsersId";
 
 
 export default function FormDialog() {
-    // Define state variables for the form data and dialog visibility
+
 
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenAlterPass, setIsOpenAlterPass] = useState(false)
@@ -43,20 +43,24 @@ export default function FormDialog() {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        await insertNewUserPerson({ userName: data.get('name'), cpf: data.get('cpf'), status: data.get('status') })
+        await insertNewUserPerson({ userName: data.get('name'), cpf: data.get('cpf'), status: data.get('status'), userPermission: radio })
             .catch((error) => {
                 // Handle the error
                 console.error(error);
             });
 
-        // Close the dialog
-        setIsOpen(false);
+
         setName('');
         setStatus('');
         setCPF('');
     };
 
-
+    const [radio, setRadio] = useState('');
+    function handleChangeRadio(event: any) {
+        const { value } = event.target
+        console.log(value)
+        setRadio(value)
+    }
 
     return (
         <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
@@ -82,7 +86,7 @@ export default function FormDialog() {
                                 <TextField
                                     name="name"
                                     required
-                                    label="name"
+                                    label="Nome"
                                     fullWidth
                                     id="name"
                                     value={name}
@@ -114,6 +118,22 @@ export default function FormDialog() {
                                     <MenuItem value="Ativo">Ativo</MenuItem>
                                     <MenuItem value="Inativo">Inativo</MenuItem>
                                 </TextField>
+
+                                <FormControl >
+                                <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
+                                <RadioGroup
+                                    aria-labelledby="demo-radio-buttons-group-label"
+                                    defaultValue="1"
+                                    name="radio-buttons-group"
+                                    value={radio}
+                                    onChange={handleChangeRadio}
+                                >
+                                    <Box display={'flex'} flexDirection={'row'} justifyContent={'center'} alignItems={'center'}>
+                                        <FormControlLabel value="2" control={<Radio />} label="Colaborador" />
+                                        <FormControlLabel value="3" control={<Radio />} label="Vendedor" />
+                                    </Box>
+                                </RadioGroup>
+                            </FormControl>
                             </Box>
                         </DialogContent>
                         <DialogActions>

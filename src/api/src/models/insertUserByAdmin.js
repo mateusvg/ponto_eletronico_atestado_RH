@@ -1,10 +1,10 @@
 const conn = require('../db/connection')
 
-async function insertUser(userName, cpf, statusReq) {
+async function insertUser(userName, cpf, statusReq, userPermission) {
 
     try {
         const insertUser = await new Promise((resolve, reject) => {
-            conn.query('INSERT INTO user (userName, userPassword, userPermission) VALUES (?, 123, 2)', [userName], (error, results, fields) => {
+            conn.query('INSERT INTO user (userName, userPassword, userPermission) VALUES (?, 123, ?)', [userName, userPermission], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -60,7 +60,7 @@ async function getAllRegistersUsersStatus() {
 async function getAllColaboradores() {
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('SELECT * FROM `user` inner join userpersonaldata on userpersonaldata.user_iduser = user.iduser where user.userPermission = "2" ', (error, results, fields) => {
+            conn.query('SELECT * FROM `user` inner join userpersonaldata on userpersonaldata.user_iduser = user.iduser where user.userPermission IN ("2", "3") ', (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });

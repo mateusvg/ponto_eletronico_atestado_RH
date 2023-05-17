@@ -5,7 +5,8 @@ exports.insertUser = async (req, res, next) => {
     let userName = req.body.userName
     let cpf = req.body.cpf
     let status = req.body.status
-    const data = await users.insertUser(userName, cpf, status)
+    let userPermission = req.body.userPermission
+    const data = await users.insertUser(userName, cpf, status, userPermission)
     res.status(200).send();
 };
 

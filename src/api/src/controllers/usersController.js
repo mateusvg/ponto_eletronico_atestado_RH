@@ -21,6 +21,15 @@ exports.insertUserPointExit = async (req, res, next) => {
     res.send().status(200)
 };
 
+exports.updateStatusUser = async (req, res, next) => {
+    let idUser = req.body.idUser
+    let status = req.body.status
+    console.log("update user status")
+    const data = await users.updateStatusUser(idUser, status)
+    res.send().status(200)
+};
+
+
 exports.getPointDateByUser = async (req, res, next) => {
     let  id  = req.params.id
     const data = await users.getPointDateByUser(id)

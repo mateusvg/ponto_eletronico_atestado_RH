@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from './pages/Admin/Home'
 import Index from './pages/Login'
 import Register from "./pages/Register";
+import ForgotPassword from './pages/ForgotPassword'
 import Person from './pages/Admin/Person'
 import Certificate from './pages/Admin/Certificate'
 import Reports from './pages/Admin/Reports'
@@ -26,6 +27,7 @@ export default function PagesRoutes() {
         <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgot" element={<ForgotPassword />} />
 
             <Route path="/home" element={<Home />} />
             <Route path="/home/person" element={<Person />} />
