@@ -155,7 +155,7 @@ export default function BasicTable() {
     return (
         <Box>
             <Box display={'flex'} gap={2} flexDirection={'row'} justifyContent={'center'} alignItems={'center'} margin={2}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}  utils={DateFnsUtils}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}  >
                     <DemoContainer components={['DatePicker', 'DatePicker', 'DatePicker']}>
                         <DatePicker label={'Mês/Ano'} views={['day', 'month', 'year']} value={selectedDate}
                             onChange={handleDateChange} />
