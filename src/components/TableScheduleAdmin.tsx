@@ -50,7 +50,7 @@ export default function BasicTable() {
 
 
 
-  const [valueDate, onChange] = useState(new Date())
+  const [valueDate, onChange] = useState<Date | null>(new Date())
 
   function convert(str: any) {
     var date = new Date(str),
@@ -73,7 +73,7 @@ export default function BasicTable() {
   const getAllHistoryRegisters = async () => {
     const data1 = await getAllUsers(valueDate)
     setPerson(data1)
-    const data2 = await getAllSchedules(valueDate.toISOString().slice(0, 10))
+    const data2 = await getAllSchedules(valueDate?.toISOString().slice(0, 10))
     setShedules(data2)
   };
 
