@@ -50,7 +50,10 @@ export default function BasicTable() {
 
 
 
-  const [valueDate, onChange] = useState<Date | null>(new Date())
+  const [valueDate, onChangeDate] = useState<Date | null>(new Date())
+  function handleChangedate(valueDate: any){
+    onChangeDate(valueDate)
+  }
 
   function convert(str: any) {
     var date = new Date(str),
@@ -152,9 +155,10 @@ export default function BasicTable() {
   }
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
-  };
+  const handleDateChange = (value: any) => {
+
+    setSelectedDate(value)
+    }
 
 
   //DeleteModal
@@ -193,7 +197,7 @@ export default function BasicTable() {
   return (
     <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} margin={1}>
       Agendamentos do dia {dateToday}
-      <Calendar onChange={onChange} value={valueDate} locale={'pt'} />
+      <Calendar onChange={handleChangedate} value={valueDate} locale={'pt'} />
       <Box margin={3}>
         <Button variant="contained" onClick={() => setIsOpen(true)}>Adicionar agendamento</Button>
       </Box>
