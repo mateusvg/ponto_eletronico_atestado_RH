@@ -49,7 +49,8 @@ export default function FormDialog() {
                 console.error(error);
             });
 
-
+        setIsOpen(false)
+        setOpen(true);
         setName('');
         setStatus('');
         setCPF('');
@@ -61,6 +62,15 @@ export default function FormDialog() {
         console.log(value)
         setRadio(value)
     }
+
+    //ALERT
+    const [open, setOpen] = React.useState(false);
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
 
     return (
         <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
@@ -120,20 +130,20 @@ export default function FormDialog() {
                                 </TextField>
 
                                 <FormControl >
-                                <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
-                                <RadioGroup
-                                    aria-labelledby="demo-radio-buttons-group-label"
-                                    defaultValue="1"
-                                    name="radio-buttons-group"
-                                    value={radio}
-                                    onChange={handleChangeRadio}
-                                >
-                                    <Box display={'flex'} flexDirection={'row'} justifyContent={'center'} alignItems={'center'}>
-                                        <FormControlLabel value="2" control={<Radio />} label="Colaborador" />
-                                        <FormControlLabel value="3" control={<Radio />} label="Vendedor" />
-                                    </Box>
-                                </RadioGroup>
-                            </FormControl>
+                                    <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
+                                    <RadioGroup
+                                        aria-labelledby="demo-radio-buttons-group-label"
+                                        defaultValue="1"
+                                        name="radio-buttons-group"
+                                        value={radio}
+                                        onChange={handleChangeRadio}
+                                    >
+                                        <Box display={'flex'} flexDirection={'row'} justifyContent={'center'} alignItems={'center'}>
+                                            <FormControlLabel value="2" control={<Radio />} label="Colaborador" />
+                                            <FormControlLabel value="3" control={<Radio />} label="Vendedor" />
+                                        </Box>
+                                    </RadioGroup>
+                                </FormControl>
                             </Box>
                         </DialogContent>
                         <DialogActions>
@@ -145,6 +155,61 @@ export default function FormDialog() {
                         </DialogActions>
                     </form>
                 </Dialog>
+
+
+                {/* Dialog */}
+                <Dialog open={isOpenAlterPass} onClose={() => setIsOpenAlterPass(false)}>
+                    <form >
+                        <DialogTitle>Alterar senha</DialogTitle>
+                        <DialogContent>
+
+                            <Box display={'flex'} flexDirection={'column'} gap={'10px'} margin={3}>
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="password"
+                                    label="Senha atual"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="current-password"
+                                />
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="password"
+                                    label="Nova senha"
+                                    type="password"
+                                    id="passwordNew"
+                                    autoComplete="current-password"
+                                />
+
+                            </Box>
+                        </DialogContent>
+                        <DialogActions>
+                            {/* Buttons */}
+                            <Button variant="contained" color="error" onClick={() => setIsOpenAlterPass(false)}>Cancelar</Button>
+                            <Button variant="contained" color="success" onClick={() => setIsOpenAlterPass(false)}>
+                                Alterar
+                            </Button>
+                        </DialogActions>
+                    </form>
+                </Dialog>
+
+
+
+
+                {/* alert colaborador registrado */}
+                <Stack spacing={2} sx={{ width: '100%' }} justifyContent={'center'}>
+                    <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+                        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                            Colaborador registrado com sucesso!
+                        </Alert>
+                    </Snackbar>
+                </Stack>
+
+
             </div>
         </Box >
     );
