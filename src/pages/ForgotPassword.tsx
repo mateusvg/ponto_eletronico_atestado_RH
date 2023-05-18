@@ -17,7 +17,7 @@ import { mask } from '../utils/MaskFormaterCPF'
 import { useNavigate } from 'react-router-dom';
 
 //Service
-import { insertNewUser } from '../services/Login/insertNewUser'
+import { recoverPassword } from '../services/Login/recoverPassword'
 import { FormControl, FormLabel, RadioGroup, Radio, Alert, Snackbar, Stack } from '@mui/material';
 import { useState } from 'react';
 
@@ -62,14 +62,20 @@ export default function SignInSide(props: any) {
         setCPF(mask(value))
     }
 
+    const [email, setemail] = useState('');
+    function handleChangeEmail(event: any) {
+        const { value } = event.target
+        setemail(value)
+    }
+
     const handleSubmitNewUser = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        // await insertNewUser({ user: data.get('user'), password: data.get('password') })
-        //     .catch((error) => {
-        //         console.error(error);
-        //     });
+        await recoverPassword({ user: data.get('user'), cpf: data.get('cpf'), email: email })
+            .catch((error) => {
+                console.error(error);
+            });
 
         setOpen(true);
         setTimeout(function () {
@@ -133,6 +139,18 @@ export default function SignInSide(props: any) {
                                 value={cpf}
                                 inputProps={{ maxLength: 14 }}
                                 onChange={handleChangeMask}
+                            />
+
+                            {/* CPF Input */}
+                            <TextField
+                                name="email"
+                                required
+                                label="E-mail"
+                                fullWidth
+                                id="email"
+                                value={email}
+                                onChange={handleChangeEmail}
+                                sx={{ mt: 1 }}
                             />
 
                             <Button

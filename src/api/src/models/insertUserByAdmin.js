@@ -29,7 +29,7 @@ async function insertUser(userName, cpf, statusReq, userPermission) {
 
         let teste = changeStatus(statusReq)
         const insertCpf = await new Promise((resolve, reject) => {
-            conn.query('INSERT INTO `ponto_atestado`.`userPersonalData` (`iduserPersonalData`, `cpf`, `user_iduser`, `statusUser_idtable1`) VALUES (0, ?, ?, ?);', [cpf, userLastId, teste], (error, results, fields) => {
+            conn.query('INSERT INTO `userPersonalData` (`iduserPersonalData`, `cpf`, `user_iduser`, `statusUser_idtable1`) VALUES (0, ?, ?, ?);', [cpf, userLastId, teste], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });

@@ -32,4 +32,16 @@ async function insertNewUser(user, password, permission) {
     }
 }
 
-module.exports = { selectUser, insertNewUser }
+async function recover(user, cpf, email) {
+    const result = await new Promise((resolve, reject) => {
+        conn.query('SELECT user.userPassword FROM `userpersonaldata` inner join user on user.iduser = userpersonaldata.user_iduser where cpf = ?', [cpf], (error, results, fields) => {
+            if (error) return reject(error);
+            return resolve(results);
+        });
+    });
+
+    let password = result[0].userPassword
+    return [password, email]
+}
+
+module.exports = { recover, selectUser, insertNewUser }

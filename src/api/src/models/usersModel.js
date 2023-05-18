@@ -35,7 +35,7 @@ async function insertUserPoint(idUser, time, date, counter) {
         let ideletronicPoint = select[0].ideletronicPoint
 
         const insertCpf = await new Promise((resolve, reject) => {
-            conn.query('INSERT INTO `ponto_atestado`.`eletronicpoint_has_user` (`eletronicPoint_ideletronicPoint`, user_iduser ) VALUES (?,?);', [ideletronicPoint, idUser], (error, results, fields) => {
+            conn.query('INSERT INTO `eletronicpoint_has_user` (`eletronicPoint_ideletronicPoint`, user_iduser ) VALUES (?,?);', [ideletronicPoint, idUser], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });

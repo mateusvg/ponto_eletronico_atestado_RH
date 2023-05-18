@@ -1,4 +1,4 @@
-const mysql = require('mysql')
+const mysql = require('mysql2')
 require('dotenv').config({  
     path: process.env.NODE_ENV === "test" ? ".env.testing" : ".env"
   })
