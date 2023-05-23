@@ -190,6 +190,26 @@ async function postFormUser(idForm, nomePacienteBody, cpfBody, nomeMedicoBody, d
 }
 
 
+async function postUserSettings(passwordNew, userIdConst) {
+    let status = "1"
+    try {
+        const result = await new Promise((resolve, reject) => {
+            console.log('postFormModel')
+            conn.query('UPDATE user set userPassword =? WHERE iduser = ?', [passwordNew, userIdConst], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+
+        });
+
+        return result
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
+
 async function getUserScheduleApointment(idUser) {
     try {
         const result = await new Promise((resolve, reject) => {
@@ -209,4 +229,4 @@ async function getUserScheduleApointment(idUser) {
 
 //SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(eletronicpoint.totalWork))) FROM eletronicpoint INNER JOIN eletronicpoint_has_user ON eletronicpoint.ideletronicPoint = eletronicpoint_has_user.eletronicPoint_ideletronicPoint inner join user ON user.iduser = eletronicpoint_has_user.user_iduser where user.iduser = 2 and month(eletronicpoint.date) = 3
 
-module.exports = {updateStatusUser, getUserScheduleApointment, selectUser, insertUserPoint, getPointDateByUser, getPointDateByUserAllHistory, insertUserPointExit, postFormUser, getAllStatusCertificate }
+module.exports = {postUserSettings, updateStatusUser, getUserScheduleApointment, selectUser, insertUserPoint, getPointDateByUser, getPointDateByUserAllHistory, insertUserPointExit, postFormUser, getAllStatusCertificate }

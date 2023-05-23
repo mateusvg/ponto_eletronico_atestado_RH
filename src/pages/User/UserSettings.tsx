@@ -7,8 +7,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Alert, Box, Snackbar, Stack } from '@mui/material';
+import { postChangePassword } from '../../services/Users/postChangePassword'
 
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { userIdConst } from "../../contexts/UsersId";
 
 export default function FormDialog() {
@@ -30,8 +31,24 @@ export default function FormDialog() {
         }
         setOpenAlert(false);
     };
-    const handleOpenAlert = () => {
+    const [passwordNew, setpasswordNew] = useState('');
+    const [passwordOld, setpasswordOld] = useState('');
+    function handlePasswordOld(event: any) {
+        const { value } = event.target
+        setpasswordOld(value)
+    }
+    function handlePasswordNew(event: any) {
+        const { value } = event.target
+        setpasswordNew(value)
+    }
+    
+    const handleOpenAlert = async () => {
         handleClose()
+        await postChangePassword({ passwordNew: passwordNew, passwordOld: passwordOld, userIdConst: userId })
+                .catch((error) => {
+                    // Handle the error
+                    console.error(error);
+                });
         setOpenAlert(true);
         setTimeout(function () {
             handleCloseAlert()
@@ -54,21 +71,23 @@ export default function FormDialog() {
                             margin="normal"
                             required
                             fullWidth
-                            name="password"
+                            name="passwordOld"
                             label="Senha atual"
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            onChange={handlePasswordOld}
                         />
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            name="password"
+                            name="passwordNew"
                             label="Nova senha"
                             type="password"
                             id="passwordNew"
                             autoComplete="current-password"
+                            onChange={handlePasswordNew}
                         />
                     </DialogContent>
                     <DialogActions>

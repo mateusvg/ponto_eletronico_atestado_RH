@@ -64,6 +64,18 @@ exports.postFormUser = async(req, res, next) => {
     res.status(201).send('Formulario recebido com sucesso');
 };
 
+exports.postUserSettings = async(req, res, next) => {
+    let passwordNew = req.body.passwordNew
+    let userIdConst = req.body.userIdConst 
+
+    console.log(" settings user ")
+    console.log(passwordNew)
+    console.log(userIdConst)
+    const data = await users.postUserSettings(passwordNew, userIdConst)
+    res.status(201).send('Formulario recebido com sucesso');
+};
+
+
 exports.getUserScheduleApointment = async (req, res, next) => {
     let  id  = req.params.id
     const data = await users.getUserScheduleApointment(id)
