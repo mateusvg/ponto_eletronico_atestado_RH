@@ -167,9 +167,15 @@ const strGeneretor = (length) => {
 
 
 let date = new Date()
-date = date.toISOString().split('T')[0]
 
 
+function convert(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("/");
+  }
+  let dateToday = convert(date)
 
 async function insertSale(values) {
 
@@ -178,7 +184,7 @@ async function insertSale(values) {
 
     try {
         let idSales = 0
-        const insertValues = await values.map(obj => [idSales, 1, obj.idStock, idSale, date]);
+        const insertValues = await values.map(obj => [idSales, 1, obj.idStock, idSale, dateToday]);
         console.log(JSON.stringify(insertValues))
 
         const query = 'INSERT into sales (idSales, quantity, idStockProduct, idSale, date) VALUES ?'
