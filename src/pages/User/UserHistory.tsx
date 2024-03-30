@@ -13,7 +13,7 @@ export default function () {
         getPointDateByUserAllHistory(userId)
     }, [])
     return (
-        <Box  display={'flex'} flexDirection={'column'} gap={'10px'} justifyContent={'center'} alignItems={'center'} p={2}>
+        <Box textAlign={"center"}>
             Histórico de ponto eletrônico
             <TableUserHistoryPoint />
 
